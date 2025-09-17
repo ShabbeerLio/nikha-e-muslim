@@ -7,7 +7,7 @@
   font-size: 2rem;
   position: absolute;
   z-index: 999999;
-  background: linear-gradient(180deg,rgba(93, 224, 230, 1) 0%, rgba(0, 74, 173, 1) 100%);
+  background: linear-gradient(to bottom, #1f1c2c, #928dab);
   top: 0;
   left: 0;
 }
@@ -27,8 +27,8 @@
   width: 10px;
   height: 10px;
   border-radius: 100%;
-  box-shadow: 0 0 10px #597445;
-  background: #597445;
+  box-shadow: 0 0 10px #51496a;
+  background: #51496a;
   float: left;
   margin: 5px;
   transform: scale(1.5);
@@ -65,35 +65,35 @@
 }
 @keyframes anm-BL-53-move1 {
   50% {
-    background: #597445;
+    background: #51496a;
     transform: scale(0.5);
   }
 }
 
 @keyframes anm-BL-53-move2 {
   50% {
-    background: #597445;
+    background: #51496a;
     transform: scale(0.5);
   }
 }
 
 @keyframes anm-BL-53-move3 {
   50% {
-    background: #597445;
+    background: #51496a;
     transform: scale(0.5);
   }
 }
 
 @keyframes anm-BL-53-move4 {
   50% {
-    background: #597445;
+    background: #51496a;
     transform: scale(0.5);
   }
 }
 
 @keyframes anm-BL-53-move5 {
   50% {
-    background: #597445;
+    background: #51496a;
     transform: scale(0.5);
   }
 }
@@ -105,9 +105,9 @@
 .loader-quote p{
     margin: 0;
     font-size: 14px;
-    color: #597445;
+    color: #51496a;
     text-align: center;
-    border: 1px solid #597445;
+    border: 1px solid #51496a;
     border-radius: 8px;
     padding: 8px;
 }
