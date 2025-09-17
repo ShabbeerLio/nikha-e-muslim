@@ -1,0 +1,179 @@
+.Profile {
+  width: 100%;
+  height: 96%;
+  background-color: #f9f8ff;
+  /* padding-bottom: 6rem; */
+}
+.Profile-main {
+  width: 100%;
+  /* padding-right: 15px;
+  padding-left: 15px; */
+  margin-right: auto;
+  margin-left: auto;
+  height: 100%;
+}
+
+.profile-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 1rem;
+  color: #51496a;
+}
+
+.profile-page {
+  padding: 0 15px;
+}
+
+.profile-header {
+  background: linear-gradient(146deg, #1f1c2c, #928dab);
+  color: white;
+  padding: 20px;
+  border-radius: 40px;
+  position: relative;
+}
+
+.profile-head {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+
+.profile-img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 3px solid white;
+  margin-bottom: 10px;
+}
+
+.profile-info h3 {
+  margin: 0;
+  /* font-size: 18px; */
+}
+
+.profile-info p {
+  font-size: 14px;
+  margin: 0;
+}
+
+.profile-stats {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 15px;
+  border-radius: 40px;
+  padding: 1rem;
+}
+.profile-stats div:nth-child(2) {
+  border-left: 1px solid #928dab;
+  border-right: 1px solid #928dab;
+  padding: 0 15px;
+}
+
+.profile-stats div {
+  text-align: center;
+}
+
+.profile-stats h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: bold;
+}
+.profile-stats p {
+  margin: 0;
+}
+
+.profile-tabs {
+  margin-top: 2rem;
+}
+.profile-tabs p {
+  width: 100%;
+}
+
+.profile-tabs button.active {
+  background: linear-gradient(146deg, #1f1c2c, #928dab);
+  color: white;
+  font-weight: bold;
+}
+
+.menu-list {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1.5rem;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 1rem;
+  border-bottom: 1px solid #928dab;
+  cursor: pointer;
+}
+.plan-detail,
+.menu-item span {
+  flex: 1 1;
+}
+
+.plans-list {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1.5rem;
+}
+
+.plan {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 15px;
+  border-bottom: 1px solid #928dab;
+}
+
+.plan img {
+  width: 12%;
+  background-color: #928dab;
+  border-radius: 40px;
+  padding: 10px;
+  aspect-ratio: 2/2;
+}
+
+.plan h4 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.plan-detail p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.subscribe-btn {
+  margin-top: 15px;
+  padding: 12px;
+  border: none;
+  background: #51496a;
+  color: white;
+  border-radius: 40px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+@media screen and (min-width: 1200px) {
+  .Profile-main {
+    max-width: 1200px;
+  }
+}
+
+@media only screen and (max-width: 680px) {
+  .Profile {
+    width: 100%;
+    height: 100%;
+    height: 96vh;
+    overflow: hidden;
+  }
+  .Profile-main {
+    width: 100%;
+  }
+}

@@ -1,0 +1,83 @@
+/* From Uiverse.io by joe-watson-sbf */
+.search {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 1rem 1rem 5px 1rem;
+}
+
+.search__input {
+  font-family: inherit;
+  font-size: inherit;
+  background-color: white;
+  border: none;
+  color: #597445;
+  padding: 0.5rem 1rem;
+  border-radius: 30px;
+  width: 30em;
+  transition: all ease-in-out 0.5s;
+  margin-right: -2.5rem;border: .5px solid #597445;
+}
+
+/* .search__input:hover,
+.search__input:focus {
+  box-shadow: 0 0 1em #00000013;
+} */
+
+.search__input:focus {
+  outline: none;
+}
+
+.search__input::-webkit-input-placeholder {
+  /* font-weight: 100; */
+  color: #597445;
+}
+
+.search__input:focus + .search__button {
+  background-color: #E7F0DC;
+}
+
+.search__button {
+  border: none;
+  background-color: white;
+  /* margin-top: 0.1em; */
+}
+
+.search__button:hover {
+  cursor: pointer;
+}
+
+.search__icon {
+  height: 1.3em;
+  width: 1.3em;
+  fill: #597445;
+}
+
+.Searchbox-box-right {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.Searchbox-box {
+  margin-top: 2rem;
+}
+.Searchbox-right-card {
+  border: 1px solid #ebebeb;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+@media only screen and (max-width: 680px) {
+  .search__input {
+    width: 100%;
+  }
+  .search__button {
+    border-radius: 25px;
+  }
+  .Searchbox-box-right {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}

@@ -1,0 +1,83 @@
+.navbar {
+  width: 100%;
+  background-color: transparent;
+  color: black;
+}
+.navbar-main {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.nav-name h5 {
+  font-size: 20px;
+  color: white;
+  margin: 0;
+}
+.nav-name span {
+  font-size: 14px;
+  color: #ffffffc7;
+  margin: 0;
+}
+
+.navbar-light .navbar-nav .nav-link.active,
+.navbar-light .navbar-nav .show > .nav-link {
+  color: white !important;
+}
+.navbar-light .navbar-nav .nav-link {
+  color: white !important;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile svg {
+  font-size: 25px;
+  color: white;
+  width: 22px;
+}
+
+.navbar-collapse {
+  justify-content: center;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+.navbar-brand img {
+  height: 50px;
+  width: 50px;
+  border-radius: 50px;
+  background-color: white;
+  object-fit: cover;
+}
+
+.navbar-title h5 {
+  line-height: 10px;
+  color: white;
+}
+.navbar-title span {
+  color: white;
+}
+
+@media screen and (min-width: 1200px) {
+  .navbar-main {
+    max-width: 1200px;
+  }
+}
+
+@media only screen and (max-width: 990px) {
+  .navbar {
+    width: 100%;
+    padding: 2px 0;
+    /* background-color: transparent; */
+  }
+  .navbar-brand {
+    width: 60%;
+  }
+}
