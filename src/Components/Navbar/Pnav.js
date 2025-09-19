@@ -68,9 +68,9 @@ const Pnav = () => {
       <ul>
         <li>
           <NavLink
-            to={"/"}
+            to={"/home"}
             className="nav-link"
-            data-path={"/"}
+            data-path={"/home"}
             ref={(el) => (navRefs.current[0] = el)}
           >
             <House />

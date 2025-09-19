@@ -1,0 +1,29 @@
+.welcome-logo img{
+width: 30%;
+object-fit: cover;
+margin-bottom: 2rem;
+}
+
+.illustration img{
+    width: 45%;
+    object-fit: cover;
+    margin-bottom: 1rem;
+}
+
+.page-box{
+    width: 80%;
+}
+.page-box h2{
+    margin-bottom: 1rem;
+}
+.page-box p{
+    font-size: 14px;
+    color: gray;
+}
+
+.btn.secondary{
+    background: transparent;
+    border: 1px solid #004aad;
+    margin-top: 1rem;
+    color: #004aad;
+}

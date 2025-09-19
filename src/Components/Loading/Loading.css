@@ -7,7 +7,8 @@
   font-size: 2rem;
   position: absolute;
   z-index: 999999;
-  background: linear-gradient(to bottom, #1f1c2c, #928dab);
+  /* background: linear-gradient(to bottom, #1f1c2c, #928dab); */
+  background: linear-gradient(0deg,#5de0e6 0%, #004aad 100%);
   top: 0;
   left: 0;
 }
@@ -114,7 +115,7 @@
 
 @media only screen and (max-width: 680px) {
   .loading-screen img {
-    width: 65%;
+    width: 45%;
     object-fit: cover;
     animation: logoanimate 1s;
   }

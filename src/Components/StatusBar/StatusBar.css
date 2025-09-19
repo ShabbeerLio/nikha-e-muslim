@@ -6,7 +6,8 @@
 }
 
 .statusbar-box {
-  border: 2px solid #928dab;
+  border: 2px solid white;
+  /* border: 2px solid #928dab; */
   border-radius: 50px;
   padding: 2px;
   position: relative;
@@ -18,6 +19,7 @@
   width: 70px;
   height: 70px;
   border-radius: 50px;
+  object-fit: cover;
 }
 
 .statusbar-box .status.active {
@@ -28,5 +30,6 @@
     height: 17px;
     width: 17px;
     border-radius: 50px;
-    border: 3px solid #f1f7ff;
+    /* border: 3px solid #322e3f; */
+    border: 3px solid #0e61b6;
 }

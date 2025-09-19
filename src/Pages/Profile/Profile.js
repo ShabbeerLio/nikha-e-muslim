@@ -1,43 +1,46 @@
 import React, { useState } from "react";
 import "./Profile.css";
-import { Settings, MessageCircle, HelpCircle, ShieldCheck, ChevronRight } from "lucide-react";
+import { Settings, MessageCircle, HelpCircle, ShieldCheck, ChevronRight, EllipsisVertical, X } from "lucide-react";
 import plan1 from "../../Assets/Plan/star.png"
 import plan2 from "../../Assets/Plan/diamond.png"
 import plan3 from "../../Assets/Plan/crown.png"
+import profileData from "../../Profile"
 
 const Profile = () => {
     const [activeTab, setActiveTab] = useState("safety");
+    console.log(profileData, "profileData")
+    const [activeSetting, setActiveSetting] = useState(false)
     return (
         <div className="Profile">
             <div className="Profile-main">
                 <div className="profile-box">
-                    <h2 className="profile-title">Profile</h2>
+                    <div className="profile-title">
+                        <h2>Profile</h2>
+                        <EllipsisVertical onClick={() => setActiveSetting(true)} />
+                    </div>
                     <div className="profile-page">
                         {/* Header Card */}
                         <div className="profile-header">
                             <div className="profile-head">
                                 <img
-                                    src="https://randomuser.me/api/portraits/women/44.jpg"
+                                    src={profileData.avatar}
                                     alt="profile"
                                     className="profile-img"
                                 />
                                 <div className="profile-info">
-                                    <h3>Serena Pretty</h3>
-                                    <p>serenapretty@email.com</p>
+                                    <h3>{profileData.userName}</h3>
+                                    <p>{profileData.email}</p>
                                 </div>
                             </div>
                             <div className="profile-stats glass">
                                 <div>
-                                    <h4>67%</h4>
-                                    <p>Reach</p>
+                                    <h4>8</h4>
+                                    <p>Active With</p>
                                 </div>
+                                <span></span>
                                 <div>
                                     <h4>3.4k</h4>
                                     <p>Impression</p>
-                                </div>
-                                <div>
-                                    <h4>2.8</h4>
-                                    <p>Credit</p>
                                 </div>
                             </div>
                         </div>
@@ -53,13 +56,13 @@ const Profile = () => {
                                 className={activeTab === "safety" ? "active" : ""}
                                 onClick={() => setActiveTab("safety")}
                             >
-                                Nearby
+                                Safety
                             </p>
                             <p
                                 className={activeTab === "plans" ? "active" : ""}
                                 onClick={() => setActiveTab("plans")}
                             >
-                                For You
+                                Subscription
                             </p>
                         </div>
 
@@ -111,6 +114,26 @@ const Profile = () => {
                                     <button className="subscribe-btn">Subscribe Now</button>
                                 </div>
                             )}
+                        </div>
+                        <div className={`profile-modal ${activeSetting === true ? "active" : ""}`}>
+                            <div className="modal-notch"></div>
+
+                            {/* Close button */}
+                            <div
+                                className="close-profile-modal"
+                                onClick={() => setActiveSetting(false)}
+                            >
+                                <X />
+                            </div>
+
+                            {/* Content */}
+                            <div className="profile-modal-box">
+                                <ul>
+                                    <li>Edit Profile</li>
+                                    <li>Share Profile</li>
+                                    <li>Account Settings</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>

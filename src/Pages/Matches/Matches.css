@@ -1,8 +1,9 @@
 .matches-page {
-  padding: 1rem;
+  padding: 1rem 15px 15px 15px;
   overflow: auto;
   height: 80vh;
   padding-bottom: 3rem;
+  border-radius: 50px 50px 0 0;
 }
 
 .matches-title {
@@ -51,4 +52,5 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-radius: 0 0 40px 40px;
 }

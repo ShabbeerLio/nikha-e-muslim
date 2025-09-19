@@ -3,10 +3,12 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  background-color: #f1f7ff;
+  /* background-color: #f8fbff; */
+  background: linear-gradient(180deg,#5de0e6 0%, #004aad 100%);
+  /* background-color: #f9f8ff; */
   display: none;
   border-radius: 50% 50% 0 0;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  /* box-shadow: #51496aa1 0px 15px 30px 0px; */
   z-index: 99999;
 }
 .Pnav ul {
@@ -35,7 +37,8 @@
 }
 .Pnav ul li a svg {
   font-size: 25px;
-  color: #37353e;
+  /* color: #37353e; */
+  color: white;
 }
 
 /*  */
@@ -69,8 +72,11 @@
   color: white;
 }
 .nav-link.active svg {
-  color: #51496a;
-  filter: drop-shadow(0px 0px 4px #51496a);
+  color: white;
+  /* color: #004AAD; */
+  /* color: #51496a; */
+  filter: drop-shadow(0px 0px 4px white);
+  /* filter: drop-shadow(0px 0px 4px #51496a); */
 }
 @media only screen and (max-width: 990px) {
   .Pnav {
