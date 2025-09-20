@@ -20,12 +20,13 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  padding: 0 15px;
 }
 
 .profile-title h2 {
   font-size: 20px;
   font-weight: bold;
-  margin: 1rem;
+  margin: 1rem 0;
   color: #51496a;
 }
 .profile-title svg {
@@ -33,11 +34,11 @@
   font-weight: bold;
   padding: 8px;
   color: #51496a;
-  border: 1px solid #928dab;
+  /* border: 1px solid #928dab; */
   border-radius: 50px;
-  width: 35px;
-  height: 35px;
-  margin-right: 15px;
+  width: 40px;
+  height: 40px;
+  /* margin-right: 15px; */
 }
 
 .profile-page {
@@ -186,7 +187,7 @@
 
 .profile-modal {
   position: absolute;
-  bottom: -30%;
+  bottom: -50%;
   left: 0;
   width: 100%;
   background-color: #f8fbff;
@@ -195,23 +196,24 @@
   border-radius: 50px 50px 0 0;
   box-shadow: #51496aa1 0px 15px 30px 0px;
   z-index: 999999;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.5s ease-in-out;
+  overflow: hidden;
+  height: 45%;
 }
 .profile-modal.active {
   bottom: 0%;
-  height: 45%;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.5s ease-in-out;
 }
-.profile-modal.active:before {
+
+.profile-modal:after {
   position: absolute;
-  top: -2%;
+  top: 2%;
   left: 50%;
   transform: translate(-50%, 0);
   content: "";
-  background-color: transparent;
-  width: 60px;
-  height: 60px;
-  rotate: 45deg;
+  background: linear-gradient(270deg, #5de0e6 0%, #004aad 100%);
+  width: 20%;
+  height: 5px;
   border-radius: 20px;
 }
 

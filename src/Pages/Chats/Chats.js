@@ -4,8 +4,10 @@ import Users from "../../Users"; // adjust path if needed
 import StatusBar from "../../Components/StatusBar/StatusBar";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { ChevronLeft, MoveLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Chats = () => {
+  const navigate = useNavigate();
   const [search, setSearch] = useState("");
 
   // Filter users based on search text
@@ -61,7 +63,7 @@ const Chats = () => {
       <div className="Home-main">
         <div className="Home-box">
           <div className="matches-title">
-            <ChevronLeft />
+            <ChevronLeft onClick={() => navigate(-1)}/>
             <h2>Message</h2>
           </div>
           <div className="chats-page">
@@ -84,7 +86,11 @@ const Chats = () => {
             <div className="chats-list">
               {filteredUsers.length > 0 ? (
                 filteredUsers.map((user) => (
-                  <div key={user.id} className="chat-item">
+                  <div
+                    key={user.id}
+                    className="chat-item"
+                    onClick={() => navigate(`/chat/${user.id}`)}
+                  >
                     <div className="chat-avatar">
                       <img src={user.img} alt={user.name} />
                       {user.active && <span className="online-dot"></span>}

@@ -1,0 +1,64 @@
+.Profile-detail {
+  height: 100vh;
+  position: relative;
+}
+
+.Profile-detail .profile-title h2,
+.Profile-detail .profile-title svg {
+  color: white;
+  /* margin: 1rem 0; */
+}
+.profile-detail-top {
+  text-align: center;
+  padding: 1rem;
+}
+.profile-detail-top img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid white;
+  padding: 5px;
+}
+.profile-detail-top h2 {
+  color: white;
+  margin: 0.5rem;
+}
+.profile-detail-top p {
+  color: #dcdcdc;
+  margin: 0;
+}
+
+.profile-detail-bottom {
+  border-radius: 40px 40px 0 0;
+  background-color: #f8fbff;
+  padding: 2rem;
+  height: 62vh;
+  position: relative;
+  overflow: auto;
+  padding-bottom: 5rem;
+}
+
+.profile-detail-bottom h2 {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.profiledetail-chat p {
+  margin: 0;
+  width: 92%;
+  position: absolute;
+  bottom: 2%;
+  left: 0;
+  background-color: #dcdcdc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2rem;
+  z-index: 2;
+  margin: 0 1rem;
+  cursor: pointer;
+  border-radius: 50px;
+  color: white;
+  background: linear-gradient(270deg, #5de0e6 0%, #004aad 100%);
+}

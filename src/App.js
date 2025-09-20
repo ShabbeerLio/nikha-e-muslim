@@ -13,6 +13,8 @@ import Profile from "./Pages/Profile/Profile";
 import Welcome from "./Pages/Login/Welcome"; // ✅ new
 import Congrats from "./Pages/Login/Congrats";
 import "./App.css";
+import ChatDetails from "./Pages/Chats/ChatDetails";
+import ProfileDetail from "./Pages/Profile/ProfileDetail";
 
 function App() {
   return (
@@ -43,8 +45,10 @@ function MainLayout() {
   const hidePnav =
     location.pathname === "/login" ||
     location.pathname === "/signup" ||
-    location.pathname === "/" || // ✅ hide Pnav on welcome
-    location.pathname === "/congrats";
+    location.pathname === "/" ||
+    location.pathname === "/congrats" ||
+     location.pathname.startsWith("/chat/") ||
+     location.pathname.startsWith("/profile-detail/");
 
   if (loading) {
     return <Loading />;
@@ -62,7 +66,9 @@ function MainLayout() {
           <Route path="/home" element={<Home />} />
           <Route path="/matches" element={<Matches />} />
           <Route path="/chats" element={<Chats />} />
+          <Route path="/chat/:id" element={<ChatDetails />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/profile-detail/:id" element={<ProfileDetail />} />
         </Routes>
         {!hidePnav && <Pnav />}
       </div>

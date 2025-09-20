@@ -127,7 +127,7 @@
 }
 .card-title-box p {
   border-radius: 50px;
-  background-color: #004AAD;
+  background: linear-gradient(270deg, #5de0e6 0%, #004aad 100%);
   /* background-color: #51496a; */
   padding: 1rem;
   margin: 0;

@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import "./Matches.css";
 import { ChevronLeft, Heart } from "lucide-react"; // heart icon
 import Users from "../../Users";
+import { useNavigate } from "react-router-dom";
 
 const Matches = () => {
+    const navigate = useNavigate();
     const [search, setSearch] = useState("");
     // Filter users based on search text
     const filteredUsers = Users.filter((user) =>
@@ -15,7 +17,7 @@ const Matches = () => {
             <div className="Home-main">
                 <div className="Home-box">
                     <div className="matches-title">
-                        <ChevronLeft />
+                        <ChevronLeft onClick={() => navigate(-1)}/>
                         <h2>Matches</h2>
                     </div>
                     <div className="chat-search">
@@ -30,7 +32,7 @@ const Matches = () => {
                         <div className="matches-page">
                             <div className="matches-grid">
                                 {filteredUsers.map((user) => (
-                                    <div key={user.id} className="match-card">
+                                    <div key={user.id} className="match-card" onClick={() => navigate(`/profile-detail/${user.id}`)}>
                                         <img src={user.img} alt={user.name} className="match-img" />
                                         <div className="match-info glass">
                                             <span>

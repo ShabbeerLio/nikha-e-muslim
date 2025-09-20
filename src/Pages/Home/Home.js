@@ -4,9 +4,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import StatusBar from "../../Components/StatusBar/StatusBar";
 import Users from "../../Users";
 import { CircleDot, Dot, MapPin, MoveUpRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   // useEffect(() => {
   //   const token = localStorage.getItem("token");
@@ -113,7 +114,7 @@ const Home = () => {
                           {user.active === true ? <span className="online"><CircleDot />Active</span> : <span className="ofline"><CircleDot />Ofline</span>}
                           <h3>{user.name}</h3>
                         </div>
-                        <p><MoveUpRight /></p>
+                        <p onClick={() => navigate(`/profile-detail/${user.id}`)} ><MoveUpRight /></p>
                       </div>
                       <div className="card-location-box glass">
                         <p><MapPin />Delhi</p>
