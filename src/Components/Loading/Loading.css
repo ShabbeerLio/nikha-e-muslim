@@ -7,8 +7,7 @@
   font-size: 2rem;
   position: absolute;
   z-index: 999999;
-  /* background: linear-gradient(to bottom, #1f1c2c, #928dab); */
-  background: linear-gradient(0deg,#5de0e6 0%, #004aad 100%);
+  background: linear-gradient(0deg, #5de0e6, #004aad);
   top: 0;
   left: 0;
 }

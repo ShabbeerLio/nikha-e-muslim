@@ -3,12 +3,9 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  /* background-color: #f8fbff; */
   background: linear-gradient(180deg,#5de0e6 0%, #004aad 100%);
-  /* background-color: #f9f8ff; */
   display: none;
   border-radius: 50% 50% 0 0;
-  /* box-shadow: #51496aa1 0px 15px 30px 0px; */
   z-index: 99999;
 }
 .Pnav ul {

@@ -26,6 +26,8 @@
 .btn.secondary {
   background: transparent;
   border: 1px solid #004aad;
+  /* border: 1px solid #abbaab; */
   margin-top: 1rem;
   color: #004aad;
+  /* color: #abbaab; */
 }

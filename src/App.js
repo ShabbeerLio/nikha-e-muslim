@@ -15,6 +15,11 @@ import Congrats from "./Pages/Login/Congrats";
 import "./App.css";
 import ChatDetails from "./Pages/Chats/ChatDetails";
 import ProfileDetail from "./Pages/Profile/ProfileDetail";
+import Notification from "./Pages/Notification/Notification";
+import Subscription from "./Pages/Subscription/Subscription";
+import Checkout from "./Pages/Checkout/Checkout";
+import ProfileEdit from "./Pages/Profile/ProfileEdit";
+import Wishlist from "./Pages/Wishlist/Wishlist";
 
 function App() {
   return (
@@ -47,8 +52,12 @@ function MainLayout() {
     location.pathname === "/signup" ||
     location.pathname === "/" ||
     location.pathname === "/congrats" ||
+    location.pathname === "/notification" ||
+    location.pathname === "/subscription" ||
+    location.pathname === "/checkout" ||
      location.pathname.startsWith("/chat/") ||
-     location.pathname.startsWith("/profile-detail/");
+     location.pathname.startsWith("/profile-detail/") ||
+     location.pathname.startsWith("/profile-edit/");
 
   if (loading) {
     return <Loading />;
@@ -69,6 +78,11 @@ function MainLayout() {
           <Route path="/chat/:id" element={<ChatDetails />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/profile-detail/:id" element={<ProfileDetail />} />
+          <Route path="/profile-edit/:section" element={<ProfileEdit />} />
+          <Route path="/notification" element={<Notification />} />
+          <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/subscription" element={<Subscription />} />
+          <Route path="/checkout" element={<Checkout />} />
         </Routes>
         {!hidePnav && <Pnav />}
       </div>

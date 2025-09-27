@@ -1,15 +1,11 @@
 .Profile {
   width: 100%;
   height: 100%;
-  background-color: #f8fbff;
-  /* background-color: #f9f8ff; */
+  background-color: #f8feff;
   position: relative;
-  /* padding-bottom: 6rem; */
 }
 .Profile-main {
   width: 100%;
-  /* padding-right: 15px;
-  padding-left: 15px; */
   margin-right: auto;
   margin-left: auto;
   height: 100%;
@@ -27,13 +23,15 @@
   font-size: 20px;
   font-weight: bold;
   margin: 1rem 0;
-  color: #51496a;
+  color: #004aad;
+  /* color: #abbaab; */
 }
 .profile-title svg {
   font-size: 20px;
   font-weight: bold;
   padding: 8px;
-  color: #51496a;
+  color: #004aad;
+  /* color: #abbaab; */
   /* border: 1px solid #928dab; */
   border-radius: 50px;
   width: 40px;
@@ -47,7 +45,6 @@
 
 .profile-header {
   background: linear-gradient(0deg, #5de0e6 0%, #004aad 100%);
-  /* background: linear-gradient(146deg, #1f1c2c, #928dab); */
   color: white;
   padding: 20px;
   border-radius: 40px;
@@ -58,7 +55,6 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 1rem;
 }
 
 .profile-img {
@@ -77,6 +73,12 @@
   /* font-size: 18px; */
 }
 
+.profile-edit {
+  width: 18px;
+  height: 18px;
+  margin-left: 0.5rem;
+}
+
 .profile-info p {
   font-size: 14px;
   margin: 0;
@@ -92,7 +94,7 @@
 
 .profile-stats span {
   width: 0.5px;
-  background: #928dab;
+  background: #abbaab;
 }
 
 .profile-stats div {
@@ -115,12 +117,6 @@
   width: 100%;
 }
 
-.profile-tabs button.active {
-  background: linear-gradient(146deg, #1f1c2c, #928dab);
-  color: white;
-  font-weight: bold;
-}
-
 .menu-list {
   display: flex;
   flex-direction: column;
@@ -133,7 +129,8 @@
   justify-content: space-between;
   gap: 12px;
   padding: 1rem;
-  border-bottom: 1px solid #928dab;
+  border-bottom: 1px solid #e0e0e0;
+  /* border-bottom: 1px solid #abbaab; */
   cursor: pointer;
 }
 .plan-detail,
@@ -153,12 +150,14 @@
   align-items: center;
   gap: 12px;
   padding: 15px;
-  border-bottom: 1px solid #928dab;
+  border-bottom: 1px solid #e0e0e0;
+  /* border-bottom: 1px solid #abbaab; */
 }
 
 .plan img {
   width: 12%;
-  background-color: #928dab;
+  /* background-color: #51496a; */
+  background-color: #004aad;
   border-radius: 40px;
   padding: 10px;
   aspect-ratio: 2/2;
@@ -178,7 +177,7 @@
   margin-top: 15px;
   padding: 12px;
   border: none;
-  background: #51496a;
+  background: linear-gradient(270deg, #5de0e6 0%, #004aad 100%);
   color: white;
   border-radius: 40px;
   font-size: 16px;
@@ -190,15 +189,15 @@
   bottom: -50%;
   left: 0;
   width: 100%;
-  background-color: #f8fbff;
-  /* background-color: #f9f8ff; */
+  /* background-color: #f8fff8; */
+  background-color: #f8feff;
   padding: 3rem 1.5rem 1.5rem 1.5rem;
   border-radius: 50px 50px 0 0;
-  box-shadow: #51496aa1 0px 15px 30px 0px;
+  box-shadow: #51496a 0px 15px 30px 0px;
   z-index: 999999;
   transition: all 0.5s ease-in-out;
   overflow: hidden;
-  height: 45%;
+  height: 50%;
 }
 .profile-modal.active {
   bottom: 0%;
@@ -227,13 +226,12 @@
 }
 
 .close-profile-modal {
-  border: 0.5px solid black;
   border-radius: 50px;
   padding: 5px;
 }
 .profile-modal-box ul li {
   padding: 1rem 0;
-  border-bottom: 1px solid #928dab;
+  border-bottom: 1px solid gray;
   display: flex;
   align-items: center;
 }

@@ -1,0 +1,8 @@
+.request-actions.wishlist-actions .decline svg{
+    color: gray;
+border: 1px solid gray;
+}
+.request-actions.wishlist-actions .accept svg{
+    color: white;
+    background: linear-gradient(270deg, #ffa3a3 0%, #ff6363 100%);
+}

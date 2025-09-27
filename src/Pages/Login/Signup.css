@@ -1,9 +1,12 @@
 .sign-page {
   /* background: white; */
   height: 100vh;
+  position: relative;
+  overflow: hidden;
 }
 .signup-top {
-  background-color: #f8fbff;
+  background-color: #f8feff;
+  /* background-color: #f8fff8; */
   width: 100%;
   padding: 2rem;
   position: relative;
@@ -42,6 +45,8 @@
 .sign-page-box {
   margin-top: 3rem;
   padding: 2rem;
+  position: relative;
+  z-index: 9;
 }
 
 .sign-page-box h2 {
@@ -49,6 +54,8 @@
   margin-bottom: 1rem;
   font-size: 20px;
   font-weight: bold;
+  display: flex;
+  align-items: center;
 }
 .sign-page-box .btn {
   /* background: linear-gradient(270deg, #5de0e6 0%, #004aad 100%); */
@@ -60,8 +67,214 @@
   padding: 1rem;
   font-weight: bold;
 }
+.sign-page-box .btn:focus {
+  box-shadow: none;
+}
 
 .sign-form {
   position: relative;
   z-index: 2;
+}
+
+.sign-page-box.registration .or {
+  color: rgb(255, 255, 255);
+}
+
+.sign-page-box.registration .or::before {
+  background-color: white;
+}
+.sign-page-box.registration .or::after {
+  background-color: white;
+}
+.sign-page-box.registration .login-register {
+  color: white;
+}
+
+/* ---------------------------------- */
+.progress-bar {
+  height: 5px;
+  background: #eee;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.progress {
+  height: 100%;
+  background: linear-gradient(-90deg, #5de0e6, #004aad);
+  transition: width 0.3s ease-in-out;
+}
+
+.step-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.back-btn {
+  cursor: pointer;
+}
+
+.step-content select,
+.step-content input {
+  display: block;
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 10px;
+  border-radius: 25px;
+  border: 1px solid #ccc;
+}
+
+.step-content h4 {
+  color: white;
+  font-size: 18px;
+}
+.step-actions {
+  margin-top: 20px;
+  text-align: right;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+.btn.success {
+  background: #2ecc71;
+  color: white;
+  border: none;
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: auto;
+  margin-top: 15px;
+  height: 35vh;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 10px;
+  /* border: 1px solid white; */
+  border-bottom: 0.1px solid white;
+  transition: all 0.2s ease;
+}
+
+.radio-option input[type="radio"] {
+  accent-color: #004aad;
+  transform: scale(1.5);
+}
+.radio-option input {
+  width: auto;
+  margin-bottom: 0;
+}
+
+.radio-option span {
+  font-weight: 500;
+  color: white;
+}
+
+.radio-group.gender-group {
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: center;
+  height: auto;
+}
+
+.radio-option.gender-option {
+  flex-direction: column;
+  text-align: center;
+  border: none;
+}
+
+.gender-img {
+  width: 90%;
+  aspect-ratio: 2/2;
+  object-fit: cover;
+}
+
+.dob-picker {
+  color: white;
+}
+
+.age-display {
+  margin-top: 15px;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  text-align: center;
+}
+
+.radio-group.Sect-group {
+  height: auto;
+}
+
+.family-location {
+  margin-top: 1rem;
+}
+.selected-location-box p {
+  border-radius: 40px;
+  padding: 10px 1rem;
+  background-color: white;
+  margin: 0;
+}
+
+.radio-group.qualifucation-group {
+  height: 30vh;
+}
+
+.profile-pic {
+  border-radius: 40px;
+  border: 1px dashed white;
+  background-color: transparent;
+  height: 25vh;
+  /* margin-bottom: 1rem; */
+  width: 100%;
+  color: white;
+}
+
+.profile-pic-box p {
+  font-size: 14px;
+}
+
+.profile-pic-image {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-pic-box img {
+  width: 50%;
+  aspect-ratio: 2/2;
+  object-fit: cover;
+  border: 3px solid #5de0e6;
+  padding: 3px;
+  border-radius: 100px;
+}
+
+.profile-pic-box .btn {
+  width: 100%;
+  border-radius: 50px;
+  margin: 0;
+  background: linear-gradient(270deg, #5de0e6 0%, #004aad 100%);
+  color: white;
+  margin-top: 1rem;
+  padding: 1rem;
+}
+
+.skip-btn {
+  color: #004aad;
+  margin-top: 1rem;
+  text-align: center;
 }

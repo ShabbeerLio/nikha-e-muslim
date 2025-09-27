@@ -14,8 +14,7 @@
 
 /* home styling */
 .home-style {
-  background-color: #f8fbff;
-  /* background-color: #f9f8ff; */
+  background-color: #f8feff;
   height: 100vh;
   /* border-radius: 100% 100% 0% 0% / 15% 15% 0% 0%; */
   border-radius: 50px 50px 0 0;
@@ -35,10 +34,8 @@
   align-items: center;
   justify-content: center;
   border-radius: 40px;
-  background-color: #f8fbff;
-  /* background-color: #f9f8ff; */
-  border: 0.5px solid #004AAD;
-  /* border: 0.5px solid #928dab; */
+  background-color: #f8feff;
+  border: 0.5px solid #004aad;
   overflow: hidden;
 }
 
@@ -66,9 +63,7 @@
   bottom: 4px;
   left: 4px;
   width: calc(50% - 4px);
-  /* background: #004AAD; */
-  background: linear-gradient(270deg,#5de0e6 0%, #004aad 100%);
-  /* background: #51496a; */
+  background: linear-gradient(270deg, #5de0e6 0%, #004aad 100%);
   border-radius: 25px;
   transition: transform 0.3s ease;
   z-index: 1;
@@ -122,13 +117,10 @@
 .glass {
   backdrop-filter: blur(5px);
   background: #0000004d;
-  /* border: 0.1px solid #ffffffa1; */
-  /* filter: drop-shadow(-8px -10px 46px #0000005f); */
 }
 .card-title-box p {
   border-radius: 50px;
   background: linear-gradient(270deg, #5de0e6 0%, #004aad 100%);
-  /* background-color: #51496a; */
   padding: 1rem;
   margin: 0;
   color: white;

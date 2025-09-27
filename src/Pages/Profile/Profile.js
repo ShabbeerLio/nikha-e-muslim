@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import "./Profile.css";
-import { Settings, MessageCircle, HelpCircle, ShieldCheck, ChevronRight, EllipsisVertical, X } from "lucide-react";
+import { Settings, MessageCircle, HelpCircle, ShieldCheck, ChevronRight, EllipsisVertical, X, Pen, Heart, Bell } from "lucide-react";
 import plan1 from "../../Assets/Plan/star.png"
 import plan2 from "../../Assets/Plan/diamond.png"
 import plan3 from "../../Assets/Plan/crown.png"
 import profileData from "../../Profile"
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
+    const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState("safety");
-    console.log(profileData, "profileData")
+    // console.log(profileData, "profileData")
     const [activeSetting, setActiveSetting] = useState(false)
     return (
         <div className="Profile">
@@ -16,7 +18,7 @@ const Profile = () => {
                 <div className="profile-box">
                     <div className="profile-title">
                         <h2>Profile</h2>
-                        <EllipsisVertical onClick={() => setActiveSetting(true)} />
+                        {/* <EllipsisVertical onClick={() => setActiveSetting(true)} /> */}
                     </div>
                     <div className="profile-page">
                         {/* Header Card */}
@@ -28,9 +30,10 @@ const Profile = () => {
                                     className="profile-img"
                                 />
                                 <div className="profile-info">
-                                    <h3>{profileData.userName}</h3>
+                                    <h3>{profileData.userName}  <Pen onClick={() => navigate(`/profile-detail/${profileData.id}`)} className="profile-edit" /></h3>
                                     <p>{profileData.email}</p>
                                 </div>
+
                             </div>
                             <div className="profile-stats glass">
                                 <div>
@@ -70,16 +73,22 @@ const Profile = () => {
                         <div className="profile-content">
                             {activeTab === "safety" && (
                                 <div className="menu-list">
+                                    <div className="menu-item" onClick={() => navigate(`/chats`)}>
+                                        <MessageCircle size={20} /> <span>Message</span> <ChevronRight />
+                                    </div>
+                                    <div className="menu-item" onClick={() => navigate(`/notification`)}>
+                                        <Bell size={20} /> <span>Ntification</span> <ChevronRight />
+                                    </div>
+                                    <div className="menu-item" onClick={() => navigate(`/wishlist`)}>
+                                        <Heart size={20} /> <span>Wishlist</span> <ChevronRight />
+                                    </div>
                                     <div className="menu-item">
                                         <Settings size={20} /> <span>Settings</span> <ChevronRight />
                                     </div>
                                     <div className="menu-item">
-                                        <MessageCircle size={20} /> <span>Message</span> <ChevronRight />
-                                    </div>
-                                    <div className="menu-item">
                                         <HelpCircle size={20} /> <span>Get help</span> <ChevronRight />
                                     </div>
-                                    <div className="menu-item">
+                                    <div className="menu-item" onClick={() => navigate(`/subscription`)}>
                                         <ShieldCheck size={20} /> <span>Verify</span> <ChevronRight />
                                     </div>
                                 </div>
@@ -111,13 +120,11 @@ const Profile = () => {
                                         </div>
                                         <span>₹72.90</span>
                                     </div>
-                                    <button className="subscribe-btn">Subscribe Now</button>
+                                    <button className="subscribe-btn" onClick={() => navigate("/subscription")}>Subscribe Now</button>
                                 </div>
                             )}
                         </div>
                         <div className={`profile-modal ${activeSetting === true ? "active" : ""}`}>
-                            <div className="modal-notch"></div>
-
                             {/* Close button */}
                             <div
                                 className="close-profile-modal"

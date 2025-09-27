@@ -1,0 +1,88 @@
+.subscription-title {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start !important;
+}
+
+.subscription-card {
+  background: #fff;
+  border-radius: 40px;
+  padding: 1.5rem;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.subscription-card {
+  color: black;
+  /* padding-right: 2.5rem; */
+  position: relative;
+}
+.subscription-card .subs-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem 1rem;
+  border-radius: 50px;
+  background: linear-gradient(270deg, #5de0e6 0%, #004aad 100%);
+  color: white;
+}
+
+.sub-plan-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sub-plan-top-left h6 {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+      margin-bottom: 5px;
+}
+.sub-plan-top-left p {
+  font-size: 14px;
+  color: rgb(48, 48, 48);
+  line-height: 16px;
+}
+
+.sub-plan-top-right h5 {
+  font-weight: 700;
+  margin: 0;
+  color: black !important;
+  font-size: 22px;
+}
+.sub-plan-top-right h5 del {
+  font-size: 14px;
+}
+.sub-plan-top-right p {
+  font-size: 14px;
+  text-align: end;
+}
+
+.last-subs {
+  padding: 5px 10px;
+  border-radius: 25px;
+  color: #004aad;
+  font-size: 10px;
+  border: 0.1px solid #004aad;
+  margin-bottom: 10px;
+  width: 40%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* position: absolute; */
+}
+
+.sub-plan-top-right {
+  text-align: right;
+  padding-bottom: 8px;
+}
+
+.status-badge {
+  border-radius: 25px;
+  padding: 5px 10px;
+  color: #004aad;
+  font-size: 10px;
+  border: 0.1px solid #004aad;
+}
