@@ -10,7 +10,7 @@ const ProfileEdit = () => {
     const [activeSetting, setActiveSetting] = useState(null);
 
     const [form, setForm] = useState({
-        profileFor: "",
+        images: [],
         name: "",
         email: "",
         password: "",
@@ -101,6 +101,14 @@ const ProfileEdit = () => {
         </p>
     );
 
+    const images = [
+        "https://cdn.pixabay.com/photo/2024/02/16/05/34/ai-generated-8576689_1280.jpg",
+        "https://cdn.pixabay.com/photo/2018/04/19/05/11/portrait-3332334_1280.jpg",
+        "https://cdn.pixabay.com/photo/2020/07/16/05/49/girl-5409762_1280.jpg",
+        "https://cdn.pixabay.com/photo/2021/08/18/15/59/woman-6555932_1280.jpg",
+        "https://cdn.pixabay.com/photo/2020/04/01/14/51/hijab-4991433_1280.jpg"
+    ];
+
     return (
         <div className="Profile">
             <div className="Profile-main">
@@ -110,6 +118,22 @@ const ProfileEdit = () => {
                         <h2>Edit {section.charAt(0).toUpperCase() + section.slice(1)}</h2>
                     </div>
                     <div className="profile-page profile-detail-modal-box profile-edit-page">
+                        {section === "images" && (
+                            <div>
+                                {/* <h3>Edit Images</h3> */}
+                                <div className="image-grid">
+                                    {images.map((img, index) => (
+                                        <div key={index} className="image-item">
+                                            <img src={img} alt={`img-${index}`} />
+                                            <X className="remove-image" />  {/* Remove image icon */}
+                                        </div>
+                                    ))}
+                                    <div className="image-item add-image" onClick={() => setActiveSetting("addImage")}>
+                                        <span>+</span>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                         {section === "basic" && (
                             <div>
                                 {/* <h3>Edit Basic Details</h3> */}
@@ -270,6 +294,14 @@ const ProfileEdit = () => {
                 </div>
                 <div className="profile-detail-modal">
                     <div className=" profile-edit-page">
+                        {activeSetting === "addImage" && (
+                            <div>
+                                <h2>Images</h2>
+                                <div className="radio-group Sect-group">
+                                    <input type="file" />
+                                </div>
+                            </div>
+                        )}
                         {activeSetting === "sect" && (
                             <div>
                                 <h2>Sect</h2>

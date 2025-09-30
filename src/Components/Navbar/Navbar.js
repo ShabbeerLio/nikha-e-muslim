@@ -1,7 +1,7 @@
 import "./Navbar.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useRef, useState } from "react";
-import { Bell, CircleQuestionMark, WalletMinimal } from "lucide-react";
+import { Bell, CircleQuestionMark, Heart, WalletMinimal } from "lucide-react";
 import NoteContext from "../../Context/SadaqahContext";
 import Profile from "../../Profile";
 
@@ -61,8 +61,13 @@ const Navbar = () => {
             </div>
             <div className="profile">
               <div className="notification">
-                <Link to={"/notification"}>
+                <Link to={"/wishlist"} className="notification-items" style={{ marginRight: "15px" }}>
+                  <Heart />
+                  <span>{6}</span>
+                </Link>
+                <Link to={"/notification"} className="notification-items">
                   <Bell />
+                  <span>{3}</span>
                 </Link>
               </div>
             </div>

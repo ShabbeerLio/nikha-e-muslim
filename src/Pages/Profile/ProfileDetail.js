@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./ProfileDetail.css";
-import { BriefcaseBusiness, ChevronLeft, EllipsisVertical, GraduationCap, Heart, Languages, Mail, MapPinHouse, MessageCircle, MessageCircleHeart, MoonStar, Pen, Phone, Ruler, ScanHeart, Star, User, UserPen, UserRoundPlus, WalletMinimal, X } from "lucide-react";
+import { BriefcaseBusiness, CheckCheck, ChevronLeft, EllipsisVertical, GraduationCap, Heart, ImagePlus, Images, Languages, Lock, Mail, MapPinHouse, MessageCircle, MessageCircleHeart, MoonStar, Pen, Phone, Ruler, ScanHeart, Star, Timer, User, UserPen, UserRoundPlus, WalletMinimal, X } from "lucide-react";
 import Users from "../../Users"; // adjust path if needed
 import { useNavigate, useParams } from "react-router-dom";
 import profileData from "../../Profile"
-import { MdFamilyRestroom, MdInterests } from "react-icons/md";
+import { MdFamilyRestroom } from "react-icons/md";
 import { FaWhatsapp } from "react-icons/fa";
 
 
@@ -15,6 +15,7 @@ const ProfileDetail = () => {
     const user = Users.find((u) => u.id.toString() === id);
     const personal = id === profileData.id;
     console.log(personal, "personal")
+    const [subscriptionPlan, setSubscriptionPlan] = useState(profileData.subscriptionPlan || "free");
 
     // 🔹 Tabs
     const tabs = [
@@ -94,12 +95,22 @@ const ProfileDetail = () => {
     ];
 
     const lifestyleOptions = [
-        "Vegetarian",
         "Non-Vegetarian",
         "Occasional Smoker",
         "Non-Smoker",
         "Fitness Enthusiast",
     ];
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const images = [
+      "https://cdn.pixabay.com/photo/2024/02/16/05/34/ai-generated-8576689_1280.jpg",
+      "https://cdn.pixabay.com/photo/2018/04/19/05/11/portrait-3332334_1280.jpg",
+  "https://cdn.pixabay.com/photo/2020/07/16/05/49/girl-5409762_1280.jpg",
+  "https://cdn.pixabay.com/photo/2021/08/18/15/59/woman-6555932_1280.jpg",
+  "https://cdn.pixabay.com/photo/2020/04/01/14/51/hijab-4991433_1280.jpg"
+];
 
     return (
         <div className="Profile-detail">
@@ -111,7 +122,11 @@ const ProfileDetail = () => {
                         <EllipsisVertical />
                     </div>
                     <div className="profile-detail-top">
-                        <img src={user.img} alt="" />
+                        <div className="profile-detail-top-image">
+                            <img src={user.img} alt="" />
+                            {personal ? <ImagePlus onClick={() => navigate(`/profile-edit/images`)} /> : <Images onClick={() => setIsModalOpen(true)} />}
+
+                        </div>
                         <h2>
                             {user.name}
                         </h2>
@@ -132,6 +147,19 @@ const ProfileDetail = () => {
                         ))}
                     </div>
                     <div className="profile-detail-bottom" ref={containerRef}>
+                        <div className="profile-detail-bottom-box">
+                            <h2>Matched</h2>
+                            <ul>
+                                <li><MapPinHouse /> Delhi <CheckCheck className="matched" /></li>
+                                <li> <Languages /> Hindi / Urdu <CheckCheck className="matched" /></li>
+                                <li><MoonStar />Sunni <CheckCheck className="matched" /></li>
+                                <li><MoonStar />Pathan <CheckCheck className="matched" /></li>
+                                <li><MoonStar />Barelvi <CheckCheck className="matched" /></li>
+                                <li><MoonStar />Fitness Enthusiast <CheckCheck className="matched" /></li>
+                                <li><MoonStar />Non-Vegetarian  <CheckCheck className="matched" /></li>
+                            </ul>
+                            <p style={{ color: "green" }}>Your profile matched 60%</p>
+                        </div>
                         <section id="basic" ref={sectionRefs.basic}>
                             <div className="profile-detail-bottom-box">
                                 <h2>Basic Details {personal && <Pen onClick={() => navigate(`/profile-edit/basic`)} />}</h2>
@@ -161,9 +189,22 @@ const ProfileDetail = () => {
 
                         <section className="profile-detail-bottom-box" id="contact" ref={sectionRefs.contact}>
                             <h2>Contact {personal && <Pen onClick={() => navigate(`/profile-edit/contact`)} />}</h2>
-                            <p><Mail /> test@example.com</p>
-                            <p><Phone /> +91-9876543210</p>
-                            <p style={{ color: "green" }}><FaWhatsapp style={{ color: "green" }} /> +91-9876543210</p>
+                            {subscriptionPlan === "free" && !personal ? (
+                                <div className="contact-overlay">
+                                    <div className="contact-overlay-content">
+                                        <Lock />
+                                        <h5>Upgrade to Premium to view contact details</h5>
+                                    </div>
+                                    <button onClick={() => navigate("/subscription")}>Upgrade Now</button>
+                                </div>
+                            ) :
+                                (<>
+                                    <p><MapPinHouse /> Delhi, India</p>
+                                    <p><Mail /> test@example.com</p>
+                                    <p><Phone /> +91-9876543210</p>
+                                    <p style={{ color: "green" }}><FaWhatsapp style={{ color: "green" }} /> +91-9876543210</p>
+                                </>)}
+
                         </section>
 
                         <section className="profile-detail-bottom-box" id="education" ref={sectionRefs.education}>
@@ -223,43 +264,96 @@ const ProfileDetail = () => {
 
                         <section className="profile-detail-bottom-box" id="religious" ref={sectionRefs.religious}>
                             <h2>Religious Detail {personal && <Pen onClick={() => navigate(`/profile-edit/religious`)} />}</h2>
-                            <div className="profile-detail-bottom-card ">
-                                <div className="lifestyle-card">
-                                    {religiousOptions.map((item) => (
-                                        <p key={item}>{item}</p>
-                                    ))}
-                                    {/* <p>Recites Quran everyday</p>
-                                    <p>Give Zakat Regularly</p>
-                                    <p>Pray everyday </p>
-                                    <p>Fast (Roza)</p>
-                                    <p>Read Quran</p>
-                                    <p>Read Quran</p> */}
+                            {subscriptionPlan === "free" && !personal ? (
+                                <div className="contact-overlay">
+                                    <div className="contact-overlay-content">
+                                        <Lock />
+                                        <h5>Upgrade to Premium to view contact details</h5>
+                                    </div>
+                                    <button onClick={() => navigate("/subscription")}>Upgrade Now</button>
                                 </div>
-                            </div>
+                            ) : (
+                                <div className="profile-detail-bottom-card ">
+                                    <div className="lifestyle-card">
+                                        {religiousOptions.map((item) => (
+                                            <p key={item}>{item}</p>
+                                        ))}
+                                    </div>
+                                </div>)}
                         </section>
 
                         <section className="profile-detail-bottom-box" id="lifestyle" ref={sectionRefs.lifestyle}>
                             <h2>Lifestyle & Interest {personal && <Pen onClick={() => navigate(`/profile-edit/lifestyle`)} />}</h2>
-                            <div className="profile-detail-bottom-card">
-                                <div className="lifestyle-card">
-                                    {lifestyleOptions.map((item) => (
-                                        <p key={item}>{item}</p>
-                                    ))}
+                            {subscriptionPlan === "free" && !personal ? (
+                                <div className="contact-overlay">
+                                    <div className="contact-overlay-content">
+                                        <Lock />
+                                        <h5>Upgrade to Premium to view contact details</h5>
+                                    </div>
+                                    <button onClick={() => navigate("/subscription")}>Upgrade Now</button>
                                 </div>
-                            </div>
+                            ) : (
+                                <div className="profile-detail-bottom-card">
+                                    <div className="lifestyle-card">
+                                        {lifestyleOptions.map((item) => (
+                                            <p key={item}>{item}</p>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
                         </section>
                     </div>
                     {!personal && (
                         <div className="profiledetail-chat">
-                            <p><Heart /> Wishlist</p>
+                            {user?.wishlist ? (
+                                <p><Heart style={{ fill: "pink" }} /> Wishlisted</p>
+                            ) : (
+                                <p><Heart /> Wishlist</p>
+                            )}
 
                             {user?.status === "interested" ? (
-                                <p  className={`${user?.status}`} onClick={() => navigate(`/chat/${user.id}`)}><MessageCircle />Chat</p>
+                                <p className={`${user?.status}`} onClick={() => navigate(`/chat/${user.id}`)}><MessageCircle />Chat</p>
+                            ) : user?.status === "pending" ? (
+                                <p><Timer />Pending</p>
                             ) : (
                                 <p><Star />Interested</p>
                             )}
                         </div>
                     )}
+                    {/* Modal */}
+      {isModalOpen && (
+        <div className="image-modal">
+          <div className="image-modal-content">
+            <button className="close-btn" onClick={() => setIsModalOpen(false)}>
+              <X size={24} />
+            </button>
+
+            {/* Full Screen Image */}
+            <div className="full-image">
+              <img
+                src={images[selectedIndex]}
+                alt={`Gallery ${selectedIndex}`}
+              />
+            </div>
+
+            {/* Image Tabs */}
+            <div className="image-tabs">
+              {images.map((img, index) => (
+                <img
+                  key={index}
+                  src={img}
+                  alt={`thumb-${index}`}
+                  className={`thumbnail ${
+                    index === selectedIndex ? "active" : ""
+                  }`}
+                  onClick={() => setSelectedIndex(index)}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
                 </div>
             </div>
         </div>

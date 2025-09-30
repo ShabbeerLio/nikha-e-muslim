@@ -6,6 +6,7 @@ const Users = [
     active: true,
     lastMessageTime: "2025-09-17T10:45:00", // ISO string
     status: "",
+    wishlist: false,
   },
   {
     id: "102",
@@ -13,7 +14,8 @@ const Users = [
     img: "https://cdn.pixabay.com/photo/2020/06/26/14/46/india-5342931_1280.jpg",
     active: false,
     lastMessageTime: "2025-09-16T20:15:00",
-    status: "",
+    status: "pending",
+    wishlist: false,
   },
   {
     id: "103",
@@ -22,6 +24,7 @@ const Users = [
     active: true,
     lastMessageTime: "2025-09-14T09:10:00",
     status: "interested",
+    wishlist: true,
   },
   {
     id: "1",
@@ -31,6 +34,7 @@ const Users = [
     age: 25,
     lastMessageTime: "2025-09-14T09:10:00",
     status: "",
+    wishlist: false,
   },
   {
     id: "2",
@@ -40,6 +44,7 @@ const Users = [
     age: 25,
     lastMessageTime: "2025-09-16T20:15:00",
     status: "interested",
+    wishlist: true,
   },
   {
     id: "6",
@@ -48,7 +53,8 @@ const Users = [
     active: false,
     age: 25,
     lastMessageTime: "2025-09-16T20:15:00",
-    status: "",
+    status: "pending",
+    wishlist: false,
   },
   {
     id: "3",
@@ -58,6 +64,7 @@ const Users = [
     age: 25,
     lastMessageTime: "2025-09-14T09:10:00",
     status: "interested",
+    wishlist: true,
   },
   {
     id: "4",
@@ -67,6 +74,7 @@ const Users = [
     img: "https://cdn.pixabay.com/photo/2016/11/21/12/42/beard-1845166_1280.jpg",
     lastMessageTime: "2025-09-16T20:15:00",
     status: "",
+    wishlist: false,
   },
   {
     id: "5",
@@ -76,6 +84,7 @@ const Users = [
     img: "https://cdn.pixabay.com/photo/2022/01/30/13/46/man-6980931_1280.jpg",
     lastMessageTime: "2025-09-14T09:10:00",
     status: "interested",
+    wishlist: true,
   },
   {
     id: "10111",
