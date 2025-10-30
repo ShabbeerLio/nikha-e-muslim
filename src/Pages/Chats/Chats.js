@@ -1,22 +1,54 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./Chats.css";
-import Users from "../../Users"; // adjust path if needed
 import StatusBar from "../../Components/StatusBar/StatusBar";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
-import { ChevronLeft, MoveLeft } from "lucide-react";
+import { Check, CheckCheck, ChevronLeft, MoveLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import NoteContext from "../../Context/NikhaContext";
 
 const Chats = () => {
+  const {
+    userDetail,
+    getAccountDetails,
+    allConnected,
+    getAllConnected,
+    socket,
+    onlineUsers,
+  } = useContext(NoteContext);
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
 
+  useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      navigate("/welcome");
+    } else {
+      getAccountDetails();
+      getAllConnected();
+    }
+  }, [navigate]);
+
+   // ✅ Listen for incoming messages in real-time
+  useEffect(() => {
+    if (!socket) return;
+
+    socket.on("receiveMessage", (data) => {
+      console.log("📨 Message received in chat list:", data);
+      getAllConnected(); // 🔁 refresh chat list with latest message
+    });
+
+    return () => {
+      socket.off("receiveMessage");
+    };
+  }, [socket]);
+  
   // Filter users based on search text
-  const filteredUsers = Users.filter((user) =>
-    user.name.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredUsers =
+    allConnected?.filter((item) =>
+      item?.name?.toLowerCase().includes(search.toLowerCase())
+    ) || [];
 
   // Active users only
-  const activeUsers = Users.filter((user) => user.active);
+  // const activeUsers = Users.filter((user) => user.active);
 
   // Format last message time
   const formatTime = (dateString) => {
@@ -57,13 +89,15 @@ const Chats = () => {
     }
   };
 
-  console.log(activeUsers, "activeUsers");
+  console.log(allConnected,"allConnected")
+  // console.log(filteredUsers, "filteredUsers");
+
   return (
     <div className="Home">
       <div className="Home-main">
         <div className="Home-box">
           <div className="matches-title">
-            <ChevronLeft onClick={() => navigate(-1)}/>
+            <ChevronLeft onClick={() => navigate(-1)} />
             <h2>Message</h2>
           </div>
           <div className="chats-page">
@@ -78,32 +112,72 @@ const Chats = () => {
             </div>
 
             {/* Active Users (scrollable row) */}
-            {activeUsers.length > 0 && (
+            {allConnected.length > 0 && (
               <div className="active-users">
-                <StatusBar Users={activeUsers} />
+                <StatusBar
+                  Users={allConnected}
+                  userDetail={userDetail}
+                  onlineUsers={onlineUsers}
+                />
               </div>
             )}
-            <div className="chats-list">
+            <div
+              className={`chats-list  ${
+                filteredUsers.length === 0 ? "empty" : ""
+              }`}
+            >
               {filteredUsers.length > 0 ? (
-                filteredUsers.map((user) => (
-                  <div
-                    key={user.id}
-                    className="chat-item"
-                    onClick={() => navigate(`/chat/${user.id}`)}
-                  >
-                    <div className="chat-avatar">
-                      <img src={user.img} alt={user.name} />
-                      {user.active && <span className="online-dot"></span>}
+                filteredUsers.map((item) => {
+                  const receiver = item;
+                  const lastMsg = item?.lastMessage;
+                  const isMine = lastMsg?.sentByMe;
+                  const isSeen = lastMsg?.isSeen;
+
+                  return (
+                    <div
+                      key={receiver?._id}
+                      className="chat-item"
+                      onClick={() => navigate(`/chat/${receiver?._id}`)}
+                    >
+                      <div className="chat-avatar">
+                        <img
+                          src={
+                            receiver?.profilePic?.url ||
+                            "https://static.vecteezy.com/system/resources/previews/008/433/598/non_2x/men-icon-for-website-symbol-presentation-free-vector.jpg"
+                          }
+                          alt={receiver?.name}
+                        />
+                        {onlineUsers.includes(receiver._id) && (
+                          <span className="online-dot"></span>
+                        )}
+                      </div>
+                      <div className="chat-info">
+                        <h4>{receiver?.name}</h4>
+                        <p className={`last-message ${!isSeen ? "seen" : ""}`}>
+                          {lastMsg ? (
+                            <>
+                              {isMine && (
+                                <span
+                                  className={`msg-status ${
+                                    isSeen ? "seen" : "sent"
+                                  }`}
+                                >
+                                  {isSeen ? <CheckCheck /> : <Check />}
+                                </span>
+                              )}{" "}
+                              {lastMsg.content}
+                            </>
+                          ) : (
+                            "Tap to start chatting..."
+                          )}
+                        </p>
+                      </div>
+                      <div className="chat-time">
+                        {formatTime(receiver.lastMessage?.createdAt)}
+                      </div>
                     </div>
-                    <div className="chat-info">
-                      <h4>{user.name}</h4>
-                      <p>Tap to start chatting...</p>
-                    </div>
-                    <div className="chat-time">
-                      {formatTime(user.lastMessageTime)}
-                    </div>
-                  </div>
-                ))
+                  );
+                })
               ) : (
                 <div className="empty-chats">
                   <DotLottieReact
@@ -111,7 +185,7 @@ const Chats = () => {
                     loop
                     autoplay
                   />
-                  <p>No chats yet. Start a conversation with people!</p>
+                  <p>No chats yet. Start a conversation!</p>
                 </div>
               )}
             </div>

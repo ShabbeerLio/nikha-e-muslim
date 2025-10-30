@@ -1,25 +1,57 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./Home.css";
 import { motion, AnimatePresence } from "framer-motion";
 import StatusBar from "../../Components/StatusBar/StatusBar";
 import Users from "../../Users";
 import { CircleDot, Dot, MapPin, MoveUpRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import Host from "../../Host/Host";
+import NoteContext from "../../Context/NikhaContext";
 
 const Home = () => {
+  const {userDetail, getAccountDetails,allConnected, getAllConnected, onlineUsers } =
+    useContext(NoteContext);
   const navigate = useNavigate();
+  const [active, setActive] = useState(2); // 2 = "For You" default
+  const [index, setIndex] = useState(0);
+  const [swipeDir, setSwipeDir] = useState("left");
+  const [userData, setUserData] = useState([]); // ✅ dynamic user data
+  const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   if (!token) {
-  //     navigate("/login");
-  //   }
-  // }, [navigate]);
-  const [active, setActive] = useState(2);
-  const [index, setIndex] = useState(0); // track current card
-  const [swipeDir, setSwipeDir] = useState("left"); // track swipe direction
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/welcome");
+    } else {
+      getAllConnected();
+      getAccountDetails();
+    }
+  }, [navigate]);
 
-  const userData = Users;
+  // ✅ Fetch users when `active` changes
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        setLoading(true);
+        const route = active === 1 ? "nearby" : "foryou";
+        const res = await fetch(`${Host}/api/match/${route}`, {
+          headers: {
+            "auth-token": localStorage.getItem("token"),
+          },
+        });
+        if (!res.ok) throw new Error("Failed to fetch users");
+        const data = await res.json();
+        setUserData(data);
+      } catch (err) {
+        console.error("Error fetching users:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, [active]);
+
   const handleSwipe = (direction) => {
     setSwipeDir(direction);
     if (direction === "left" && index < userData.length - 1) {
@@ -28,19 +60,23 @@ const Home = () => {
       setIndex((prev) => prev - 1);
     }
   };
-  console.log(userData, "userData")
+
+  // console.log(allConnected, "allConnected");
 
   return (
     <div className="Home">
       <div className="Home-main">
         <div className="Home-box">
-          <StatusBar Users={Users} />
+          <StatusBar Users={allConnected} userDetail={userDetail} onlineUsers={onlineUsers}/>
           <div className="home-style">
             <div className="home-location">
               <div className="home-location-btn">
                 <div
                   className="active-bg"
-                  style={{ transform: active === 1 ? "translateX(0%)" : "translateX(100%)" }}
+                  style={{
+                    transform:
+                      active === 1 ? "translateX(0%)" : "translateX(100%)",
+                  }}
                 ></div>
 
                 <p
@@ -62,72 +98,101 @@ const Home = () => {
           </div> */}
             <div className="cards">
               <AnimatePresence mode="popLayout">
-                {userData.slice(index, index + 2).map((user, i) => {
-                  const isTop = i === 0;
+                {userData.length === 0 ? (
+                  <p className="no-users">No users found</p>
+                ) : (
+                  userData.slice(index, index + 2).map((user, i) => {
+                    const isTop = i === 0;
 
-                  return (
-                    <motion.div
-                      key={user.id}
-                      className="card"
-                      drag={isTop ? "x" : false}
-                      dragConstraints={{ left: 0, right: 0 }}
-                      dragElastic={0.8}
-                      onDragEnd={(e, info) => {
-                        if (info.offset.x < -100) {
-                          handleSwipe("left");
-                        } else if (info.offset.x > 100) {
-                          handleSwipe("right");
-                        }
-                      }}
-                      initial={{
-                        x: isTop
-                          ? swipeDir === "left"
-                            ? 300 // coming from right
-                            : -300 // coming from left
-                          : 0,
-                        scale: isTop ? 1 : 0.9,
-                        y: isTop ? 0 : 20,
-                        opacity: 0,
-                        rotate: isTop ? -5 : 5,
-                      }}
-                      animate={{
-                        x: 0,
-                        scale: isTop ? 1 : 0.9,
-                        y: isTop ? 0 : 20,
-                        opacity: 1,
-                        rotate: isTop ? -5 : 5,
-                      }}
-                      exit={{
-                        x: isTop
-                          ? swipeDir === "left"
-                            ? -300 // going left
-                            : 300 // going right
-                          : 0,
-                        opacity: isTop ? 0 : 1,
-                      }}
-                      transition={{ duration: 0.3 }}
-                      style={{ zIndex: userData.length - (index + i) }}
-                    >
-                      <img src={user.img} alt={user.name} />
-                      <div className="card-title-box glass">
-                        <div className="cart-title">
-                          {user.active === true ? <span className="online"><CircleDot />Active</span> : <span className="ofline"><CircleDot />Ofline</span>}
-                          <h3>{user.name}</h3>
+                    return (
+                      <motion.div
+                        key={user._id}
+                        className="card"
+                        drag={isTop ? "x" : false}
+                        dragConstraints={{ left: 0, right: 0 }}
+                        dragElastic={0.8}
+                        onDragEnd={(e, info) => {
+                          if (info.offset.x < -100) {
+                            handleSwipe("left");
+                          } else if (info.offset.x > 100) {
+                            handleSwipe("right");
+                          }
+                        }}
+                        initial={{
+                          x: isTop
+                            ? swipeDir === "left"
+                              ? 300 // coming from right
+                              : -300 // coming from left
+                            : 0,
+                          scale: isTop ? 1 : 0.9,
+                          y: isTop ? 0 : 20,
+                          opacity: 0,
+                          rotate: isTop ? -5 : 5,
+                        }}
+                        animate={{
+                          x: 0,
+                          scale: isTop ? 1 : 0.9,
+                          y: isTop ? 0 : 20,
+                          opacity: 1,
+                          rotate: isTop ? -5 : 5,
+                        }}
+                        exit={{
+                          x: isTop
+                            ? swipeDir === "left"
+                              ? -300 // going left
+                              : 300 // going right
+                            : 0,
+                          opacity: isTop ? 0 : 1,
+                        }}
+                        transition={{ duration: 0.3 }}
+                        style={{ zIndex: userData.length - (index + i) }}
+                      >
+                        <img
+                          src={
+                            user.profilePic?.url ||
+                            "https://static.vecteezy.com/system/resources/previews/008/433/598/non_2x/men-icon-for-website-symbol-presentation-free-vector.jpg"
+                          }
+                          alt={user.name}
+                        />
+                        <div className="card-title-box glass">
+                          <div className="cart-title">
+                            {onlineUsers.includes(user._id) ? (
+                              <span className="online">
+                                <CircleDot />
+                                Online
+                              </span>
+                            ):(
+                              <span className="ofline">
+                                <CircleDot />
+                                Ofline
+                              </span>
+                            )}
+                            <h3>{user.name}</h3>
+                          </div>
+                          <p
+                            onClick={() =>
+                              navigate(`/profile-detail/${user._id}`)
+                            }
+                          >
+                            <MoveUpRight />
+                          </p>
                         </div>
-                        <p onClick={() => navigate(`/profile-detail/${user.id}`)} ><MoveUpRight /></p>
-                      </div>
-                      <div className="card-location-box glass">
-                        <p><MapPin />Delhi</p>
-                      </div>
-                    </motion.div>
-                  );
-                })}
+                        <div className="card-location-box glass">
+                          <p>
+                            <MapPin />
+                            {user.city || "Unknown"}
+                          </p>
+                        </div>
+                      </motion.div>
+                    );
+                  })
+                )}
               </AnimatePresence>
             </div>
           </div>
         </div>
       </div>
-    </div >
+    </div>
   );
 };
 

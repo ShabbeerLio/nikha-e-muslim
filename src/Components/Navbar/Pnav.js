@@ -2,16 +2,15 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import "./Pnav.css";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import {
-  House,
-  User,
-  MessageCircleHeart,
-  CopyCheck,
-} from "lucide-react";
+import { House, User, MessageCircleHeart, CopyCheck } from "lucide-react";
+import NoteContext from "../../Context/NikhaContext";
 
 const Pnav = () => {
-  // const { userDetail, getAccountDetails } = useContext(NoteContext);
-  // const navigate = useNavigate();
+  const {
+    allConnected,
+    getAllConnected,
+  } = useContext(NoteContext);
+  const navigate = useNavigate();
   const location = useLocation();
   const [highlightProps, setHighlightProps] = useState({
     left: -9999,
@@ -19,15 +18,6 @@ const Pnav = () => {
   });
   const navRefs = useRef([]);
   const [tail, setTail] = useState(null);
-  // const user = userDetail;
-
-  // useEffect(() => {
-  //   if (!localStorage.getItem("token")) {
-  //     navigate("/login");
-  //   } else {
-  //     getAccountDetails();
-  //   }
-  // }, [navigate]);
 
   useEffect(() => {
     const links = ["/", "/matches", "/chats", "/profile"];
@@ -68,9 +58,9 @@ const Pnav = () => {
       <ul>
         <li>
           <NavLink
-            to={"/home"}
+            to={"/"}
             className="nav-link"
-            data-path={"/home"}
+            data-path={"/"}
             ref={(el) => (navRefs.current[0] = el)}
           >
             <House />

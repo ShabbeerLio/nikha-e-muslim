@@ -13,7 +13,7 @@
   padding: 10px 14px;
   border-radius: 40px;
   /* border: .1px solid #abbaab; */
-  border: .1px solid #f8feff;
+  border: 0.1px solid #f8feff;
   font-size: 14px;
   outline: none;
 }
@@ -48,9 +48,12 @@
   padding: 1rem;
   overflow: auto;
   height: 68vh;
-padding-bottom: 3rem;
-background-color: #f8feff;
+  padding-bottom: 3rem;
+  background-color: #f8feff;
   border-radius: 50px 50px 0 0;
+}
+.chats-list.empty {
+  height: 80vh;
 }
 
 .chat-item {
@@ -111,6 +114,10 @@ background-color: #f8feff;
 }
 
 .empty-chats {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   text-align: center;
   padding: 40px 20px;
   color: #666;
@@ -118,10 +125,33 @@ background-color: #f8feff;
   flex-direction: column;
   align-items: center;
   gap: 12px;
+  width: 100%;
 }
 
 .empty-chats .empty-icon {
   width: 60px;
   height: 60px;
   color: #bbb;
+}
+
+.msg-status {
+  font-size: 13px;
+  margin: 0 4px;
+  font-weight: bold;
+}
+.msg-status svg {
+  width: 16px;
+  height: 16px;
+}
+
+.msg-status.sent {
+  color: gray; /* single tick */
+}
+
+.msg-status.seen {
+  color: #0ba4f1; /* blue double tick */
+}
+
+.last-message.seen{
+  font-weight: bold;
 }

@@ -1,21 +1,124 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import "./ProfileDetail.css";
-import { BriefcaseBusiness, CheckCheck, ChevronLeft, EllipsisVertical, GraduationCap, Heart, ImagePlus, Images, Languages, Lock, Mail, MapPinHouse, MessageCircle, MessageCircleHeart, MoonStar, Pen, Phone, Ruler, ScanHeart, Star, Timer, User, UserPen, UserRoundPlus, WalletMinimal, X } from "lucide-react";
-import Users from "../../Users"; // adjust path if needed
-import { useNavigate, useParams } from "react-router-dom";
-import profileData from "../../Profile"
+import {
+    BriefcaseBusiness,
+    CheckCheck,
+    ChevronLeft,
+    EllipsisVertical,
+    GraduationCap,
+    Heart,
+    ImagePlus,
+    Images,
+    Languages,
+    Lock,
+    Mail,
+    MapPinHouse,
+    MessageCircle,
+    MessageCircleHeart,
+    MoonStar,
+    Pen,
+    Phone,
+    Ruler,
+    ScanHeart,
+    Star,
+    Timer,
+    User,
+    UserPen,
+    UserRoundPlus,
+    WalletMinimal,
+    X,
+} from "lucide-react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { MdFamilyRestroom } from "react-icons/md";
 import { FaWhatsapp } from "react-icons/fa";
-
-
+import Host from "../../Host/Host";
+import NoteContext from "../../Context/NikhaContext";
 
 const ProfileDetail = () => {
+    const { userDetail, getAccountDetails } = useContext(NoteContext);
     const navigate = useNavigate();
     const { id } = useParams();
-    const user = Users.find((u) => u.id.toString() === id);
-    const personal = id === profileData.id;
-    console.log(personal, "personal")
-    const [subscriptionPlan, setSubscriptionPlan] = useState(profileData.subscriptionPlan || "free");
+    const [user, setUser] = useState([]);
+    const [matchedItems, setMatchedItems] = useState()
+
+    useEffect(() => {
+        if (!localStorage.getItem("token")) {
+            navigate("/welcome");
+        } else {
+            getAccountDetails();
+        }
+    }, [navigate]);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const response = await fetch(`${Host}/api/auth/${id}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "auth-token": localStorage.getItem("token"),
+                    },
+                });
+                const data = await response.json();
+                setUser(data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        const fetchMatched = async () => {
+            try {
+                const response = await fetch(`${Host}/api/match/${id}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "auth-token": localStorage.getItem("token"),
+                    },
+                });
+                const data = await response.json();
+                setMatchedItems(data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchMatched();
+        fetchUser();
+    }, [id]);
+
+    const [status, setStatus] = useState(null);
+
+    useEffect(() => {
+        const fetchStatus = async () => {
+            try {
+                const response = await fetch(`${Host}/api/connection/status/${id}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "auth-token": localStorage.getItem("token"),
+                    },
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    setStatus(data.status); // e.g., "Pending", "Accepted", "Rejected", "Blocked"
+                } else {
+                    setStatus(null);
+                }
+            } catch (error) {
+                console.error("Error fetching status:", error);
+            }
+        };
+
+        if (id && userDetail?._id) {
+            fetchStatus();
+        }
+    }, [id, userDetail]);
+
+    const personal = userDetail?._id === id;
+    //   console.log(personal, "personal");
+    const [subscriptionPlan, setSubscriptionPlan] = useState(
+        userDetail.subscription?.plan || "free"
+    );
+
+    // console.log(userDetail,"userDetail")
 
     // 🔹 Tabs
     const tabs = [
@@ -86,31 +189,69 @@ const ProfileDetail = () => {
         return () => container.removeEventListener("scroll", handleScroll);
     }, []);
 
-    const religiousOptions = [
-        "Recites Quran everyday",
-        "Give Zakat Regularly",
-        "Pray everyday",
-        "Fast (Roza)",
-        "Read Quran",
-    ];
-
-    const lifestyleOptions = [
-        "Non-Vegetarian",
-        "Occasional Smoker",
-        "Non-Smoker",
-        "Fitness Enthusiast",
-    ];
-
     const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState(0);
+    const [selectedIndex, setSelectedIndex] = useState(0);
 
-  const images = [
-      "https://cdn.pixabay.com/photo/2024/02/16/05/34/ai-generated-8576689_1280.jpg",
-      "https://cdn.pixabay.com/photo/2018/04/19/05/11/portrait-3332334_1280.jpg",
-  "https://cdn.pixabay.com/photo/2020/07/16/05/49/girl-5409762_1280.jpg",
-  "https://cdn.pixabay.com/photo/2021/08/18/15/59/woman-6555932_1280.jpg",
-  "https://cdn.pixabay.com/photo/2020/04/01/14/51/hijab-4991433_1280.jpg"
-];
+    const galleryImages = user.images || [];
+
+    // console.log(user, "user");
+    const sendInderest = async (receiverId) => {
+        try {
+            const response = await fetch(`${Host}/api/connection/send/${receiverId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "auth-token": localStorage.getItem("token"),
+                }
+            });
+            const data = await response.json();
+            if (response.ok) {
+                setStatus("Pending");
+            } else {
+                console.error("Error sending interest:", data.error);
+            }
+        } catch (error) {
+            console.error("Error sending interest:", error);
+        }
+    };
+
+    const handleWishlist = async (userId) => {
+        try {
+            const response = await fetch(`${Host}/api/wishlist/add/${userId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "auth-token": localStorage.getItem("token"),
+                },
+            });
+            const data = await response.json();
+            if (response.ok) {
+                getAccountDetails();
+            } else {
+                console.error("Error updating wishlist:", data.error);
+            }
+        } catch (error) { console.error("Error updating wishlist:", error); }
+    };
+    const handleRemoveWishlist = async (userId) => {
+        try {
+            const response = await fetch(`${Host}/api/wishlist/remove/${userId}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "auth-token": localStorage.getItem("token"),
+                },
+            });
+            const data = await response.json();
+            if (response.ok) {
+                getAccountDetails();
+            } else {
+                console.error("Error updating wishlist:", data.error);
+            }
+        } catch (error) { console.error("Error updating wishlist:", error); }
+    };
+
+
+    // console.log(userDetail, "userDetail")
 
     return (
         <div className="Profile-detail">
@@ -123,16 +264,22 @@ const ProfileDetail = () => {
                     </div>
                     <div className="profile-detail-top">
                         <div className="profile-detail-top-image">
-                            <img src={user.img} alt="" />
-                            {personal ? <ImagePlus onClick={() => navigate(`/profile-edit/images`)} /> : <Images onClick={() => setIsModalOpen(true)} />}
-
+                            <img
+                                src={
+                                    user?.profilePic?.url
+                                        ? user?.profilePic?.url
+                                        : "https://static.vecteezy.com/system/resources/previews/068/013/243/large_2x/muslim-male-character-free-vector.jpg"
+                                }
+                                alt="profile"
+                            />
+                            {personal ? (
+                                <ImagePlus onClick={() => navigate(`/profile-edit/images`)} />
+                            ) : (
+                                <Images onClick={() => setIsModalOpen(true)} />
+                            )}
                         </div>
-                        <h2>
-                            {user.name}
-                        </h2>
-                        <p>
-                            Delhi
-                        </p>
+                        <h2>{user?.name || "-"}</h2>
+                        <p>{user?.city || "-"}</p>
                     </div>
                     {/* 🔹 Tabs */}
                     <div className="profile-detail-tabs">
@@ -147,213 +294,335 @@ const ProfileDetail = () => {
                         ))}
                     </div>
                     <div className="profile-detail-bottom" ref={containerRef}>
-                        <div className="profile-detail-bottom-box">
-                            <h2>Matched</h2>
-                            <ul>
-                                <li><MapPinHouse /> Delhi <CheckCheck className="matched" /></li>
-                                <li> <Languages /> Hindi / Urdu <CheckCheck className="matched" /></li>
-                                <li><MoonStar />Sunni <CheckCheck className="matched" /></li>
-                                <li><MoonStar />Pathan <CheckCheck className="matched" /></li>
-                                <li><MoonStar />Barelvi <CheckCheck className="matched" /></li>
-                                <li><MoonStar />Fitness Enthusiast <CheckCheck className="matched" /></li>
-                                <li><MoonStar />Non-Vegetarian  <CheckCheck className="matched" /></li>
-                            </ul>
-                            <p style={{ color: "green" }}>Your profile matched 60%</p>
-                        </div>
+                        {!personal && (
+                            <div className="profile-detail-bottom-box">
+                                <h2>Matched</h2>
+                                <ul>
+                                    {matchedItems?.matchedFields.map((field, i) => (
+                                        <li key={i}><MoonStar /> {field} <CheckCheck className="matched" /></li>
+                                    ))}
+                                </ul>
+                                <p style={{ color: "green" }}>Your profile matched {matchedItems?.matchPercentage}%</p>
+                            </div>
+                        )}
                         <section id="basic" ref={sectionRefs.basic}>
                             <div className="profile-detail-bottom-box">
-                                <h2>Basic Details {personal && <Pen onClick={() => navigate(`/profile-edit/basic`)} />}</h2>
+                                <h2>
+                                    Basic Details{" "}
+                                    {personal && (
+                                        <Pen onClick={() => navigate(`/profile-edit/basic`)} />
+                                    )}
+                                </h2>
                                 <ul>
-                                    <li><ScanHeart />Single</li>
-                                    <li> <Ruler /> 5ft 11in</li>
-                                    <li><MapPinHouse /> Delhi</li>
-                                    <li> <Languages /> Hindi / Urdu</li>
-                                    <li><MoonStar />Sunni, Pathan, Barelvi</li>
-                                    <li><UserPen />Profile created for Self</li>
+                                    <li>
+                                        <ScanHeart />
+                                        {user?.maritalStatus || "-"}
+                                    </li>
+                                    <li>
+                                        <Ruler />
+                                        {user?.height?.ft && user?.height?.inch ? user?.height?.ft + " ft " + user?.height?.inch + " inch" : "-"}
+                                    </li>
+                                    <li>
+                                        <MapPinHouse /> {user?.city && user?.state ? user?.city + ", " + user?.state : "-"}
+                                    </li>
+                                    <li>
+                                        <Languages /> {user?.motherTongue}
+                                    </li>
+                                    <li>
+                                        <MoonStar />
+                                        {user?.sect && user?.caste && user?.maslak ? user?.sect + ", " + user?.caste + ", " + user?.maslak : "-"}
+                                    </li>
+                                    <li>
+                                        <UserPen />
+                                        {user?.profileFor ? `Profile created for ${user?.profileFor}` : "-"}
+                                    </li>
                                 </ul>
                             </div>
                             <div className="profile-detail-bottom-box">
-                                <h2>{user.name}'s Bio {personal && <Pen onClick={() => navigate(`/profile-edit/bio`)} />}</h2>
+                                <h2>
+                                    {user?.name}'s Bio{" "}
+                                    {personal && (
+                                        <Pen onClick={() => navigate(`/profile-edit/bio`)} />
+                                    )}
+                                </h2>
                                 <p>
-                                    {showFullBio
-                                        ? "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam ullam laudantium tempora ipsum commodi expedita sit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam ullam laudantium tempora ipsum commodi expedita sit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam ullam laudantium tempora ipsum commodi expedita sit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam ullam laudantium tempora ipsum commodi expedita sit."
-                                        : truncateWords(
-                                            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam ullam laudantium tempora ipsum commodi expedita sit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam ullam laudantium tempora ipsum commodi expedita sit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam ullam laudantium tempora ipsum commodi expedita sit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam ullam laudantium tempora ipsum commodi expedita sit.",
-                                            20
-                                        )}
-                                    <span className="view-more-btn"
-                                        onClick={() => setShowFullBio(!showFullBio)}>{showFullBio ? "View Less" : "View More"}</span>
+                                    {user?.about ? (
+                                        <>
+                                            {showFullBio
+                                                ? `${user?.about}`
+                                                : truncateWords(`${user?.about}`, 20)}
+                                            <span
+                                                className="view-more-btn"
+                                                onClick={() => setShowFullBio(!showFullBio)}
+                                            >
+                                                {showFullBio ? "View Less" : "View More"}
+                                            </span>
+                                        </>
+                                    ) : (
+                                        <>-</>
+                                    )}
                                 </p>
                             </div>
                         </section>
 
-                        <section className="profile-detail-bottom-box" id="contact" ref={sectionRefs.contact}>
-                            <h2>Contact {personal && <Pen onClick={() => navigate(`/profile-edit/contact`)} />}</h2>
+                        <section
+                            className="profile-detail-bottom-box"
+                            id="contact"
+                            ref={sectionRefs.contact}
+                        >
+                            <h2>
+                                Contact{" "}
+                                {personal && (
+                                    <Pen onClick={() => navigate(`/profile-edit/contact`)} />
+                                )}
+                            </h2>
                             {subscriptionPlan === "free" && !personal ? (
                                 <div className="contact-overlay">
                                     <div className="contact-overlay-content">
                                         <Lock />
                                         <h5>Upgrade to Premium to view contact details</h5>
                                     </div>
-                                    <button onClick={() => navigate("/subscription")}>Upgrade Now</button>
+                                    <button onClick={() => navigate("/subscription")}>
+                                        Upgrade Now
+                                    </button>
                                 </div>
-                            ) :
-                                (<>
-                                    <p><MapPinHouse /> Delhi, India</p>
-                                    <p><Mail /> test@example.com</p>
-                                    <p><Phone /> +91-9876543210</p>
-                                    <p style={{ color: "green" }}><FaWhatsapp style={{ color: "green" }} /> +91-9876543210</p>
-                                </>)}
-
+                            ) : (
+                                <>
+                                    <p>
+                                        <MapPinHouse /> {user.city + ", " + user?.state + ", India"}
+                                    </p>
+                                    <p>
+                                        <Mail /> {user?.email}
+                                    </p>
+                                    <p>
+                                        <Phone /> {user?.mobile}
+                                    </p>
+                                    <p style={{ color: "green" }}>
+                                        <FaWhatsapp style={{ color: "green" }} /> {user?.whatsapp || "Not Added"}
+                                    </p>
+                                </>
+                            )}
                         </section>
 
-                        <section className="profile-detail-bottom-box" id="education" ref={sectionRefs.education}>
-                            <h2>Education & Career {personal && <Pen onClick={() => navigate(`/profile-edit/education`)} />}</h2>
+                        <section
+                            className="profile-detail-bottom-box"
+                            id="education"
+                            ref={sectionRefs.education}
+                        >
+                            <h2>
+                                Education & Career{" "}
+                                {personal && (
+                                    <Pen onClick={() => navigate(`/profile-edit/education`)} />
+                                )}
+                            </h2>
                             <div className="profile-detail-bottom-card">
                                 <GraduationCap />
                                 <div className="profiledetail-card-detail">
-                                    <h6>B.C.A</h6>
-                                    <p>XYZ Univercity of Technology</p>
+                                    <h6>{user?.qualification || "Qualification"}</h6>
+                                    <p>{user?.institute || "-"}</p>
                                 </div>
                             </div>
                             <div className="profile-detail-bottom-card">
                                 <BriefcaseBusiness />
                                 <div className="profiledetail-card-detail">
-                                    <h6>MERN Stack Developer</h6>
-                                    <p>Private Sector</p>
+                                    <h6>{user?.profession || "Profession"}</h6>
+                                    <p>{user?.workSector || "-"}</p>
                                 </div>
                             </div>
                             <div className="profile-detail-bottom-card">
                                 <WalletMinimal />
                                 <div className="profiledetail-card-detail">
-                                    <h6>Rs. 5 - 6 Lakh</h6>
+                                    <h6>Rs. {user?.income || "-"}</h6>
                                     <p>Annual Income</p>
                                 </div>
                             </div>
                         </section>
 
-                        <section className="profile-detail-bottom-box" id="family" ref={sectionRefs.family}>
-                            <h2>Family {personal && <Pen onClick={() => navigate(`/profile-edit/family`)} />}</h2>
+                        <section
+                            className="profile-detail-bottom-box"
+                            id="family"
+                            ref={sectionRefs.family}
+                        >
+                            <h2>
+                                Family{" "}
+                                {personal && (
+                                    <Pen onClick={() => navigate(`/profile-edit/family`)} />
+                                )}
+                            </h2>
                             <div className="profile-detail-bottom-card">
                                 <MdFamilyRestroom />
                                 <div className="profiledetail-card-detail">
                                     <h6>Family Lives in</h6>
-                                    <p>Delhi</p>
+                                    <p>{user.family?.location || "-"}</p>
                                     <h6>Family Status</h6>
-                                    <p>-</p>
+                                    <p>{user.family?.status || "-"}</p>
                                     <h6>Family Type</h6>
-                                    <p>-</p>
+                                    <p>{user.family?.type || "-"}</p>
                                 </div>
                             </div>
                             <div className="profile-detail-bottom-card">
                                 <UserRoundPlus />
                                 <div className="profiledetail-card-detail">
                                     <h6>Father's Name</h6>
-                                    <p>-</p>
+                                    <p>{user.family?.fatherName || "-"}</p>
+                                    <h6>Father's Occupation</h6>
+                                    <p>{user.family?.fatherOccupation || "-"}</p>
                                     <h6>Mother's Occupation</h6>
-                                    <p>-</p>
+                                    <p>{user.family?.motherOccupation || "-"}</p>
                                     <h6>No. of brothers</h6>
-                                    <p>-</p>
+                                    <p>{user.family?.brothers || "-"}</p>
                                     <h6>No. of sisters</h6>
-                                    <p>-</p>
+                                    <p>{user.family?.sisters || "-"}</p>
                                     <h6>About Family</h6>
-                                    <p>-</p>
+                                    <p>{user.family?.about || "-"}</p>
                                 </div>
                             </div>
                         </section>
 
-                        <section className="profile-detail-bottom-box" id="religious" ref={sectionRefs.religious}>
-                            <h2>Religious Detail {personal && <Pen onClick={() => navigate(`/profile-edit/religious`)} />}</h2>
+                        <section
+                            className="profile-detail-bottom-box"
+                            id="religious"
+                            ref={sectionRefs.religious}
+                        >
+                            <h2>
+                                Religious Detail{" "}
+                                {personal && (
+                                    <Pen onClick={() => navigate(`/profile-edit/religious`)} />
+                                )}
+                            </h2>
                             {subscriptionPlan === "free" && !personal ? (
                                 <div className="contact-overlay">
                                     <div className="contact-overlay-content">
                                         <Lock />
                                         <h5>Upgrade to Premium to view contact details</h5>
                                     </div>
-                                    <button onClick={() => navigate("/subscription")}>Upgrade Now</button>
+                                    <button onClick={() => navigate("/subscription")}>
+                                        Upgrade Now
+                                    </button>
                                 </div>
                             ) : (
                                 <div className="profile-detail-bottom-card ">
                                     <div className="lifestyle-card">
-                                        {religiousOptions.map((item) => (
+                                        {user?.religiousDetail?.map((item) => (
                                             <p key={item}>{item}</p>
                                         ))}
                                     </div>
-                                </div>)}
+                                </div>
+                            )}
                         </section>
 
-                        <section className="profile-detail-bottom-box" id="lifestyle" ref={sectionRefs.lifestyle}>
-                            <h2>Lifestyle & Interest {personal && <Pen onClick={() => navigate(`/profile-edit/lifestyle`)} />}</h2>
+                        <section
+                            className="profile-detail-bottom-box"
+                            id="lifestyle"
+                            ref={sectionRefs.lifestyle}
+                        >
+                            <h2>
+                                Lifestyle & Interest{" "}
+                                {personal && (
+                                    <Pen onClick={() => navigate(`/profile-edit/lifestyle`)} />
+                                )}
+                            </h2>
                             {subscriptionPlan === "free" && !personal ? (
                                 <div className="contact-overlay">
                                     <div className="contact-overlay-content">
                                         <Lock />
                                         <h5>Upgrade to Premium to view contact details</h5>
                                     </div>
-                                    <button onClick={() => navigate("/subscription")}>Upgrade Now</button>
+                                    <button onClick={() => navigate("/subscription")}>
+                                        Upgrade Now
+                                    </button>
                                 </div>
                             ) : (
                                 <div className="profile-detail-bottom-card">
                                     <div className="lifestyle-card">
-                                        {lifestyleOptions.map((item) => (
+                                        {user?.interest?.map((item) => (
                                             <p key={item}>{item}</p>
                                         ))}
                                     </div>
                                 </div>
                             )}
-
                         </section>
                     </div>
                     {!personal && (
                         <div className="profiledetail-chat">
-                            {user?.wishlist ? (
-                                <p><Heart style={{ fill: "pink" }} /> Wishlisted</p>
+                            {userDetail?.wishlist?.includes(user._id) ? (
+                                <p onClick={() => handleRemoveWishlist(user._id)}>
+                                    <Heart style={{ fill: "pink" }} /> Wishlisted
+                                </p>
                             ) : (
-                                <p><Heart /> Wishlist</p>
+                                <p onClick={() => handleWishlist(user._id)}>
+                                    <Heart /> Wishlist
+                                </p>
                             )}
 
-                            {user?.status === "interested" ? (
-                                <p className={`${user?.status}`} onClick={() => navigate(`/chat/${user.id}`)}><MessageCircle />Chat</p>
-                            ) : user?.status === "pending" ? (
-                                <p><Timer />Pending</p>
+                            {status === "Accepted" ? (
+                                <p
+                                    className="Accepted"
+                                    onClick={() => navigate(`/chat/${user._id}`)}
+                                >
+                                    <MessageCircle />
+                                    Chat
+                                </p>
+                            ) : status === "Pending" ? (
+                                <p className="Pending">
+                                    <Timer />
+                                    Pending
+                                </p>
+                            ) : status === "Rejected" ? (
+                                <p className="Rejected" style={{ color: "red" }}>
+                                    <X />
+                                    Rejected
+                                </p>
+                            ) : status === "Blocked" ? (
+                                <p className="Blocked" style={{ color: "gray" }}>
+                                    <Lock />
+                                    Blocked
+                                </p>
                             ) : (
-                                <p><Star />Interested</p>
+                                <p
+                                    className="Interested"
+                                    onClick={() => sendInderest(user._id)}
+                                >
+                                    <Star />
+                                    Interested
+                                </p>
                             )}
                         </div>
                     )}
                     {/* Modal */}
-      {isModalOpen && (
-        <div className="image-modal">
-          <div className="image-modal-content">
-            <button className="close-btn" onClick={() => setIsModalOpen(false)}>
-              <X size={24} />
-            </button>
+                    {isModalOpen && (
+                        <div className="image-modal">
+                            <div className="image-modal-content">
+                                <button
+                                    className="close-btn"
+                                    onClick={() => setIsModalOpen(false)}
+                                >
+                                    <X size={24} />
+                                </button>
 
-            {/* Full Screen Image */}
-            <div className="full-image">
-              <img
-                src={images[selectedIndex]}
-                alt={`Gallery ${selectedIndex}`}
-              />
-            </div>
+                                {/* Full Screen Image */}
+                                <div className="full-image">
+                                    <img
+                                        src={galleryImages[selectedIndex]}
+                                        alt={`Gallery ${selectedIndex}`}
+                                    />
+                                </div>
 
-            {/* Image Tabs */}
-            <div className="image-tabs">
-              {images.map((img, index) => (
-                <img
-                  key={index}
-                  src={img}
-                  alt={`thumb-${index}`}
-                  className={`thumbnail ${
-                    index === selectedIndex ? "active" : ""
-                  }`}
-                  onClick={() => setSelectedIndex(index)}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
+                                <div className="image-tabs">
+                                    {galleryImages.map((img, index) => (
+                                        <img
+                                            key={index}
+                                            src={img}
+                                            alt={`thumb-${index}`}
+                                            className={`thumbnail ${index === selectedIndex ? "active" : ""
+                                                }`}
+                                            onClick={() => setSelectedIndex(index)}
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

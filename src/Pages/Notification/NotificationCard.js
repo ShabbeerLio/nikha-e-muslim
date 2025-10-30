@@ -1,41 +1,129 @@
 import { Check, X } from "lucide-react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import Host from "../../Host/Host";
 
-const NotificationCard = ({user}) => {
+const NotificationCard = ({ user ,getNotifications}) => {
   const navigate = useNavigate();
+  console.log(user, "user");
+  // Format last message time
+  const formatTime = (dateString) => {
+    if (!dateString) return "";
+
+    const date = new Date(dateString);
+    const now = new Date();
+
+    const isToday =
+      date.getDate() === now.getDate() &&
+      date.getMonth() === now.getMonth() &&
+      date.getFullYear() === now.getFullYear();
+
+    const yesterday = new Date();
+    yesterday.setDate(now.getDate() - 1);
+    const isYesterday =
+      date.getDate() === yesterday.getDate() &&
+      date.getMonth() === yesterday.getMonth() &&
+      date.getFullYear() === yesterday.getFullYear();
+
+    const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+
+    if (isToday) {
+      return date.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    } else if (isYesterday) {
+      return "Yesterday";
+    } else if (diffDays < 7) {
+      return date.toLocaleDateString([], { weekday: "long" });
+    } else {
+      return date.toLocaleDateString([], {
+        day: "2-digit",
+        month: "2-digit",
+        year: "2-digit",
+      });
+    }
+  };
+
+  const handleAccept = async (userId) => {
+    try {
+      const res = await fetch(`${Host}/api/connection/accept/${userId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": localStorage.getItem("token"),
+        },
+        body: JSON.stringify({ fromUserId: user.fromUser._id }),
+      });
+      const data = res.json();
+      if (data.success) {
+        getNotifications()
+        // Refresh notifications or update state as needed
+      }
+    } catch (error) {
+      console.log(error, "error");
+    }
+    // Handle accept connection request
+  };
+  const handleReject = async (userId) => {
+    try {
+      const res = await fetch(`${Host}/api/connection/reject/${userId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": localStorage.getItem("token"),
+        },
+        body: JSON.stringify({ fromUserId: user.fromUser._id }),
+      });
+      const data = res.json();
+      if (data.success) {
+        getNotifications()
+        // Refresh notifications or update state as needed
+      }
+    } catch (error) {
+      console.log(error, "error");
+    }
+    // Handle accept connection request
+  };
+
   return (
-    <div className={`notification-card ${user.status}` }>
+    <div
+      className={`notification-card ${
+        user.type === "connection_request" ? "request" : ""
+      }`}
+    >
       <img
-        onClick={() => navigate(`/profile-detail/${user.id}`)}
-        src={user.img}
-        alt={user.name}
+        onClick={() => navigate(`/profile-detail/${user.fromUser._id}`)}
+        src={
+          user?.fromUser?.profilePic?.url
+            ? user?.fromUser?.profilePic?.url
+            : "https://static.vecteezy.com/system/resources/previews/068/013/243/large_2x/muslim-male-character-free-vector.jpg"
+        }
+        alt="profile"
         className="profile-img"
       />
       <div
         className="notification-info"
-        onClick={() => navigate(`/profile-detail/${user.id}`)}
+        onClick={() => navigate(`/profile-detail/${user.fromUser._id}`)}
       >
         <p>
-          <span className="user">{user.name}</span> {user.action}
+          <span className="user">{user?.fromUser?.name}</span> {user.message}
         </p>
-        <span className="date">{user.date}</span>
+        <span className="date">{formatTime(user.createdAt)}</span>
       </div>
-      {user.status === "request" ? (
+      {user?.type === "connection_request" ? (
         <div className="request-actions">
           <button className="decline">
-            {" "}
-            <X />
+            <X onClick={() => handleReject(user?.fromUser?._id)} />
           </button>
           <button className="accept">
-            {" "}
-            <Check />
+            <Check onClick={() => handleAccept(user?.fromUser?._id)} />
           </button>
         </div>
       ) : (
-        <span className="time">{user.time}</span>
+        <span className="time">{formatTime(user.createdAt)}</span>
       )}
-      <span className={`dot ${user.status}`}></span>
+      <span className={`dot ${user.isRead === false ? "new" : ""}`}></span>
     </div>
   );
 };

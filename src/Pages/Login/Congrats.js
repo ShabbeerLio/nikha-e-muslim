@@ -14,7 +14,7 @@ const Congrats = () => {
         <div className="illustration">
           <img src={congrats} alt="congrats" />
         </div>
-        <button className="btn primary" onClick={() => navigate("/home")}>Proceed</button>
+        <button className="btn primary" onClick={() => navigate("/")}>Proceed</button>
       </div>
     </div>
   );

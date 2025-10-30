@@ -182,6 +182,12 @@
   border-radius: 40px;
   font-size: 16px;
   cursor: pointer;
+  text-align: center;
+}
+.subscribe-btn.logout{
+  background: transparent;
+  color: gray;
+  border: .1px solid gray;
 }
 
 .profile-modal {

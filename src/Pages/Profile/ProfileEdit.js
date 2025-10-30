@@ -1,17 +1,40 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ChevronDown, ChevronLeft, X } from "lucide-react";
+import { ChevronDown, ChevronLeft, Pen, X } from "lucide-react";
 import Picker from "react-mobile-picker";
+import NoteContext from "../../Context/NikhaContext";
+import Host from "../../Host/Host";
 
 const ProfileEdit = () => {
     const { section } = useParams();
+    const { userDetail, getAccountDetails } = useContext(NoteContext);
     const navigate = useNavigate();
 
+    useEffect(() => {
+        if (!localStorage.getItem("token")) {
+            navigate("/welcome");
+        } else {
+            getAccountDetails();
+        }
+    }, [navigate]);
+
     const [activeSetting, setActiveSetting] = useState(null);
+    const [selectedReligious, setSelectedReligious] = useState(
+        userDetail.religiousDetail
+    );
+    const [selectedLifestyle, setSelectedLifestyle] = useState(
+        userDetail.interest
+    );
+
+    const [images, setImages] = useState(userDetail.images || []);
+    const [profilePic, setProfilePic] = useState(userDetail.profilePic?.url || "");
+    const [selectedProfileFile, setSelectedProfileFile] = useState(null);
+    const [selectedGalleryFiles, setSelectedGalleryFiles] = useState([]);
 
     const [form, setForm] = useState({
         images: [],
         name: "",
+        about: "",
         email: "",
         password: "",
         gender: "",
@@ -25,15 +48,77 @@ const ProfileEdit = () => {
         city: "",
         maritalStatus: "",
         mobile: "",
+        whatsapp: "",
         motherTongue: "",
         disability: "",
+        institute: "",
         qualification: "",
         workSector: "",
         profession: "",
         income: "",
         profilePic: null,
         subscription: "",
+        family: {
+            location: "",
+            status: "",
+            type: "",
+            fatherName: "",
+            fatherOccupation: "",
+            motherOccupation: "",
+            brothers: "",
+            sisters: "",
+            about: "",
+        },
+        religiousDetail: "",
+        interest: "",
     });
+
+
+    useEffect(() => {
+        if (userDetail) {
+            setForm({
+                images: userDetail.images || [],
+                name: userDetail.name || "",
+                about: userDetail.about || "",
+                email: userDetail.email || "",
+                password: "", // password is usually not returned
+                gender: userDetail.gender || "",
+                dob: userDetail.dob || { day: "", month: "", year: "" },
+                height: userDetail.height || { ft: "", inch: "" },
+                religion: userDetail.religion || "Muslim",
+                sect: userDetail.sect || "",
+                caste: userDetail.caste || "",
+                maslak: userDetail.maslak || "",
+                state: userDetail.state || "",
+                city: userDetail.city || "",
+                maritalStatus: userDetail.maritalStatus || "",
+                mobile: userDetail.mobile || "",
+                whatsapp: userDetail.whatsapp || "",
+                motherTongue: userDetail.motherTongue || "",
+                disability: userDetail.disability || "",
+                qualification: userDetail.qualification || "",
+                institute: userDetail.institute || "",
+                workSector: userDetail.workSector || "",
+                profession: userDetail.profession || "",
+                income: userDetail.income || "",
+                profilePic: userDetail.profilePic || null,
+                subscription: userDetail.subscription?.plan || "",
+                family: userDetail.family || {
+                    location: "",
+                    status: "",
+                    type: "",
+                    fatherName: "",
+                    fatherOccupation: "",
+                    motherOccupation: "",
+                    brothers: "",
+                    sisters: "",
+                    about: "",
+                },
+                religiousDetail: selectedReligious || "",
+                interest: selectedLifestyle || "",
+            });
+        }
+    }, [userDetail]);
 
     const [searchTerm, setSearchTerm] = useState("");
 
@@ -41,26 +126,40 @@ const ProfileEdit = () => {
         Arts: ["B.A", "B.Ed", "B.M.C.", "B.J.M.C.", "B.M.M."],
         Commerce: ["B.Com", "B.B.A", "B.B.M"],
         Science: ["B.Sc.", "B.Pharm", "B.Tech"],
-        Computer: ["B.C.A", "B.Sc. Computer Science", "B.Tech IT"]
+        Computer: ["B.C.A", "B.Sc. Computer Science", "B.Tech IT"],
     };
-
 
     const [professionSearch, setProfessionSearch] = useState("");
 
     const professions = {
-        "IT & Software": ["Software Engineer", "Web Developer", "Data Analyst", "AI/ML Engineer"],
-        "Healthcare": ["Doctor", "Nurse", "Pharmacist", "Lab Technician"],
-        "Education": ["Teacher", "Professor", "Counselor"],
+        "IT & Software": [
+            "Software Engineer",
+            "Web Developer",
+            "Data Analyst",
+            "AI/ML Engineer",
+        ],
+        Healthcare: ["Doctor", "Nurse", "Pharmacist", "Lab Technician"],
+        Education: ["Teacher", "Professor", "Counselor"],
         "Business & Finance": ["Accountant", "Manager", "Entrepreneur"],
-        "Creative": ["Designer", "Writer", "Photographer", "Musician"],
+        Creative: ["Designer", "Writer", "Photographer", "Musician"],
     };
 
     const calculateAge = (day, month, year) => {
         if (!day || !month || !year) return "";
 
         const monthIndex = [
-            "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
         ].indexOf(month);
 
         const dob = new Date(year, monthIndex, day);
@@ -75,9 +174,6 @@ const ProfileEdit = () => {
 
         return age;
     };
-
-    const [selectedReligious, setSelectedReligious] = useState([]);
-    const [selectedLifestyle, setSelectedLifestyle] = useState([]);
 
     const religiousOptions = [
         "Recites Quran everyday",
@@ -101,13 +197,111 @@ const ProfileEdit = () => {
         </p>
     );
 
-    const images = [
-        "https://cdn.pixabay.com/photo/2024/02/16/05/34/ai-generated-8576689_1280.jpg",
-        "https://cdn.pixabay.com/photo/2018/04/19/05/11/portrait-3332334_1280.jpg",
-        "https://cdn.pixabay.com/photo/2020/07/16/05/49/girl-5409762_1280.jpg",
-        "https://cdn.pixabay.com/photo/2021/08/18/15/59/woman-6555932_1280.jpg",
-        "https://cdn.pixabay.com/photo/2020/04/01/14/51/hijab-4991433_1280.jpg"
-    ];
+    // 📸 Handle Profile Image Selection + Preview
+    const handleProfileSelect = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setSelectedProfileFile(file);
+            const previewURL = URL.createObjectURL(file);
+            setProfilePic(previewURL); // show preview instantly
+            setActiveSetting(null); // close modal
+        }
+    };
+
+    // 🖼 Handle Gallery Image Selection + Preview
+    const handleImagesSelect = (e) => {
+        const files = Array.from(e.target.files);
+
+        // Prevent exceeding 6 total
+        const totalFiles = selectedGalleryFiles.length + files.length;
+        if (totalFiles > 6) {
+            alert("You can upload up to 6 images total!");
+            return;
+        }
+
+        // Append new files
+        setSelectedGalleryFiles((prev) => [...prev, ...files]);
+
+        // Create previews for new files and append them
+        const previewURLs = files.map((file) => URL.createObjectURL(file));
+        setImages((prev) => [...prev, ...previewURLs]);
+
+        setActiveSetting(null); // close modal
+    };
+
+    // ❌ Remove Image Preview
+    const handleRemoveImage = async (index) => {
+        console.log(index,"index")
+        try {
+            // instantly update UI
+            setImages((prev) => prev.filter((_, i) => i !== index));
+            setSelectedGalleryFiles((prev) => prev.filter((_, i) => i !== index));
+
+            // call backend to delete image
+            await fetch(`${Host}/api/auth/image/${index}`, {
+                method: "DELETE",
+                headers: { "auth-token": localStorage.getItem("token") },
+            });
+        } catch (err) {
+            console.error("Error deleting image:", err);
+            alert("Failed to delete image from server");
+        }
+    };
+
+    const handleAllSave = () => {
+        if (section === "images") {
+            handleSave()
+        }
+        else {
+            console.log("form data is saving")
+        }
+    }
+
+    console.log(selectedGalleryFiles, "selectedGalleryFiles")
+    // 💾 Save images to backend using Fetch
+    const handleSave = async () => {
+        try {
+            // ✅ Upload Profile Pic
+            if (selectedProfileFile) {
+                const formData = new FormData();
+                formData.append("profilePic", selectedProfileFile);
+
+                const res = await fetch(`${Host}/api/auth/profile`, {
+                    method: "POST",
+                    headers: { "auth-token": localStorage.getItem("token") },
+                    body: formData,
+                });
+
+                if (!res.ok) throw new Error("Profile upload failed");
+                const data = await res.json();
+                setProfilePic(data.profilePic.url);
+            }
+
+            // ✅ Upload Gallery Images
+            if (selectedGalleryFiles.length > 0) {
+                const formData = new FormData();
+                selectedGalleryFiles.forEach((file) => formData.append("images", file));
+
+                const res = await fetch(`${Host}/api/auth/images`, {
+                    method: "POST",
+                    headers: { "auth-token": localStorage.getItem("token") },
+                    body: formData,
+                });
+
+                if (!res.ok) throw new Error("Image upload failed");
+                const data = await res.json();
+                setImages(data.images);
+            }
+
+            alert("Images updated successfully!");
+            navigate(-1);
+        } catch (err) {
+            console.error(err);
+            alert("Failed to upload images");
+        }
+    };
+
+
 
     return (
         <div className="Profile">
@@ -120,24 +314,66 @@ const ProfileEdit = () => {
                     <div className="profile-page profile-detail-modal-box profile-edit-page">
                         {section === "images" && (
                             <div>
+                                <div className="profile-edit-image">
+                                    <img src={
+                                        profilePic ||
+                                        "https://static.vecteezy.com/system/resources/previews/008/433/598/non_2x/men-icon-for-website-symbol-presentation-free-vector.jpg"
+                                    } alt="" />
+                                    <span
+                                        onClick={() => document.getElementById("profilePicInput").click()}
+                                    >
+                                        <Pen />
+                                        <input
+                                            id="profilePicInput"
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={handleProfileSelect}
+                                            style={{
+                                                display: "none",
+                                            }}
+                                        />
+                                    </span>
+                                </div>
                                 {/* <h3>Edit Images</h3> */}
                                 <div className="image-grid">
                                     {images.map((img, index) => (
                                         <div key={index} className="image-item">
                                             <img src={img} alt={`img-${index}`} />
-                                            <X className="remove-image" />  {/* Remove image icon */}
+                                            <X
+                                                className="remove-image"
+                                                onClick={() => handleRemoveImage(index)}
+                                            />
                                         </div>
                                     ))}
-                                    <div className="image-item add-image" onClick={() => setActiveSetting("addImage")}>
-                                        <span>+</span>
-                                    </div>
+                                    {images.length < 6 &&
+                                        <div
+                                            className="image-item add-image"
+                                            onClick={() => document.getElementById("imagesInput").click()}
+                                        >
+                                            <span>+</span>
+                                            <input
+                                                id="imagesInput"
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={handleImagesSelect}
+                                                style={{
+                                                    display: "none", // completely hide the input
+                                                }}
+                                            />
+                                        </div>
+                                    }
+
                                 </div>
                             </div>
                         )}
                         {section === "basic" && (
                             <div>
                                 {/* <h3>Edit Basic Details</h3> */}
-                                <select name="city">
+                                <select
+                                    name="city"
+                                    value={form.city} // bind value
+                                    onChange={(e) => setForm({ ...form, city: e.target.value })} // update state
+                                >
                                     <option value="">Select City</option>
                                     {[
                                         "Mumbai",
@@ -152,7 +388,11 @@ const ProfileEdit = () => {
                                         </option>
                                     ))}
                                 </select>
-                                <select name="state">
+                                <select
+                                    name="state"
+                                    value={form.state}
+                                    onChange={(e) => setForm({ ...form, state: e.target.value })}
+                                >
                                     <option value="">Select State</option>
                                     {[
                                         "Maharashtra",
@@ -166,51 +406,138 @@ const ProfileEdit = () => {
                                         </option>
                                     ))}
                                 </select>
-                                <p onClick={() => setActiveSetting("sect")} >Select Sect <ChevronDown /></p>
-                                <p onClick={() => setActiveSetting("caste")} >Select Caste <ChevronDown /></p>
-                                <p onClick={() => setActiveSetting("height")} >Height<ChevronDown /></p>
-                                <p onClick={() => setActiveSetting("tongue")} >Mother Tongue<ChevronDown /></p>
-                                <p onClick={() => setActiveSetting("disability")} >Any Disability<ChevronDown /></p>
-                                <p onClick={() => setActiveSetting("maslak")} >Maslak(Optional)<ChevronDown /></p>
+                                <p onClick={() => setActiveSetting("sect")}>
+                                    {form.sect || "Select Sect"} <ChevronDown />
+                                </p>
+                                <p onClick={() => setActiveSetting("caste")}>
+                                    {form.caste || "Select Caste "} <ChevronDown />
+                                </p>
+                                <p onClick={() => setActiveSetting("height")}>
+                                    Height:{" "}
+                                    {form.height.ft && form.height.inch
+                                        ? `${form.height.ft} ft ${form.height.inch} in`
+                                        : "Select Height"}{" "}
+                                    <ChevronDown />
+                                </p>
+                                <p onClick={() => setActiveSetting("tongue")}>
+                                    {form.motherTongue || "Select Mother Tongue"} <ChevronDown />
+                                </p>
+                                <p onClick={() => setActiveSetting("disability")}>
+                                    {form.disability || "Select Disability"} <ChevronDown />
+                                </p>
+                                <p onClick={() => setActiveSetting("maslak")}>
+                                    {form.maslak || "Select Maslak"} <ChevronDown />
+                                </p>
                             </div>
                         )}
 
                         {section === "bio" && (
                             <div>
                                 {/* <h3>Edit Bio</h3> */}
-                                <textarea placeholder="Enter bio here..." />
+                                <textarea value={form.about} placeholder="Enter bio here..." />
                             </div>
                         )}
                         {section === "contact" && (
                             <div>
                                 {/* <h3>Edit Contact</h3> */}
-                                <input type="tel" placeholder="Phone" />
+                                <input type="tel" placeholder="Phone" value={form.mobile} />
+                                <input
+                                    type="tel"
+                                    placeholder="Whatsapp Number"
+                                    value={form.whatsapp}
+                                />
                             </div>
                         )}
                         {section === "education" && (
                             <div>
-                                <p onClick={() => setActiveSetting("cource")} >Cource<ChevronDown /></p>
-                                <input type="text" placeholder="College" />
-                                <p onClick={() => setActiveSetting("profession")} >Profession<ChevronDown /></p>
-                                <p onClick={() => setActiveSetting("sector")} >Sector<ChevronDown /></p>
-                                <p onClick={() => setActiveSetting("salary")} >Salary<ChevronDown /></p>
+                                <p onClick={() => setActiveSetting("cource")}>
+                                    Qualification: {form.qualification || "Select"}{" "}
+                                    <ChevronDown />
+                                </p>
+                                <input
+                                    type="text"
+                                    placeholder="College or Univercity"
+                                    value={form.institute}
+                                />
+                                <p onClick={() => setActiveSetting("profession")}>
+                                    {form.profession || "Select Profession"} <ChevronDown />
+                                </p>
+                                <p onClick={() => setActiveSetting("sector")}>
+                                    {form.workSector || "Select Sector"} <ChevronDown />
+                                </p>
+                                <p onClick={() => setActiveSetting("salary")}>
+                                    {form.income || "Select Income"} <ChevronDown />
+                                </p>
                             </div>
                         )}
                         {section === "family" && (
                             <div>
                                 {/* <h3>Edit Family</h3> */}
-                                <input type="text" placeholder="Family Lives in " />
-                                <p onClick={() => setActiveSetting("familystatus")} >Family Status<ChevronDown /></p>
-                                <p onClick={() => setActiveSetting("familytype")} >Family Type<ChevronDown /></p>
-                                <p onClick={() => setActiveSetting("familynative")} >Native State<ChevronDown /></p>
-                                <input type="text" placeholder="Father's Name" />
-                                <p onClick={() => setActiveSetting("Fatheroccupation")} >Father's Occupation<ChevronDown /></p>
-                                <p onClick={() => setActiveSetting("motheroccupation")} >Mother's Occupation<ChevronDown /></p>
+                                <input
+                                    type="text"
+                                    placeholder="Family Lives in "
+                                    value={form.family.location}
+                                />
+                                <p onClick={() => setActiveSetting("familystatus")}>
+                                    {form.family.status || "Select Family Status"} <ChevronDown />
+                                </p>
+                                <p onClick={() => setActiveSetting("familytype")}>
+                                    {form.family.type || "Select Family Type"} <ChevronDown />
+                                </p>
+                                <input
+                                    type="text"
+                                    placeholder="Father's Name"
+                                    value={form.family.fatherName}
+                                    onChange={(e) =>
+                                        setForm({
+                                            ...form,
+                                            family: { ...form.family, fatherName: e.target.value },
+                                        })
+                                    }
+                                />
+                                <p onClick={() => setActiveSetting("Fatheroccupation")}>
+                                    {form.family.fatherOccupation || "Select Father's Occupation"}{" "}
+                                    <ChevronDown />
+                                </p>
+                                <p onClick={() => setActiveSetting("motheroccupation")}>
+                                    {form.family.motherOccupation || "Select Mother's Occupation"}{" "}
+                                    <ChevronDown />
+                                </p>
                                 <div style={{ display: "flex", gap: "10px" }}>
-                                    <input type="number" placeholder="No. of Brother's" />
-                                    <input type="number" placeholder="No. of Sister's" />
+                                    <input
+                                        type="number"
+                                        placeholder="No. of Brother's"
+                                        value={form.family.brothers}
+                                        onChange={(e) =>
+                                            setForm({
+                                                ...form,
+                                                family: { ...form.family, brothers: e.target.value },
+                                            })
+                                        }
+                                    />
+                                    <input
+                                        type="number"
+                                        placeholder="No. of Sister's"
+                                        value={form.family.sisters}
+                                        onChange={(e) =>
+                                            setForm({
+                                                ...form,
+                                                family: { ...form.family, sisters: e.target.value },
+                                            })
+                                        }
+                                    />
                                 </div>
-                                <textarea type="text" placeholder="About Family" />
+                                <textarea
+                                    type="text"
+                                    placeholder="About Family"
+                                    value={form.family.about}
+                                    onChange={(e) =>
+                                        setForm({
+                                            ...form,
+                                            family: { ...form.family, about: e.target.value },
+                                        })
+                                    }
+                                />
                             </div>
                         )}
                         {section === "religious" && (
@@ -222,7 +549,9 @@ const ProfileEdit = () => {
                                             key={item}
                                             label={item}
                                             onRemove={() =>
-                                                setSelectedReligious(selectedReligious.filter((i) => i !== item))
+                                                setSelectedReligious(
+                                                    selectedReligious.filter((i) => i !== item)
+                                                )
                                             }
                                         />
                                     ))}
@@ -236,7 +565,9 @@ const ProfileEdit = () => {
                                             <p
                                                 key={item}
                                                 className="option-btn"
-                                                onClick={() => setSelectedReligious([...selectedReligious, item])}
+                                                onClick={() =>
+                                                    setSelectedReligious([...selectedReligious, item])
+                                                }
                                             >
                                                 {item}
                                             </p>
@@ -253,7 +584,9 @@ const ProfileEdit = () => {
                                             key={item}
                                             label={item}
                                             onRemove={() =>
-                                                setSelectedLifestyle(selectedLifestyle.filter((i) => i !== item))
+                                                setSelectedLifestyle(
+                                                    selectedLifestyle.filter((i) => i !== item)
+                                                )
                                             }
                                         />
                                     ))}
@@ -267,7 +600,9 @@ const ProfileEdit = () => {
                                             <p
                                                 key={item}
                                                 className="option-btn"
-                                                onClick={() => setSelectedLifestyle([...selectedLifestyle, item])}
+                                                onClick={() =>
+                                                    setSelectedLifestyle([...selectedLifestyle, item])
+                                                }
                                             >
                                                 {item}
                                             </p>
@@ -278,7 +613,7 @@ const ProfileEdit = () => {
 
                         {/* Repeat for contact, education, family, religious, lifestyle */}
 
-                        <button onClick={() => navigate(-1)}>Save</button>
+                        <button onClick={handleAllSave}>Save</button>
                     </div>
                 </div>
             </div>
@@ -294,14 +629,6 @@ const ProfileEdit = () => {
                 </div>
                 <div className="profile-detail-modal">
                     <div className=" profile-edit-page">
-                        {activeSetting === "addImage" && (
-                            <div>
-                                <h2>Images</h2>
-                                <div className="radio-group Sect-group">
-                                    <input type="file" />
-                                </div>
-                            </div>
-                        )}
                         {activeSetting === "sect" && (
                             <div>
                                 <h2>Sect</h2>
@@ -327,7 +654,14 @@ const ProfileEdit = () => {
                             <div>
                                 <h2>Caste</h2>
                                 <div className="radio-group">
-                                    {["Syed", "Sheikh", "Pathan", "Ansari", "Qureshi", "Other"].map((option) => (
+                                    {[
+                                        "Syed",
+                                        "Sheikh",
+                                        "Pathan",
+                                        "Ansari",
+                                        "Qureshi",
+                                        "Other",
+                                    ].map((option) => (
                                         <label key={option} className="radio-option">
                                             <span>{option}</span>
                                             <input
@@ -379,20 +713,22 @@ const ProfileEdit = () => {
                             <div>
                                 <h2>Mother Tongue</h2>
                                 <div className="radio-group">
-                                    {["Hindi/Urdu", "Angika", "Arabic", "Arunachali"].map((status) => (
-                                        <label key={status} className="radio-option">
-                                            <span>{status}</span>
-                                            <input
-                                                type="radio"
-                                                name="motherTongue"
-                                                value={status}
-                                                checked={form.motherTongue === status}
-                                                onChange={(e) => {
-                                                    setForm({ ...form, motherTongue: e.target.value });
-                                                }}
-                                            />
-                                        </label>
-                                    ))}
+                                    {["Hindi/Urdu", "Angika", "Arabic", "Arunachali"].map(
+                                        (status) => (
+                                            <label key={status} className="radio-option">
+                                                <span>{status}</span>
+                                                <input
+                                                    type="radio"
+                                                    name="motherTongue"
+                                                    value={status}
+                                                    checked={form.motherTongue === status}
+                                                    onChange={(e) => {
+                                                        setForm({ ...form, motherTongue: e.target.value });
+                                                    }}
+                                                />
+                                            </label>
+                                        )
+                                    )}
                                 </div>
                             </div>
                         )}
@@ -422,7 +758,15 @@ const ProfileEdit = () => {
                             <div>
                                 <h2>Maslak(Optional)</h2>
                                 <div className="radio-group">
-                                    {["No Maslak", "Ahle Hadees", "Barelvi", "Deobandi", "Sufi", "Tablighi Jamaat", "Others"].map((m) => (
+                                    {[
+                                        "No Maslak",
+                                        "Ahle Hadees",
+                                        "Barelvi",
+                                        "Deobandi",
+                                        "Sufi",
+                                        "Tablighi Jamaat",
+                                        "Others",
+                                    ].map((m) => (
                                         <label key={m} className="radio-option">
                                             <span>{m}</span>
                                             <input
@@ -450,7 +794,11 @@ const ProfileEdit = () => {
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                     className="search-input"
-                                    style={{ marginBottom: "15px", padding: "8px", width: "100%" }}
+                                    style={{
+                                        marginBottom: "15px",
+                                        padding: "8px",
+                                        width: "100%",
+                                    }}
                                 />
 
                                 {/* Course Lists */}
@@ -475,7 +823,10 @@ const ProfileEdit = () => {
                                                             value={course}
                                                             checked={form.qualification === course}
                                                             onChange={(e) => {
-                                                                setForm({ ...form, qualification: e.target.value });
+                                                                setForm({
+                                                                    ...form,
+                                                                    qualification: e.target.value,
+                                                                });
                                                             }}
                                                         />
                                                     </label>
@@ -497,38 +848,50 @@ const ProfileEdit = () => {
                                     value={professionSearch}
                                     onChange={(e) => setProfessionSearch(e.target.value)}
                                     className="search-input"
-                                    style={{ marginBottom: "15px", padding: "8px", width: "100%" }}
+                                    style={{
+                                        marginBottom: "15px",
+                                        padding: "8px",
+                                        width: "100%",
+                                    }}
                                 />
 
                                 {/* Profession List */}
                                 <div className="radio-group qualifucation-group">
-                                    {Object.entries(professions).map(([category, categoryProfessions]) => {
-                                        const filteredProfessions = categoryProfessions.filter((prof) =>
-                                            prof.toLowerCase().includes(professionSearch.toLowerCase())
-                                        );
+                                    {Object.entries(professions).map(
+                                        ([category, categoryProfessions]) => {
+                                            const filteredProfessions = categoryProfessions.filter(
+                                                (prof) =>
+                                                    prof
+                                                        .toLowerCase()
+                                                        .includes(professionSearch.toLowerCase())
+                                            );
 
-                                        if (filteredProfessions.length === 0) return null;
+                                            if (filteredProfessions.length === 0) return null;
 
-                                        return (
-                                            <div key={category} style={{ marginBottom: "15px" }}>
-                                                <h4>{category}</h4>
-                                                {filteredProfessions.map((prof) => (
-                                                    <label key={prof} className="radio-option">
-                                                        <span>{prof}</span>
-                                                        <input
-                                                            type="radio"
-                                                            name="profession"
-                                                            value={prof}
-                                                            checked={form.profession === prof}
-                                                            onChange={(e) => {
-                                                                setForm({ ...form, profession: e.target.value });
-                                                            }}
-                                                        />
-                                                    </label>
-                                                ))}
-                                            </div>
-                                        );
-                                    })}
+                                            return (
+                                                <div key={category} style={{ marginBottom: "15px" }}>
+                                                    <h4>{category}</h4>
+                                                    {filteredProfessions.map((prof) => (
+                                                        <label key={prof} className="radio-option">
+                                                            <span>{prof}</span>
+                                                            <input
+                                                                type="radio"
+                                                                name="profession"
+                                                                value={prof}
+                                                                checked={form.profession === prof}
+                                                                onChange={(e) => {
+                                                                    setForm({
+                                                                        ...form,
+                                                                        profession: e.target.value,
+                                                                    });
+                                                                }}
+                                                            />
+                                                        </label>
+                                                    ))}
+                                                </div>
+                                            );
+                                        }
+                                    )}
                                 </div>
                             </div>
                         )}
@@ -536,7 +899,14 @@ const ProfileEdit = () => {
                             <div>
                                 <h2>Sector you work in?</h2>
                                 <div className="radio-group">
-                                    {["Business/Self Employed", "Civil Services", "Defence", "Government/Public Sector", "Private Sector", "Not Working"].map((status) => (
+                                    {[
+                                        "Business/Self Employed",
+                                        "Civil Services",
+                                        "Defence",
+                                        "Government/Public Sector",
+                                        "Private Sector",
+                                        "Not Working",
+                                    ].map((status) => (
                                         <label key={status} className="radio-option">
                                             <span>{status}</span>
                                             <input
@@ -582,17 +952,25 @@ const ProfileEdit = () => {
                             <div>
                                 <h2>Family Status</h2>
                                 <div className="radio-group">
-                                    {["Middle Class", "Upper Middle Class", "Rich", "Affluent"].map((status) => (
+                                    {[
+                                        "Middle Class",
+                                        "Upper Middle Class",
+                                        "Rich",
+                                        "Affluent",
+                                    ].map((status) => (
                                         <label key={status} className="radio-option">
                                             <span>{status}</span>
                                             <input
                                                 type="radio"
                                                 name="familyStatus"
                                                 value={status}
-                                                checked={form.familyStatus === status}
-                                                onChange={(e) => {
-                                                    setForm({ ...form, familyStatus: e.target.value });
-                                                }}
+                                                checked={form.family.status === status}
+                                                onChange={(e) =>
+                                                    setForm({
+                                                        ...form,
+                                                        family: { ...form.family, status: e.target.value },
+                                                    })
+                                                }
                                             />
                                         </label>
                                     ))}
@@ -610,31 +988,13 @@ const ProfileEdit = () => {
                                                 type="radio"
                                                 name="familyType"
                                                 value={status}
-                                                checked={form.familyType === status}
-                                                onChange={(e) => {
-                                                    setForm({ ...form, familyType: e.target.value });
-                                                }}
-                                            />
-                                        </label>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-                        {activeSetting === "familynative" && (
-                            <div>
-                                <h2>Native State</h2>
-                                <div className="radio-group">
-                                    {["Maharashtra", "Uttar Pradesh", "Delhi", "Karnataka", "Bihar"].map((st) => (
-                                        <label key={st} className="radio-option">
-                                            <span>{st}</span>
-                                            <input
-                                                type="radio"
-                                                name="familyNative"
-                                                value={st}
-                                                checked={form.familyNative === st}
-                                                onChange={(e) => {
-                                                    setForm({ ...form, familyNative: e.target.value });
-                                                }}
+                                                checked={form.family.type === status}
+                                                onChange={(e) =>
+                                                    setForm({
+                                                        ...form,
+                                                        family: { ...form.family, type: e.target.value },
+                                                    })
+                                                }
                                             />
                                         </label>
                                     ))}
@@ -645,17 +1005,29 @@ const ProfileEdit = () => {
                             <div>
                                 <h2>Father's Occupation</h2>
                                 <div className="radio-group">
-                                    {["Private Job", "Government Job", "Business", "Retired", "Other"].map((status) => (
+                                    {[
+                                        "Private Job",
+                                        "Government Job",
+                                        "Business",
+                                        "Retired",
+                                        "Other",
+                                    ].map((status) => (
                                         <label key={status} className="radio-option">
                                             <span>{status}</span>
                                             <input
                                                 type="radio"
                                                 name="fatherOccupation"
                                                 value={status}
-                                                checked={form.fatherOccupation === status}
-                                                onChange={(e) => {
-                                                    setForm({ ...form, fatherOccupation: e.target.value });
-                                                }}
+                                                checked={form.family.fatherOccupation === status}
+                                                onChange={(e) =>
+                                                    setForm({
+                                                        ...form,
+                                                        family: {
+                                                            ...form.family,
+                                                            fatherOccupation: e.target.value,
+                                                        },
+                                                    })
+                                                }
                                             />
                                         </label>
                                     ))}
@@ -666,20 +1038,28 @@ const ProfileEdit = () => {
                             <div>
                                 <h2>Mother's Occupation</h2>
                                 <div className="radio-group">
-                                    {["Housewife", "Working", "Retired", "Other"].map((status) => (
-                                        <label key={status} className="radio-option">
-                                            <span>{status}</span>
-                                            <input
-                                                type="radio"
-                                                name="motherOccupation"
-                                                value={status}
-                                                checked={form.motherOccupation === status}
-                                                onChange={(e) => {
-                                                    setForm({ ...form, motherOccupation: e.target.value });
-                                                }}
-                                            />
-                                        </label>
-                                    ))}
+                                    {["Housewife", "Working", "Retired", "Other"].map(
+                                        (status) => (
+                                            <label key={status} className="radio-option">
+                                                <span>{status}</span>
+                                                <input
+                                                    type="radio"
+                                                    name="motherOccupation"
+                                                    value={status}
+                                                    checked={form.family.motherOccupation === status}
+                                                    onChange={(e) =>
+                                                        setForm({
+                                                            ...form,
+                                                            family: {
+                                                                ...form.family,
+                                                                motherOccupation: e.target.value,
+                                                            },
+                                                        })
+                                                    }
+                                                />
+                                            </label>
+                                        )
+                                    )}
                                 </div>
                             </div>
                         )}

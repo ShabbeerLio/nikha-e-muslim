@@ -2,22 +2,25 @@ import "./Navbar.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Bell, CircleQuestionMark, Heart, WalletMinimal } from "lucide-react";
-import NoteContext from "../../Context/SadaqahContext";
-import Profile from "../../Profile";
+import NoteContext from "../../Context/NikhaContext";
 
 const Navbar = () => {
-  // const { userDetail, getAccountDetails } = useContext(NoteContext);
-  // const navigate = useNavigate();
+  const {
+    userDetail,
+    getAccountDetails,
+    allNotification,
+    getNotifications
+  } = useContext(NoteContext);
+  const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   if (!localStorage.getItem("token")) {
-  //     navigate("/login");
-  //   } else {
-  //     getAccountDetails();
-  //   }
-  // }, [navigate]);
-
-  const userDetail = Profile;
+  useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      navigate("/login");
+    } else {
+      getAccountDetails();
+      getNotifications();
+    }
+  }, [navigate]);
 
   if (!userDetail) return null;
 
@@ -29,15 +32,15 @@ const Navbar = () => {
             <Link to={"/profile"} className="navbar-brand">
               <img
                 src={
-                  userDetail.avatar
-                    ? userDetail.avatar
+                  userDetail.profilePic?.url
+                    ? userDetail.profilePic?.url
                     : "https://static.vecteezy.com/system/resources/previews/068/013/243/large_2x/muslim-male-character-free-vector.jpg"
                 }
-                alt={"Shabbeer"}
+                alt={userDetail.name}
               />
               <div className="navbar-title">
-                <h5>{userDetail.userName}</h5>
-                <span>{userDetail.location}</span>
+                <h5>{userDetail.name}</h5>
+                <span>{userDetail.city}</span>
               </div>
             </Link>
             <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
@@ -61,13 +64,17 @@ const Navbar = () => {
             </div>
             <div className="profile">
               <div className="notification">
-                <Link to={"/wishlist"} className="notification-items" style={{ marginRight: "15px" }}>
+                <Link
+                  to={"/wishlist"}
+                  className="notification-items"
+                  style={{ marginRight: "15px" }}
+                >
                   <Heart />
-                  <span>{6}</span>
+                  <span>{userDetail?.wishlist?.length || 0}</span>
                 </Link>
                 <Link to={"/notification"} className="notification-items">
                   <Bell />
-                  <span>{3}</span>
+                  <span>{allNotification?.length || 0}</span>
                 </Link>
               </div>
             </div>

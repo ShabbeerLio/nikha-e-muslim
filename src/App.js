@@ -43,14 +43,14 @@ function MainLayout() {
   }, []);
 
   const hideNav =
-    location.pathname === "/home" ||
+    location.pathname === "/" ||
     location.pathname === "/matches" ||
     location.pathname === "/chats";
 
   const hidePnav =
     location.pathname === "/login" ||
     location.pathname === "/signup" ||
-    location.pathname === "/" ||
+    location.pathname === "/welcome" ||
     location.pathname === "/congrats" ||
     location.pathname === "/notification" ||
     location.pathname === "/subscription" ||
@@ -68,11 +68,11 @@ function MainLayout() {
       <div className="app-container">
         {hideNav && <Navbar />}
         <Routes>
-          <Route path="/" element={<Welcome />} />
+          <Route path="/welcome" element={<Welcome />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/congrats" element={<Congrats />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/" element={<Home />} />
           <Route path="/matches" element={<Matches />} />
           <Route path="/chats" element={<Chats />} />
           <Route path="/chat/:id" element={<ChatDetails />} />

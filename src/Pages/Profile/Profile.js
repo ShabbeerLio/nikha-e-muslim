@@ -1,17 +1,45 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./Profile.css";
-import { Settings, MessageCircle, HelpCircle, ShieldCheck, ChevronRight, EllipsisVertical, X, Pen, Heart, Bell } from "lucide-react";
-import plan1 from "../../Assets/Plan/star.png"
-import plan2 from "../../Assets/Plan/diamond.png"
-import plan3 from "../../Assets/Plan/crown.png"
-import profileData from "../../Profile"
+import {
+    Settings,
+    MessageCircle,
+    HelpCircle,
+    ShieldCheck,
+    ChevronRight,
+    EllipsisVertical,
+    X,
+    Pen,
+    Heart,
+    Bell,
+} from "lucide-react";
+import plan1 from "../../Assets/Plan/star.png";
+import plan2 from "../../Assets/Plan/diamond.png";
+import plan3 from "../../Assets/Plan/crown.png";
+import profileData from "../../Profile";
 import { useNavigate } from "react-router-dom";
+import NoteContext from "../../Context/NikhaContext";
 
 const Profile = () => {
+    const { userDetail, getAccountDetails } = useContext(NoteContext);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!localStorage.getItem("token")) {
+            navigate("/welcome");
+        } else {
+            getAccountDetails();
+        }
+    }, [navigate]);
+
     const [activeTab, setActiveTab] = useState("safety");
     // console.log(profileData, "profileData")
-    const [activeSetting, setActiveSetting] = useState(false)
+    const [activeSetting, setActiveSetting] = useState(false);
+
+    const handlelogout = () => {
+        localStorage.removeItem("token")
+        navigate("/welcome");
+    }
+
     return (
         <div className="Profile">
             <div className="Profile-main">
@@ -25,15 +53,26 @@ const Profile = () => {
                         <div className="profile-header">
                             <div className="profile-head">
                                 <img
-                                    src={profileData.avatar}
+                                    src={
+                                        userDetail?.profilePic?.url
+                                            ? userDetail?.profilePic?.url
+                                            : "https://static.vecteezy.com/system/resources/previews/068/013/243/large_2x/muslim-male-character-free-vector.jpg"
+                                    }
                                     alt="profile"
                                     className="profile-img"
                                 />
                                 <div className="profile-info">
-                                    <h3>{profileData.userName}  <Pen onClick={() => navigate(`/profile-detail/${profileData.id}`)} className="profile-edit" /></h3>
-                                    <p>{profileData.email}</p>
+                                    <h3>
+                                        {userDetail?.name}
+                                        <Pen
+                                            onClick={() =>
+                                                navigate(`/profile-detail/${userDetail?._id}`)
+                                            }
+                                            className="profile-edit"
+                                        />
+                                    </h3>
+                                    <p>{userDetail?.email}</p>
                                 </div>
-
                             </div>
                             <div className="profile-stats glass">
                                 <div>
@@ -52,7 +91,12 @@ const Profile = () => {
                         <div className="home-location-btn profile-tabs">
                             <div
                                 className="active-bg"
-                                style={{ transform: activeTab === "safety" ? "translateX(0%)" : "translateX(100%)" }}
+                                style={{
+                                    transform:
+                                        activeTab === "safety"
+                                            ? "translateX(0%)"
+                                            : "translateX(100%)",
+                                }}
                             ></div>
 
                             <p
@@ -74,22 +118,35 @@ const Profile = () => {
                             {activeTab === "safety" && (
                                 <div className="menu-list">
                                     <div className="menu-item" onClick={() => navigate(`/chats`)}>
-                                        <MessageCircle size={20} /> <span>Message</span> <ChevronRight />
+                                        <MessageCircle size={20} /> <span>Message</span>{" "}
+                                        <ChevronRight />
                                     </div>
-                                    <div className="menu-item" onClick={() => navigate(`/notification`)}>
+                                    <div
+                                        className="menu-item"
+                                        onClick={() => navigate(`/notification`)}
+                                    >
                                         <Bell size={20} /> <span>Ntification</span> <ChevronRight />
                                     </div>
-                                    <div className="menu-item" onClick={() => navigate(`/wishlist`)}>
+                                    <div
+                                        className="menu-item"
+                                        onClick={() => navigate(`/wishlist`)}
+                                    >
                                         <Heart size={20} /> <span>Wishlist</span> <ChevronRight />
                                     </div>
                                     <div className="menu-item">
-                                        <Settings size={20} /> <span>Settings</span> <ChevronRight />
+                                        <Settings size={20} /> <span>Settings</span>{" "}
+                                        <ChevronRight />
                                     </div>
                                     <div className="menu-item">
-                                        <HelpCircle size={20} /> <span>Get help</span> <ChevronRight />
+                                        <HelpCircle size={20} /> <span>Get help</span>{" "}
+                                        <ChevronRight />
                                     </div>
-                                    <div className="menu-item" onClick={() => navigate(`/subscription`)}>
-                                        <ShieldCheck size={20} /> <span>Verify</span> <ChevronRight />
+                                    <div
+                                        className="menu-item"
+                                        onClick={() => navigate(`/subscription`)}
+                                    >
+                                        <ShieldCheck size={20} /> <span>Verify</span>{" "}
+                                        <ChevronRight />
                                     </div>
                                 </div>
                             )}
@@ -120,11 +177,22 @@ const Profile = () => {
                                         </div>
                                         <span>₹72.90</span>
                                     </div>
-                                    <button className="subscribe-btn" onClick={() => navigate("/subscription")}>Subscribe Now</button>
+                                    <button
+                                        className="subscribe-btn"
+                                        onClick={() => navigate("/subscription")}
+                                    >
+                                        Subscribe Now
+                                    </button>
                                 </div>
                             )}
                         </div>
-                        <div className={`profile-modal ${activeSetting === true ? "active" : ""}`}>
+                        <div >
+                            <p className="subscribe-btn logout" onClick={handlelogout}>Log Out</p>
+                        </div>
+                        <div
+                            className={`profile-modal ${activeSetting === true ? "active" : ""
+                                }`}
+                        >
                             {/* Close button */}
                             <div
                                 className="close-profile-modal"
