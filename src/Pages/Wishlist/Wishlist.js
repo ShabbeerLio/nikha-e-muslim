@@ -4,6 +4,7 @@ import { ChevronLeft } from "lucide-react";
 import WishlistCard from "./WishlistCard";
 import "./Wishlist.css";
 import Host from "../../Host/Host";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 const Wishlist = () => {
   const navigate = useNavigate();
@@ -35,7 +36,6 @@ const Wishlist = () => {
       console.error(error);
     }
   };
-  
 
   const handleRemoveWishlist = async (userId) => {
     try {
@@ -65,13 +65,28 @@ const Wishlist = () => {
             <ChevronLeft onClick={() => navigate(-1)} />
             <h2>Wishlist</h2>
           </div>
-          <div className="notification-page">
-            <div className="notification-section">
-              {wishlist?.map((n) => (
-                <WishlistCard key={n.id} user={n} handleRemoveWishlist={handleRemoveWishlist}/>
-              ))}
+          {wishlist?.length === 0 ? (
+            <div className="empty-chats">
+              <DotLottieReact
+                src="https://lottie.host/aa29d567-b12a-437d-92fb-b6241cd3862d/bgGsoGqk55.lottie"
+                loop
+                autoplay
+              />
+              <p className="no-users">No Wishlist</p>
             </div>
-          </div>
+          ) : (
+            <div className="notification-page">
+              <div className="notification-section">
+                {wishlist?.map((n) => (
+                  <WishlistCard
+                    key={n.id}
+                    user={n}
+                    handleRemoveWishlist={handleRemoveWishlist}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
