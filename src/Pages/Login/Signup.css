@@ -7,7 +7,7 @@
 .signup-top {
   background-color: #f8feff;
   width: 100%;
-  height: 34vh;
+  height: 30vh;
   padding: 2rem;
   position: relative;
   text-align: center;
@@ -26,27 +26,27 @@
   font-size: 12px;
 }
 .signup-top h5 {
-  font-size: 18px;
+  font-size: 14px;
 }
 .signup-top h2 {
   font-weight: bold;
-  font-size: 20px;
+  font-size: 16px;
 }
 .signup-top p {
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .signup-logo {
   width: 25%;
   object-fit: cover;
-  margin: 1rem 0;
+  margin: .5rem 0;
 }
 
 .therm_img {
   width: 100%;
   object-fit: cover;
   position: absolute;
-  top: 90%;
+  top: 92%;
   left: 0;
   filter: drop-shadow(0px 24px 10px rgba(0, 0, 0, 0.249));
   z-index: 1;
@@ -67,10 +67,12 @@
 .sign-page-box h2 {
   color: white;
   margin-bottom: 1rem;
-  font-size: 20px;
+  font-size: 14px;
   font-weight: bold;
   display: flex;
   align-items: center;
+  position: relative;
+  z-index: 9999;
 }
 .sign-page-box .btn {
   /* background: linear-gradient(270deg, #5de0e6 0%, #004aad 100%); */
@@ -79,8 +81,9 @@
   color: white;
   width: 100%;
   border-radius: 50px;
-  padding: 1rem;
+  padding: .8rem 1rem;
   font-weight: bold;
+  font-size: 14px;
 }
 .sign-page-box .btn:focus {
   box-shadow: none;
@@ -139,15 +142,20 @@
   padding: 10px;
   border-radius: 25px;
   border: 1px solid #ccc;
+  font-size: 12px;
 }
 
 .step-content h4 {
   color: white;
-  font-size: 18px;
+  font-size: 14px;
 }
 .step-actions {
-  margin-top: 20px;
+  margin-top:  20px;
   text-align: right;
+  /* position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%; */
 }
 
 .btn {
@@ -177,7 +185,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  font-size: 16px;
+  font-size: 12px;
   cursor: pointer;
   padding: 10px;
   /* border: 1px solid white; */
@@ -187,7 +195,7 @@
 
 .radio-option input[type="radio"] {
   accent-color: #004aad;
-  transform: scale(1.5);
+  transform: scale(1.2);
 }
 .radio-option input {
   width: auto;
@@ -224,7 +232,7 @@
 
 .age-display {
   margin-top: 15px;
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 600;
   color: white;
   text-align: center;
@@ -245,7 +253,7 @@
 }
 
 .radio-group.qualifucation-group {
-  height: 30vh;
+  height: 28vh;
 }
 
 .profile-pic {
@@ -259,7 +267,7 @@
 }
 
 .profile-pic-box p {
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .profile-pic-image {

@@ -3,7 +3,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import Host from "../../Host/Host";
 
-const NotificationCard = ({ user ,getNotifications}) => {
+const NotificationCard = ({ user, getNotifications }) => {
   const navigate = useNavigate();
   console.log(user, "user");
   // Format last message time
@@ -57,7 +57,7 @@ const NotificationCard = ({ user ,getNotifications}) => {
       });
       const data = res.json();
       if (data.success) {
-        getNotifications()
+        getNotifications();
         // Refresh notifications or update state as needed
       }
     } catch (error) {
@@ -77,7 +77,7 @@ const NotificationCard = ({ user ,getNotifications}) => {
       });
       const data = res.json();
       if (data.success) {
-        getNotifications()
+        getNotifications();
         // Refresh notifications or update state as needed
       }
     } catch (error) {
@@ -86,10 +86,56 @@ const NotificationCard = ({ user ,getNotifications}) => {
     // Handle accept connection request
   };
 
+  const handleApprovePicture = async (userId) => {
+    try {
+      const res = await fetch(`${Host}/api/auth/approve-picture/${userId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": localStorage.getItem("token"),
+        },
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        alert("Picture request approved!");
+        getNotifications(); // refresh
+      } else {
+        alert(data.error);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleRejectPicture = async (userId) => {
+    try {
+      const res = await fetch(`${Host}/api/auth/reject-picture/${userId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": localStorage.getItem("token"),
+        },
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        alert("Picture request rejected.");
+        getNotifications();
+      } else {
+        alert(data.error);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <div
       className={`notification-card ${
-        user.type === "connection_request" ? "request" : ""
+        user.type === "connection_request" || "profile_picture_request"
+          ? "request"
+          : ""
       }`}
     >
       <img
@@ -111,13 +157,30 @@ const NotificationCard = ({ user ,getNotifications}) => {
         </p>
         <span className="date">{formatTime(user.createdAt)}</span>
       </div>
-      {user?.type === "connection_request" ? (
+      {user?.type === "connection_request" ||
+      user?.type === "profile_picture_request" ? (
         <div className="request-actions">
           <button className="decline">
-            <X onClick={() => handleReject(user?.fromUser?._id)} />
+            <X
+              onClick={() => {
+                if (user.type === "profile_picture_request") {
+                  handleRejectPicture(user.fromUser._id);
+                } else {
+                  handleReject(user.fromUser._id);
+                }
+              }}
+            />
           </button>
           <button className="accept">
-            <Check onClick={() => handleAccept(user?.fromUser?._id)} />
+            <Check
+              onClick={() => {
+                if (user.type === "profile_picture_request") {
+                  handleApprovePicture(user.fromUser._id);
+                } else {
+                  handleAccept(user.fromUser._id);
+                }
+              }}
+            />
           </button>
         </div>
       ) : (

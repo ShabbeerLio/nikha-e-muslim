@@ -23,7 +23,7 @@
 .page-image{
   width: 35%;
   object-fit: cover;
-  border-radius: 40px 40px 0 0 ;
+  /* border-radius: 40px 40px 0 0 ; */
 }
 .page-box .form{
   background-color: white;
@@ -46,14 +46,14 @@
   align-items: center;
   justify-content: flex-end;
   padding-bottom: 1rem;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .login-register{
   font-weight: bold;
   margin-top: 1rem;
   text-align: center;
-  font-size: 14px;
+  font-size: 12px;
     color: gray;
 }
 .login-register span{

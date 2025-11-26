@@ -404,15 +404,15 @@ const Signup = () => {
                   >
                     <Picker.Column name="ft">
                       {[...Array(10)].map((_, i) => (
-                        <Picker.Item key={i + 1} value={i + 1}>
-                          {i + 1} ft
+                        <Picker.Item key={i} value={i}>
+                          {i} ft
                         </Picker.Item>
                       ))}
                     </Picker.Column>
                     <Picker.Column name="inch">
                       {[...Array(11)].map((_, i) => (
-                        <Picker.Item key={i + 1} value={i + 1}>
-                          {i + 1} in
+                        <Picker.Item key={i} value={i}>
+                          {i} in
                         </Picker.Item>
                       ))}
                     </Picker.Column>
@@ -420,7 +420,7 @@ const Signup = () => {
                 </div>
                 {form.height.ft && form.height.inch && (
                   <p className="age-display">
-                    You are {form.height.ft} ft {form.height.inch} in tall
+                    You are {form.height.ft} ft {form.height.inch || 0} in tall
                   </p>
                 )}
               </div>
@@ -569,6 +569,7 @@ const Signup = () => {
                 <div className="radio-group Sect-group">
                   {["Yes", "No"].map((option) => (
                     <label key={option} className="radio-option">
+                      <span>{option}</span>
                       <input
                         type="radio"
                         name="familyLivesHere"
@@ -581,7 +582,6 @@ const Signup = () => {
                           }
                         }}
                       />
-                      <span>{option}</span>
                     </label>
                   ))}
                 </div>
@@ -713,7 +713,7 @@ const Signup = () => {
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="search-input"
                   style={{
-                    marginBottom: "15px",
+                    marginBottom: "10px",
                     padding: "8px",
                     width: "100%",
                   }}
@@ -730,7 +730,7 @@ const Signup = () => {
                     if (filteredCourses.length === 0) return null;
 
                     return (
-                      <div key={stream} style={{ marginBottom: "15px" }}>
+                      <div key={stream} style={{ marginBottom: "10px" }}>
                         <h4>{stream}</h4>
                         {filteredCourses.map((course) => (
                           <label key={course} className="radio-option">

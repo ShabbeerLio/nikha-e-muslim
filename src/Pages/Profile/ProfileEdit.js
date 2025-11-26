@@ -36,7 +36,6 @@ const ProfileEdit = () => {
         name: "",
         about: "",
         email: "",
-        password: "",
         gender: "",
         dob: { day: "", month: "", year: "" },
         height: { ft: "", inch: "" },
@@ -81,7 +80,7 @@ const ProfileEdit = () => {
                 name: userDetail.name || "",
                 about: userDetail.about || "",
                 email: userDetail.email || "",
-                password: "", // password is usually not returned
+                
                 gender: userDetail.gender || "",
                 dob: userDetail.dob || { day: "", month: "", year: "" },
                 height: userDetail.height || { ft: "", inch: "" },
@@ -144,37 +143,6 @@ const ProfileEdit = () => {
         Creative: ["Designer", "Writer", "Photographer", "Musician"],
     };
 
-    const calculateAge = (day, month, year) => {
-        if (!day || !month || !year) return "";
-
-        const monthIndex = [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-        ].indexOf(month);
-
-        const dob = new Date(year, monthIndex, day);
-        const today = new Date();
-
-        let age = today.getFullYear() - dob.getFullYear();
-        const m = today.getMonth() - dob.getMonth();
-
-        if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
-            age--;
-        }
-
-        return age;
-    };
-
     const religiousOptions = [
         "Recites Quran everyday",
         "Give Zakat Regularly",
@@ -231,7 +199,7 @@ const ProfileEdit = () => {
 
     // ❌ Remove Image Preview
     const handleRemoveImage = async (index) => {
-        console.log(index,"index")
+        console.log(index, "index")
         try {
             // instantly update UI
             setImages((prev) => prev.filter((_, i) => i !== index));
@@ -253,6 +221,7 @@ const ProfileEdit = () => {
             handleSave()
         }
         else {
+            handleSaveData()
             console.log("form data is saving")
         }
     }
@@ -298,6 +267,38 @@ const ProfileEdit = () => {
         } catch (err) {
             console.error(err);
             alert("Failed to upload images");
+        }
+    };
+
+    const handleSaveData = async () => {
+        try {
+            // 🔥 Merge form with religious + lifestyle selections
+            const finalData = {
+                ...form,
+                religiousDetail: selectedReligious,
+                interest: selectedLifestyle,
+            };
+
+            console.log(finalData,"finalData")
+
+            const res = await fetch(`${Host}/api/auth/update`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "auth-token": localStorage.getItem("token"),
+                },
+                body: JSON.stringify(finalData),
+            });
+
+            if (!res.ok) throw new Error("Update failed");
+
+            const data = await res.json();
+            alert("Profile updated successfully!");
+            navigate(-1);
+
+        } catch (err) {
+            console.error("Update error:", err);
+            alert("Failed to update profile");
         }
     };
 

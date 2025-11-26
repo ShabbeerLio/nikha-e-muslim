@@ -7,10 +7,16 @@ import { CircleDot, Dot, MapPin, MoveUpRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Host from "../../Host/Host";
 import NoteContext from "../../Context/NikhaContext";
+import Loading from "../../Components/Loading/Loading";
 
 const Home = () => {
-  const {userDetail, getAccountDetails,allConnected, getAllConnected, onlineUsers } =
-    useContext(NoteContext);
+  const {
+    userDetail,
+    getAccountDetails,
+    allConnected,
+    getAllConnected,
+    onlineUsers,
+  } = useContext(NoteContext);
   const navigate = useNavigate();
   const [active, setActive] = useState(2); // 2 = "For You" default
   const [index, setIndex] = useState(0);
@@ -61,13 +67,51 @@ const Home = () => {
     }
   };
 
+  const calculateAge = (day, month, year) => {
+    if (!day || !month || !year) return "";
+
+    const monthIndex = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ].indexOf(month);
+
+    const dob = new Date(year, monthIndex, day);
+    const today = new Date();
+
+    let age = today.getFullYear() - dob.getFullYear();
+    const m = today.getMonth() - dob.getMonth();
+
+    if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+      age--;
+    }
+
+    return age;
+  };
   // console.log(allConnected, "allConnected");
+
+  if (loading) {
+    return <Loading/>;
+  }
 
   return (
     <div className="Home">
       <div className="Home-main">
         <div className="Home-box">
-          <StatusBar Users={allConnected} userDetail={userDetail} onlineUsers={onlineUsers}/>
+          <StatusBar
+            Users={allConnected}
+            userDetail={userDetail}
+            onlineUsers={onlineUsers}
+          />
           <div className="home-style">
             <div className="home-location">
               <div className="home-location-btn">
@@ -103,7 +147,6 @@ const Home = () => {
                 ) : (
                   userData.slice(index, index + 2).map((user, i) => {
                     const isTop = i === 0;
-
                     return (
                       <motion.div
                         key={user._id}
@@ -161,13 +204,15 @@ const Home = () => {
                                 <CircleDot />
                                 Online
                               </span>
-                            ):(
+                            ) : (
                               <span className="ofline">
                                 <CircleDot />
                                 Ofline
                               </span>
                             )}
-                            <h3>{user.name}</h3>
+                            <h3>
+                              {user.name}, {user.age}
+                            </h3>
                           </div>
                           <p
                             onClick={() =>

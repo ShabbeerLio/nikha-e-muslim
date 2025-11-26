@@ -70,11 +70,11 @@ const Navbar = () => {
                   style={{ marginRight: "15px" }}
                 >
                   <Heart />
-                  <span>{userDetail?.wishlist?.length || 0}</span>
+                  <span>{userDetail?.wishlist?.length}</span>
                 </Link>
                 <Link to={"/notification"} className="notification-items">
                   <Bell />
-                  <span>{allNotification?.length || 0}</span>
+                  <span>{allNotification?.length}</span>
                 </Link>
               </div>
             </div>

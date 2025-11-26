@@ -185,9 +185,9 @@ const Profile = () => {
                                     </button>
                                 </div>
                             )}
-                        </div>
                         <div >
                             <p className="subscribe-btn logout" onClick={handlelogout}>Log Out</p>
+                        </div>
                         </div>
                         <div
                             className={`profile-modal ${activeSetting === true ? "active" : ""
