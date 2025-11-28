@@ -13,6 +13,7 @@ const ContextState = (props) => {
   const [socket, setSocket] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [notification, setNotifications] = useState([]);
+  const [plans, setPlans] = useState([]);
 
   // Get getAccount detail
   const getAccountDetails = async () => {
@@ -41,6 +42,20 @@ const ContextState = (props) => {
     // console.log(json, "json");
     setAllConnected(json);
   };
+
+  // Get getAccount detail
+  const getPlans = async () => {
+    const response = await fetch(`${Host}/api/plans/getall`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const json = await response.json();
+    // console.log(json, "json");
+    setPlans(json);
+  };
+
   // Get getAccount detail
   const getNotifications = async () => {
     const response = await fetch(`${Host}/api/notifications`, {
@@ -107,6 +122,9 @@ const ContextState = (props) => {
         socket,
         onlineUsers,
         notification,
+
+        getPlans,
+        plans,
       }}
     >
       {props.children}

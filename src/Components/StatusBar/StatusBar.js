@@ -1,27 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./StatusBar.css";
+import defaultimg from "../../Assets/default.jpg";
 
 const StatusBar = ({ Users, userDetail, onlineUsers }) => {
   const navigate = useNavigate();
-  const currentUserId = userDetail?._id;
-
-  const getProfilePic = (profilePic, currentUserId) => {
-    if (!profilePic) return "/default-hidden.jpg"; // fallback
-
-    if (profilePic.isHidden === false && profilePic.url) {
-      return profilePic.url;
-    }
-
-    if (
-      profilePic.isHidden === true &&
-      profilePic.allowedUsers?.includes(currentUserId)
-    ) {
-      return profilePic.url;
-    }
-
-    return "/default-hidden.jpg";
-  };
 
   const handleClick = (receiverId) => {
     if (receiverId) navigate(`/chat/${receiverId}`);
@@ -32,7 +15,6 @@ const StatusBar = ({ Users, userDetail, onlineUsers }) => {
       {Users && Users.length > 0 ? (
         Users.map((item) => {
           const receiver = item;
-          const imageUrl = getProfilePic(receiver?.profilePic, currentUserId);
           return (
             <div
               key={receiver?._id}
@@ -41,8 +23,8 @@ const StatusBar = ({ Users, userDetail, onlineUsers }) => {
             >
               <img
                 src={
-                  imageUrl ||
-                  "https://static.vecteezy.com/system/resources/previews/031/401/516/large_2x/unlock-account-icon-in-trendy-outline-style-isolated-on-white-background-unlock-account-silhouette-symbol-for-your-website-design-logo-app-ui-illustration-eps10-free-vector.jpg"
+                  receiver?.profilePic.url ||
+                  defaultimg
                 }
                 alt={receiver?.name || "User"}
                 className="match-img"

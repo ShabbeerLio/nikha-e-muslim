@@ -20,7 +20,7 @@ import { useNavigate } from "react-router-dom";
 import NoteContext from "../../Context/NikhaContext";
 
 const Profile = () => {
-    const { userDetail, getAccountDetails } = useContext(NoteContext);
+    const { userDetail, getAccountDetails, allConnected, getAllConnected  } = useContext(NoteContext);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -28,6 +28,7 @@ const Profile = () => {
             navigate("/welcome");
         } else {
             getAccountDetails();
+            getAllConnected();
         }
     }, [navigate]);
 
@@ -39,6 +40,8 @@ const Profile = () => {
         localStorage.removeItem("token")
         navigate("/welcome");
     }
+
+    console.log(userDetail, "userDetail")
 
     return (
         <div className="Profile">
@@ -76,7 +79,7 @@ const Profile = () => {
                             </div>
                             <div className="profile-stats glass">
                                 <div>
-                                    <h4>8</h4>
+                                    <h4>{allConnected?.length}</h4>
                                     <p>Active With</p>
                                 </div>
                                 <span></span>
@@ -152,42 +155,62 @@ const Profile = () => {
                             )}
 
                             {activeTab === "plans" && (
-                                <div className="plans-list">
-                                    <div className="plan">
-                                        <img src={plan1} alt="" />
-                                        <div className="plan-detail">
-                                            <h4>3 Months</h4>
-                                            <p>₹9.83 per month</p>
+                                <>
+                                    {userDetail?.subscription?.plan !== "Free" ? (
+                                        <div className="subscribed-plan">
+                                            <h3>Your Current Plan</h3>
+                                            <div className="current-plan-card">
+                                                <div className="plan-detail-box">
+                                                    <h4>{userDetail?.subscription?.plan} Plan</h4>
+                                                    <p>
+                                                        Valid Till :{" "}
+                                                        {new Date(
+                                                            userDetail?.subscription?.expiry
+                                                        ).toLocaleDateString()}
+                                                    </p>
+                                                    <span className="active-badge">Active</span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <span>₹29.50</span>
-                                    </div>
-                                    <div className="plan">
-                                        <img src={plan2} alt="" />
-                                        <div className="plan-detail">
-                                            <h4>6 Months</h4>
-                                            <p>₹9 per month</p>
+                                    ) : (
+                                        < div className="plans-list">
+                                            <div className="plan">
+                                                <img src={plan1} alt="" />
+                                                <div className="plan-detail">
+                                                    <h4>3 Months</h4>
+                                                    <p>₹9.83 per month</p>
+                                                </div>
+                                                <span>₹29.50</span>
+                                            </div>
+                                            <div className="plan">
+                                                <img src={plan2} alt="" />
+                                                <div className="plan-detail">
+                                                    <h4>6 Months</h4>
+                                                    <p>₹9 per month</p>
+                                                </div>
+                                                <span>₹54.20</span>
+                                            </div>
+                                            <div className="plan">
+                                                <img src={plan3} alt="" />
+                                                <div className="plan-detail">
+                                                    <h4>12 Months</h4>
+                                                    <p>₹6 per month</p>
+                                                </div>
+                                                <span>₹72.90</span>
+                                            </div>
+                                            <button
+                                                className="subscribe-btn"
+                                                onClick={() => navigate("/subscription")}
+                                            >
+                                                Subscribe Now
+                                            </button>
                                         </div>
-                                        <span>₹54.20</span>
-                                    </div>
-                                    <div className="plan">
-                                        <img src={plan3} alt="" />
-                                        <div className="plan-detail">
-                                            <h4>12 Months</h4>
-                                            <p>₹6 per month</p>
-                                        </div>
-                                        <span>₹72.90</span>
-                                    </div>
-                                    <button
-                                        className="subscribe-btn"
-                                        onClick={() => navigate("/subscription")}
-                                    >
-                                        Subscribe Now
-                                    </button>
-                                </div>
+                                    )}
+                                </>
                             )}
-                        <div >
-                            <p className="subscribe-btn logout" onClick={handlelogout}>Log Out</p>
-                        </div>
+                            <div >
+                                <p className="subscribe-btn logout" onClick={handlelogout}>Log Out</p>
+                            </div>
                         </div>
                         <div
                             className={`profile-modal ${activeSetting === true ? "active" : ""
@@ -213,7 +236,7 @@ const Profile = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 

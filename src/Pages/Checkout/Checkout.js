@@ -3,22 +3,21 @@ import "./Checkout.css";
 import { ChevronLeft } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import Modal from "../../Components/Modal/Modal";
+import Host from "../../Host/Host";
 
 const Checkout = () => {
   const navigate = useNavigate();
-
-  const [userData, setUserData] = useState();
   const location = useLocation();
+
   const [coupons, setCoupons] = useState([]);
   const [couponCode, setCouponCode] = useState("");
   const [appliedCoupon, setAppliedCoupon] = useState(null);
   const [discountedPrice, setDiscountedPrice] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [showBillingForm, setShowBillingForm] = useState(false);
-  const [status, setStatus] = useState("");
   const [showModal, setShowModal] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
-  const [voucherMessage, setVoucherMessage] = useState("")
+  const [status, setStatus] = useState("");
   const [billingDetails, setBillingDetails] = useState({
     name: "",
     email: "",
@@ -29,242 +28,107 @@ const Checkout = () => {
     state: "",
   });
 
-  const checkoutData = location.state; // { type, data }
+  const checkoutData = location.state;
   const { type, data } = checkoutData || {};
 
-  // Find base price
-  const getBasePrice = () => {
-    switch (type) {
-      case "subscription":
-        return data.slprice;
-      case "product":
-        return data.price;
-      default:
-        return 0;
+  // BASE PRICE
+  const basePrice = type === "subscription" ? data.slprice : data.price;
+
+  // Load Coupons From Backend
+  const fetchCoupons = async () => {
+    try {
+      const res = await fetch(`${Host}/api/coupons/getall`);
+      const result = await res.json();
+      setCoupons(result);
+    } catch (err) {
+      console.log("Error loading coupons:", err);
     }
   };
-  const basePrice = getBasePrice();
 
-  // Fetch Coupons
-  // useEffect(() => {
-  //   const fetchCoupons = async () => {
-  //     try {
-  //       const response = await fetch(`${Host}/coupons`, {
-  //         method: "GET",
-  //         headers: { "Content-Type": "application/json" },
-  //       });
-  //       const json = await response.json();
-  //       setCoupons(json);
-  //     } catch (error) {
-  //       console.log("error", error);
-  //     }
-  //   };
-  //   if (token) fetchCoupons();
-  // }, [Host, token]);
+  useEffect(() => {
+    fetchCoupons();
+  }, []);
 
-  // Redirect if no checkout data
-  // useEffect(() => {
-  //   if (!checkoutData?.data) {
-  //     navigate("/", { replace: true });
-  //   }
-  //   if (userDetail?.subscription?.plan === "Free") {
-  //     setTimeout(() => {
-  //       setShowAlert(true)
-  //     }, 1000);
-  //   }
-  // }, [checkoutData, navigate]);
-
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     try {
-  //       const json = await userDetail;
-  //       setUserData(json);
-  //       // Pre-fill form with data
-  //       if (json?.invoices && json.invoices.length > 0) {
-  //         const invoices = json?.invoices;
-  //         const lastInvoice = invoices && invoices.length > 0 ? invoices[invoices.length - 1] : null;
-  //         setBillingDetails({
-  //           name: lastInvoice.name || "",
-  //           email: lastInvoice.email || "",
-  //           phone: lastInvoice.phone || "",
-  //           address: lastInvoice.address || "",
-  //           pincode: lastInvoice.pincode || "",
-  //           city: lastInvoice.city || "",
-  //           state: lastInvoice.state || "",
-  //         });
-  //       }
-  //       else {
-  //         setBillingDetails({
-  //           name: json.name || "",
-  //           email: json.email || "",
-  //         });
-  //       }
-  //     } catch (error) {
-  //       console.log("error", error);
-  //     }
-  //   };
-
-  //   if (token) {
-  //     fetchUser();
-  //   }
-  // }, [Host, token]);
-
-  // Apply coupon
+  // Apply Coupon
   const handleApplyCoupon = () => {
     if (!couponCode) {
       setErrorMessage("Please enter a coupon code");
       return;
     }
 
-    const foundCoupon = coupons.find(
+    const found = coupons.find(
       (c) =>
         c.code.toLowerCase() === couponCode.toLowerCase() &&
         c.status === "enable" &&
         c.type === type
     );
 
-    if (foundCoupon) {
-      setAppliedCoupon(foundCoupon);
-      setErrorMessage("");
-      const newPrice = basePrice - (basePrice * foundCoupon.discount) / 100;
-      setDiscountedPrice(newPrice.toFixed(2));
-    } else {
+    if (!found) {
       setErrorMessage("Invalid or expired coupon");
+      return;
     }
+
+    const newPrice = basePrice - (basePrice * found.discount) / 100;
+
+    setAppliedCoupon(found);
+    setDiscountedPrice(newPrice);
+    setErrorMessage("");
   };
 
-  // Remove coupon
+  // Remove Coupon
   const handleRemoveCoupon = () => {
-    setVoucherMessage("")
     setAppliedCoupon(null);
     setDiscountedPrice(null);
     setCouponCode("");
     setErrorMessage("");
   };
 
-  // Final Subscribe
+  // Start Subscription (PhonePe Payment)
   const handleSubscribe = async () => {
-    try {
-      if (voucherMessage) {
-        const finalPrice = discountedPrice || basePrice;
-        const transactionId = "TXN" + Date.now()
-
-        // const response = await fetch(`${Host}/subscription/assign`, {
-        //   method: "POST",
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //     "auth-token": token,
-        //   },
-        //   body: JSON.stringify({
-        //     plan: data.plan,
-        //     paymentMethod: "online", // you can update based on user selection
-        //     transactionId: transactionId,
-        //     couponCode: appliedCoupon?.code || null,
-        //   }),
-        // });
-
-        // const result = await response.json();
-        // if (result.success) {
-        //   await handleInvoice(finalPrice, transactionId);
-        // }
-      }
-      else {
-        setStatus("Error");
-        setTimeout(() => {
-          navigate("/")
-        }, 4000);
-      }
-    } catch (error) {
-      setStatus("Error");
-      setTimeout(() => {
-        navigate("/")
-      }, 4000);
-      console.log("Subscribe error", error);
-    }
-  };
-
-  // Invoice API
-  const handleInvoice = async (finalPrice, transactionId) => {
-    console.log(billingDetails, "billingDetails")
-    try {
-      // let response2 = await fetch(`${Host}/invoice/add`, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     "auth-token": token,
-      //   },
-      //   body: JSON.stringify({
-      //     type,
-      //     transactionId,
-      //     plan: data.plan,
-      //     price: finalPrice,
-      //     ...billingDetails,
-      //   }),
-      // });
-
-      // let data2 = await response2.json();
-      // if (data2.success) {
-      //   setStatus("successful");
-      //   setTimeout(() => {
-      //     setStatus("")
-      //     setShowModal(false)
-      //   }, 3000);
-      //   setTimeout(() => {
-      //     navigate("/")
-      //   }, 4000);
-      // }
-    } catch (error) {
-      console.log("Invoice error", error);
-    }
-  };
-
-  // Billing form submit
-  const handleBillingSubmit = (e) => {
-    e.preventDefault();
-    setShowModal(true)
+    setShowModal(true);
     setStatus("Processing");
-    if (!billingDetails.name || !billingDetails.email) {
-      alert("Please fill required fields");
-      return;
+    try {
+      const response = await fetch(`${Host}/api/subscription/subscribe`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": localStorage.getItem("token"),
+        },
+        body: JSON.stringify({
+          planId: data._id,
+          couponCode: appliedCoupon?.code || "",
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result) {
+        setStatus("Success");
+        setTimeout(() => {
+          setShowModal(false);
+          navigate("/");
+        }, 2000);
+      } else {
+        setStatus("Error");
+      }
+    } catch (err) {
+      console.log("Payment Error", err);
+      setStatus("Error");
     }
+  };
+
+  // Billing Submit
+  const handleBillingSubmit = async (e) => {
+    e.preventDefault();
+    setShowModal(true);
+    setStatus("Processing");
     handleSubscribe();
   };
 
-  const handleCollectVoucher = () => {
-    setShowAlert(false)
-    if (coupons.length > 0) {
-      const firstCoupon = coupons[0];
-      setCouponCode(firstCoupon.code);
-      setVoucherMessage("Conratulations! You are our 1st 100 users")
-
-      // apply it directly
-      if (firstCoupon.status === "enable" && firstCoupon.type === type) {
-        setAppliedCoupon(firstCoupon);
-        setErrorMessage("");
-        const newPrice = basePrice - (basePrice * firstCoupon.discount) / 100;
-        setDiscountedPrice(newPrice.toFixed(2));
-      } else {
-        setErrorMessage("Voucher not valid for this checkout");
-      }
-    } else {
-      setErrorMessage("No vouchers available");
-    }
-  };
-
-  if (!checkoutData?.data) {
+  if (!checkoutData) {
     return (
       <p style={{ textAlign: "center", marginTop: "2rem" }}>Redirecting...</p>
     );
-  }
-
-  const plans =
-  {
-    _id: "sub1",
-    plan: "Monthly",
-    description: "Perfect for individuals looking to explore our platform.",
-    price: "₹999",
-    slprice: "499",
-    tag: "",
   }
 
   return (
@@ -275,25 +139,29 @@ const Checkout = () => {
             <ChevronLeft onClick={() => navigate(-1)} />
             <h2>Checkout</h2>
           </div>
+
           <div className="chats-page">
+            {/* Selected Plan Info */}
             <div className="checkout-item">
               <div className="checkout-item-box">
-                <div key={plans._id} className="subscription-card">
+                <div className="subscription-card">
                   <div className="sub-plan-top">
                     <div className="sub-plan-top-left">
-                      <h6>
-                        {plans.plan}{" "}
-                      </h6>
-                      <p>{plans.description}</p>
+                      <h6>{data.title}</h6>
+                      <p>
+                        {data.description} ({data.duration} days)
+                      </p>
                     </div>
                     <div className="sub-plan-top-right">
-                      <h5>₹{plans.slprice}</h5>
-                      <del>{plans.price}</del>
+                      <h5>₹{data.slprice}</h5>
+                      <del>₹{data.price}</del>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+
+            {/* Coupon Section */}
             <div className="checkout-list">
               {!appliedCoupon && (
                 <div className="checkout-coupon-card">
@@ -306,28 +174,44 @@ const Checkout = () => {
                     />
                     <button onClick={handleApplyCoupon}>Apply</button>
                   </div>
-                  {errorMessage && <p className="coupon-error">{errorMessage}</p>}
+                  {errorMessage && (
+                    <p className="coupon-error">{errorMessage}</p>
+                  )}
                 </div>
               )}
 
-              {/* Summary Box */}
+              {/* Summary */}
               <div className="checkout-total-box">
-                <p>Total: <span> ₹{basePrice}</span></p>
+                <p>
+                  Total: <span> ₹{basePrice}</span>
+                </p>
+
                 {appliedCoupon && (
                   <>
                     <p>
-                      Coupon: <span>
+                      Coupon:
+                      <span>
                         <button onClick={handleRemoveCoupon}>Remove</button>
-                        <b>{appliedCoupon.code}</b>{" "}
+                        <b>{appliedCoupon.code}</b>
                       </span>
                     </p>
-                    <p>Discount: <span>-₹{((basePrice * appliedCoupon.discount) / 100).toFixed(2)}</span></p>
+                    <p>
+                      Discount:
+                      <span>
+                        -₹
+                        {((basePrice * appliedCoupon.discount) / 100).toFixed(
+                          2
+                        )}
+                      </span>
+                    </p>
                   </>
                 )}
-                <h5>Subtotal: <span>₹{discountedPrice || basePrice}</span> </h5>
+
+                <h5>
+                  Subtotal: <span>₹{discountedPrice || basePrice}</span>
+                </h5>
               </div>
 
-              {/* Step 1: Proceed */}
               {!showBillingForm && (
                 <h6
                   className="checkout-proceed"
@@ -336,123 +220,68 @@ const Checkout = () => {
                   Proceed to Payment
                 </h6>
               )}
-              {/* Step 2: Billing Form */}
+
+              {/* Billing Form */}
               {showBillingForm && (
-                <form className="checkout-card billing-form" onSubmit={handleBillingSubmit}>
+                <form
+                  className="checkout-card billing-form"
+                  onSubmit={handleBillingSubmit}
+                >
                   <h6>Billing Details</h6>
-                  <input
-                    type="text"
-                    placeholder="Full Name"
-                    value={billingDetails.name}
-                    onChange={(e) =>
-                      setBillingDetails({
-                        ...billingDetails,
-                        name: e.target.value,
-                      })
-                    }
-                    required
-                  />
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    value={billingDetails.email}
-                    onChange={(e) =>
-                      setBillingDetails({
-                        ...billingDetails,
-                        email: e.target.value,
-                      })
-                    }
-                    required
-                  />
-                  <input
-                    type="number"
-                    placeholder="Phone"
-                    value={billingDetails.phone}
-                    onChange={(e) =>
-                      setBillingDetails({
-                        ...billingDetails,
-                        phone: e.target.value,
-                      })
-                    }
-                  />
-                  <input
-                    type="text"
-                    placeholder="Address"
-                    value={billingDetails.address}
-                    onChange={(e) =>
-                      setBillingDetails({
-                        ...billingDetails,
-                        address: e.target.value,
-                      })
-                    }
-                  />
-                  <input
-                    type="number"
-                    placeholder="Pincode"
-                    value={billingDetails.pincode}
-                    onChange={(e) =>
-                      setBillingDetails({
-                        ...billingDetails,
-                        pincode: e.target.value,
-                      })
-                    }
-                  />
-                  <input
-                    type="text"
-                    placeholder="City"
-                    value={billingDetails.city}
-                    onChange={(e) =>
-                      setBillingDetails({
-                        ...billingDetails,
-                        city: e.target.value,
-                      })
-                    }
-                  />
-                  <input
-                    type="text"
-                    placeholder="State"
-                    value={billingDetails.state}
-                    onChange={(e) =>
-                      setBillingDetails({
-                        ...billingDetails,
-                        state: e.target.value,
-                      })
-                    }
-                  />
+
+                  {Object.keys(billingDetails).map((key) => (
+                    <input
+                      key={key}
+                      type="text"
+                      placeholder={key.replace(/^\w/, (c) => c.toUpperCase())}
+                      value={billingDetails[key]}
+                      onChange={(e) =>
+                        setBillingDetails({
+                          ...billingDetails,
+                          [key]: e.target.value,
+                        })
+                      }
+                      required={key === "name" || key === "email"}
+                    />
+                  ))}
+
                   <button type="submit" className="checkout-proceed">
                     Confirm & Subscribe
                   </button>
                 </form>
               )}
+
+              {/* Processing Modal */}
               <div className={`modal-overlay ${showModal}`}>
                 <div className="modal-content liquid-glass">
-                  {status === "Processing" &&
+                  {status === "Processing" && (
                     <>
                       <div className="wallet-status">
                         <DotLottieReact
                           className="wallet-success"
-                          src="https://lottie.host/5066ed2e-4dbb-4c34-ac26-2bfada68301f/QJPWTrsYv7.lottie"
+                          src="https://lottie.host/5db8a04e-cabe-49f3-9f4d-f2fc13ff8717/9v40gQFrUM.lottie"
                           loop
                           autoplay
                         />
-                        <p className="status-msg">{status}</p>
+                        <p className="status-msg">Processing...</p>
                       </div>
                     </>
-                  }
-                  {status === "successful" &&
+                  )}
+                  {status === "Success" && (
                     <>
                       <div className="wallet-status">
                         <DotLottieReact
                           className="wallet-success"
-                          src="https://lottie.host/e63d43ae-3f25-49b2-a2e4-721b5e4ed7dd/NjKNhinvXI.lottie"
+                          src="https://lottie.host/b08d0607-b021-4196-ba76-e6596d9332e5/o1EFjMW31w.lottie"
                           loop
                           autoplay
                         />
-                        <p className="status-msg">{status}</p>
+                        <p className="status-msg">Successful</p>
                       </div>
                     </>
-                  }
-                  {status === "Error" &&
+                  )}
+
+                  {status === "Error" && (
                     <>
                       <div className="wallet-status">
                         <DotLottieReact
@@ -461,10 +290,12 @@ const Checkout = () => {
                           loop
                           autoplay
                         />
-                        <p className="status-msg">Server Not responding, Please tyr again later.</p>
+                        <p className="status-msg">
+                          Payment Failed. Try again later.
+                        </p>
                       </div>
                     </>
-                  }
+                  )}
                 </div>
               </div>
             </div>

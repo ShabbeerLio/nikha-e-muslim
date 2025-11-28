@@ -140,3 +140,12 @@
   outline: 0;
   text-align: center;
 }
+
+.checkout-total-box button{
+  color: white;
+  background-color: red;
+  border: none;
+  border-radius: 50px;
+  font-size: 12px;
+  margin-right: 5px;
+}

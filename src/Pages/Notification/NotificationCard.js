@@ -1,10 +1,13 @@
 import { Check, X } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Host from "../../Host/Host";
+import Modal from "../../Components/Modal/Modal";
+import defaultimg from "../../Assets/default.jpg"
 
 const NotificationCard = ({ user, getNotifications }) => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   console.log(user, "user");
   // Format last message time
   const formatTime = (dateString) => {
@@ -46,6 +49,7 @@ const NotificationCard = ({ user, getNotifications }) => {
   };
 
   const handleAccept = async (userId) => {
+    setLoading(true);
     try {
       const res = await fetch(`${Host}/api/connection/accept/${userId}`, {
         method: "POST",
@@ -57,6 +61,7 @@ const NotificationCard = ({ user, getNotifications }) => {
       });
       const data = res.json();
       if (data.success) {
+        setLoading(false);
         getNotifications();
         // Refresh notifications or update state as needed
       }
@@ -66,6 +71,7 @@ const NotificationCard = ({ user, getNotifications }) => {
     // Handle accept connection request
   };
   const handleReject = async (userId) => {
+    setLoading(true);
     try {
       const res = await fetch(`${Host}/api/connection/reject/${userId}`, {
         method: "POST",
@@ -77,6 +83,7 @@ const NotificationCard = ({ user, getNotifications }) => {
       });
       const data = res.json();
       if (data.success) {
+        setLoading(false);
         getNotifications();
         // Refresh notifications or update state as needed
       }
@@ -87,6 +94,7 @@ const NotificationCard = ({ user, getNotifications }) => {
   };
 
   const handleApprovePicture = async (userId) => {
+    setLoading(true);
     try {
       const res = await fetch(`${Host}/api/auth/approve-picture/${userId}`, {
         method: "POST",
@@ -98,7 +106,8 @@ const NotificationCard = ({ user, getNotifications }) => {
 
       const data = await res.json();
       if (res.ok) {
-        alert("Picture request approved!");
+        // alert("Picture request approved!");
+        setLoading(false);
         getNotifications(); // refresh
       } else {
         alert(data.error);
@@ -109,6 +118,7 @@ const NotificationCard = ({ user, getNotifications }) => {
   };
 
   const handleRejectPicture = async (userId) => {
+    setLoading(true);
     try {
       const res = await fetch(`${Host}/api/auth/reject-picture/${userId}`, {
         method: "POST",
@@ -120,7 +130,8 @@ const NotificationCard = ({ user, getNotifications }) => {
 
       const data = await res.json();
       if (res.ok) {
-        alert("Picture request rejected.");
+        // alert("Picture request rejected.");
+        setLoading(false);
         getNotifications();
       } else {
         alert(data.error);
@@ -143,7 +154,7 @@ const NotificationCard = ({ user, getNotifications }) => {
         src={
           user?.fromUser?.profilePic?.url
             ? user?.fromUser?.profilePic?.url
-            : "https://static.vecteezy.com/system/resources/previews/068/013/243/large_2x/muslim-male-character-free-vector.jpg"
+            : defaultimg
         }
         alt="profile"
         className="profile-img"
@@ -166,7 +177,7 @@ const NotificationCard = ({ user, getNotifications }) => {
                 if (user.type === "profile_picture_request") {
                   handleRejectPicture(user.fromUser._id);
                 } else {
-                  handleReject(user.fromUser._id);
+                  handleReject(user.requestId);
                 }
               }}
             />
@@ -177,7 +188,7 @@ const NotificationCard = ({ user, getNotifications }) => {
                 if (user.type === "profile_picture_request") {
                   handleApprovePicture(user.fromUser._id);
                 } else {
-                  handleAccept(user.fromUser._id);
+                  handleAccept(user.requestId);
                 }
               }}
             />
@@ -187,6 +198,7 @@ const NotificationCard = ({ user, getNotifications }) => {
         <span className="time">{formatTime(user.createdAt)}</span>
       )}
       <span className={`dot ${user.isRead === false ? "new" : ""}`}></span>
+      <Modal loading={loading}/>
     </div>
   );
 };

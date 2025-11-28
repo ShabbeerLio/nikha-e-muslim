@@ -5,6 +5,7 @@ import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { Check, CheckCheck, ChevronLeft, MoveLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import NoteContext from "../../Context/NikhaContext";
+import defaultimg from "../../Assets/default.jpg"
 
 const Chats = () => {
   const {
@@ -143,7 +144,7 @@ const Chats = () => {
                         <img
                           src={
                             receiver?.profilePic?.url ||
-                            "https://static.vecteezy.com/system/resources/previews/008/433/598/non_2x/men-icon-for-website-symbol-presentation-free-vector.jpg"
+                            defaultimg
                           }
                           alt={receiver?.name}
                         />

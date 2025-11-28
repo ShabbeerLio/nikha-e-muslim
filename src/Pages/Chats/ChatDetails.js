@@ -4,6 +4,7 @@ import { Check, CheckCheck, ChevronLeft, EllipsisVertical, Paperclip, Pen, Send,
 import { useNavigate, useParams } from "react-router-dom";
 import NoteContext from "../../Context/NikhaContext";
 import Host from "../../Host/Host";
+import defaultimg from "../../Assets/default.jpg"
 
 const ChatDetails = () => {
     const { userDetail, getAccountDetails, onlineUsers, socket } = useContext(NoteContext);
@@ -156,7 +157,7 @@ const ChatDetails = () => {
 
     // ✅ Function to safely get profile picture based on privacy
     const getProfilePic = (profilePic, currentUserId) => {
-        if (!profilePic) return "/default-hidden.jpg"; // fallback
+        if (!profilePic) return defaultimg; // fallback
 
         if (profilePic.isHidden === false && profilePic.url) {
             return profilePic.url;
@@ -171,7 +172,7 @@ const ChatDetails = () => {
         }
 
         // otherwise show default hidden image
-        return "/default-hidden.jpg";
+        return defaultimg;
     };
 
     //   console.log(user, "user");

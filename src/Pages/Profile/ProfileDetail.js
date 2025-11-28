@@ -35,6 +35,8 @@ import { FaWhatsapp } from "react-icons/fa";
 import Host from "../../Host/Host";
 import NoteContext from "../../Context/NikhaContext";
 import defaultimg from "../../Assets/default.jpg";
+import Modal from "../../Components/Modal/Modal";
+import SubscriptionLock from "./SubscriptionLock";
 
 const ProfileDetail = () => {
     const { userDetail, getAccountDetails } = useContext(NoteContext);
@@ -130,9 +132,9 @@ const ProfileDetail = () => {
     const personal = userDetail?._id === id;
     //   console.log(personal, "personal");
     const [subscriptionPlan, setSubscriptionPlan] = useState(
-        userDetail.subscription?.plan || "free"
+        userDetail.subscription?.plan || "Free"
     );
-    // console.log(userDetail,"userDetail")
+    console.log(userDetail, "userDetail")
 
     // 🔹 Tabs
     const tabs = [
@@ -205,11 +207,13 @@ const ProfileDetail = () => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(0);
+    const [loading, setLoading] = useState(false);
 
     const galleryImages = user.images || [];
 
     // console.log(user, "user");
     const sendInderest = async (receiverId) => {
+        setLoading(true);
         try {
             const response = await fetch(`${Host}/api/connection/send/${receiverId}`, {
                 method: "POST",
@@ -221,6 +225,7 @@ const ProfileDetail = () => {
             const data = await response.json();
             if (response.ok) {
                 setStatus("Pending");
+                setLoading(false);
             } else {
                 console.error("Error sending interest:", data.error);
             }
@@ -230,6 +235,7 @@ const ProfileDetail = () => {
     };
 
     const handleWishlist = async (userId) => {
+        setLoading(true);
         try {
             const response = await fetch(`${Host}/api/wishlist/add/${userId}`, {
                 method: "POST",
@@ -241,12 +247,14 @@ const ProfileDetail = () => {
             const data = await response.json();
             if (response.ok) {
                 getAccountDetails();
+                setLoading(false);
             } else {
                 console.error("Error updating wishlist:", data.error);
             }
         } catch (error) { console.error("Error updating wishlist:", error); }
     };
     const handleRemoveWishlist = async (userId) => {
+        setLoading(true);
         try {
             const response = await fetch(`${Host}/api/wishlist/remove/${userId}`, {
                 method: "DELETE",
@@ -258,6 +266,7 @@ const ProfileDetail = () => {
             const data = await response.json();
             if (response.ok) {
                 getAccountDetails();
+                setLoading(false);
             } else {
                 console.error("Error updating wishlist:", data.error);
             }
@@ -296,6 +305,7 @@ const ProfileDetail = () => {
     };
 
     const handleBlock = async () => {
+        setLoading(true);
         try {
             const res = await fetch(`${Host}/api/auth/block/${id}`, {
                 method: "POST",
@@ -310,6 +320,7 @@ const ProfileDetail = () => {
                 setShowOptions(false);
                 setShowBlockModal(false)
                 fetchUser()
+                setLoading(false);
             } else {
                 alert(data.error);
             }
@@ -319,6 +330,7 @@ const ProfileDetail = () => {
     };
 
     const handleUnblock = async () => {
+        setLoading(true);
         try {
             const res = await fetch(`${Host}/api/auth/block/${id}`, {
                 method: "DELETE",
@@ -332,6 +344,7 @@ const ProfileDetail = () => {
                 setIsBlocked(false);
                 setShowBlockModal(false);
                 fetchUser()
+                setLoading(false);
             } else {
                 alert(data.error);
             }
@@ -340,6 +353,7 @@ const ProfileDetail = () => {
         }
     };
     const handleRequestProfilePic = async () => {
+        setLoading(true);
         try {
             const res = await fetch(`${Host}/api/auth/request-picture/${id}`, {
                 method: "POST",
@@ -351,6 +365,7 @@ const ProfileDetail = () => {
             const data = await res.json();
             if (res.ok) {
                 alert("Request sent successfully!");
+                setLoading(false);
             } else {
                 alert(data.msg);
             }
@@ -366,6 +381,8 @@ const ProfileDetail = () => {
     // console.log(userDetail, "userDetail")
 
     console.log(user, "user")
+
+    console.log(subscriptionPlan, "subscriptionPlan")
 
     return (
         <div className="Profile-detail">
@@ -513,7 +530,7 @@ const ProfileDetail = () => {
                                             <Pen onClick={() => navigate(`/profile-edit/contact`)} />
                                         )}
                                     </h2>
-                                    {subscriptionPlan === "free" && !personal ? (
+                                    {subscriptionPlan === "Free" && !personal ? (
                                         <div className="contact-overlay">
                                             <div className="contact-overlay-content">
                                                 <Lock />
@@ -586,34 +603,41 @@ const ProfileDetail = () => {
                                             <Pen onClick={() => navigate(`/profile-edit/family`)} />
                                         )}
                                     </h2>
-                                    <div className="profile-detail-bottom-card">
-                                        <MdFamilyRestroom />
-                                        <div className="profiledetail-card-detail">
-                                            <h6>Family Lives in</h6>
-                                            <p>{user.family?.location || "-"}</p>
-                                            <h6>Family Status</h6>
-                                            <p>{user.family?.status || "-"}</p>
-                                            <h6>Family Type</h6>
-                                            <p>{user.family?.type || "-"}</p>
-                                        </div>
-                                    </div>
-                                    <div className="profile-detail-bottom-card">
-                                        <UserRoundPlus />
-                                        <div className="profiledetail-card-detail">
-                                            <h6>Father's Name</h6>
-                                            <p>{user.family?.fatherName || "-"}</p>
-                                            <h6>Father's Occupation</h6>
-                                            <p>{user.family?.fatherOccupation || "-"}</p>
-                                            <h6>Mother's Occupation</h6>
-                                            <p>{user.family?.motherOccupation || "-"}</p>
-                                            <h6>No. of brothers</h6>
-                                            <p>{user.family?.brothers || "-"}</p>
-                                            <h6>No. of sisters</h6>
-                                            <p>{user.family?.sisters || "-"}</p>
-                                            <h6>About Family</h6>
-                                            <p>{user.family?.about || "-"}</p>
-                                        </div>
-                                    </div>
+                                    {subscriptionPlan === "Free" && !personal ? (
+                                        <SubscriptionLock />
+                                    ) : (
+                                        <>
+                                            <div className="profile-detail-bottom-card">
+                                                <MdFamilyRestroom />
+                                                <div className="profiledetail-card-detail">
+                                                    <h6>Family Lives in</h6>
+                                                    <p>{user.family?.location || "-"}</p>
+                                                    <h6>Family Status</h6>
+                                                    <p>{user.family?.status || "-"}</p>
+                                                    <h6>Family Type</h6>
+                                                    <p>{user.family?.type || "-"}</p>
+                                                </div>
+                                            </div>
+                                            <div className="profile-detail-bottom-card">
+                                                <UserRoundPlus />
+                                                <div className="profiledetail-card-detail">
+                                                    <h6>Father's Name</h6>
+                                                    <p>{user.family?.fatherName || "-"}</p>
+                                                    <h6>Father's Occupation</h6>
+                                                    <p>{user.family?.fatherOccupation || "-"}</p>
+                                                    <h6>Mother's Occupation</h6>
+                                                    <p>{user.family?.motherOccupation || "-"}</p>
+                                                    <h6>No. of brothers</h6>
+                                                    <p>{user.family?.brothers || "-"}</p>
+                                                    <h6>No. of sisters</h6>
+                                                    <p>{user.family?.sisters || "-"}</p>
+                                                    <h6>About Family</h6>
+                                                    <p>{user.family?.about || "-"}</p>
+                                                </div>
+                                            </div>
+                                        </>
+                                    )}
+
                                 </section>
 
                                 <section
@@ -627,16 +651,8 @@ const ProfileDetail = () => {
                                             <Pen onClick={() => navigate(`/profile-edit/religious`)} />
                                         )}
                                     </h2>
-                                    {subscriptionPlan === "free" && !personal ? (
-                                        <div className="contact-overlay">
-                                            <div className="contact-overlay-content">
-                                                <Lock />
-                                                <h5>Upgrade to Premium to view contact details</h5>
-                                            </div>
-                                            <button onClick={() => navigate("/subscription")}>
-                                                Upgrade Now
-                                            </button>
-                                        </div>
+                                    {subscriptionPlan === "Free" && !personal ? (
+                                        <SubscriptionLock />
                                     ) : (
                                         <div className="profile-detail-bottom-card ">
                                             <div className="lifestyle-card">
@@ -659,16 +675,8 @@ const ProfileDetail = () => {
                                             <Pen onClick={() => navigate(`/profile-edit/lifestyle`)} />
                                         )}
                                     </h2>
-                                    {subscriptionPlan === "free" && !personal ? (
-                                        <div className="contact-overlay">
-                                            <div className="contact-overlay-content">
-                                                <Lock />
-                                                <h5>Upgrade to Premium to view contact details</h5>
-                                            </div>
-                                            <button onClick={() => navigate("/subscription")}>
-                                                Upgrade Now
-                                            </button>
-                                        </div>
+                                    {subscriptionPlan === "Free" && !personal ? (
+                                        <SubscriptionLock />
                                     ) : (
                                         <div className="profile-detail-bottom-card">
                                             <div className="lifestyle-card">
@@ -858,6 +866,7 @@ const ProfileDetail = () => {
                                     <div className="modal-button-box">
                                         <button className="yes-btn" onClick={async () => {
                                             setShowOptions(false);
+                                            setLoading(true);
                                             try {
                                                 const res = await fetch(`${Host}/api/auth/toggle-picture-privacy`, {
                                                     method: "PUT",
@@ -872,6 +881,7 @@ const ProfileDetail = () => {
                                                     fetchUser();
                                                     getAccountDetails();
                                                     setShowRequestModal(false)
+                                                    setLoading(false);
                                                 } else {
                                                     alert(data.error);
                                                 }
@@ -887,6 +897,7 @@ const ProfileDetail = () => {
                     )}
                 </div>
             </div>
+            <Modal loading={loading} />
         </div>
     );
 };

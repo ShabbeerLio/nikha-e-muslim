@@ -184,10 +184,10 @@
   cursor: pointer;
   text-align: center;
 }
-.subscribe-btn.logout{
+.subscribe-btn.logout {
   background: transparent;
   color: gray;
-  border: .1px solid gray;
+  border: 0.1px solid gray;
 }
 
 .profile-modal {
@@ -242,11 +242,43 @@
   align-items: center;
 }
 
-.profile-content{
-      height: 50vh;
-    overflow: auto;
-    padding-bottom: 1rem;
+.profile-content {
+  height: 50vh;
+  overflow: auto;
+  padding-bottom: 1rem;
 }
+
+.subscribed-plan {
+  margin-top: 1rem;
+}
+
+.subscribed-plan h3 {
+  font-size: 18px;
+  margin-top: 1.5rem;
+}
+.plan-detail-box {
+  background: linear-gradient(0deg, #5de0e6, #004aad);
+  color: white;
+  /* background: #fff; */
+  border-radius: 40px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+.plan-detail-box h4 {
+  font-size: 16px;
+}
+.plan-detail-box p {
+  margin: 0;
+}
+.plan-detail-box span {
+  color: rgb(0, 255, 0);
+  position: absolute;
+  top: 15%;
+  right: 7%;
+  font-size: 12px;
+}
+
 @media screen and (min-width: 1200px) {
   .Profile-main {
     max-width: 1200px;

@@ -4,6 +4,7 @@ import { ChevronDown, ChevronLeft, Pen, X } from "lucide-react";
 import Picker from "react-mobile-picker";
 import NoteContext from "../../Context/NikhaContext";
 import Host from "../../Host/Host";
+import Modal from "../../Components/Modal/Modal";
 
 const ProfileEdit = () => {
     const { section } = useParams();
@@ -26,6 +27,7 @@ const ProfileEdit = () => {
         userDetail.interest
     );
 
+    const [loading, setLoading] = useState(false);
     const [images, setImages] = useState(userDetail.images || []);
     const [profilePic, setProfilePic] = useState(userDetail.profilePic?.url || "");
     const [selectedProfileFile, setSelectedProfileFile] = useState(null);
@@ -229,6 +231,7 @@ const ProfileEdit = () => {
     console.log(selectedGalleryFiles, "selectedGalleryFiles")
     // 💾 Save images to backend using Fetch
     const handleSave = async () => {
+        setLoading(true);
         try {
             // ✅ Upload Profile Pic
             if (selectedProfileFile) {
@@ -243,6 +246,7 @@ const ProfileEdit = () => {
 
                 if (!res.ok) throw new Error("Profile upload failed");
                 const data = await res.json();
+                setLoading(false);
                 setProfilePic(data.profilePic.url);
             }
 
@@ -259,6 +263,7 @@ const ProfileEdit = () => {
 
                 if (!res.ok) throw new Error("Image upload failed");
                 const data = await res.json();
+                setLoading(false);
                 setImages(data.images);
             }
 
@@ -271,6 +276,7 @@ const ProfileEdit = () => {
     };
 
     const handleSaveData = async () => {
+        setLoading(true);
         try {
             // 🔥 Merge form with religious + lifestyle selections
             const finalData = {
@@ -293,6 +299,7 @@ const ProfileEdit = () => {
             if (!res.ok) throw new Error("Update failed");
 
             const data = await res.json();
+            setLoading(false);
             alert("Profile updated successfully!");
             navigate(-1);
 
@@ -1067,6 +1074,7 @@ const ProfileEdit = () => {
                     </div>
                 </div>
             </div>
+            <Modal loading={loading}/>
         </div>
     );
 };

@@ -5,6 +5,7 @@ import { ChevronLeft } from "lucide-react";
 import NotificationCard from "./NotificationCard";
 import NoteContext from "../../Context/NikhaContext";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import Modal from "../../Components/Modal/Modal";
 
 const Notification = () => {
   const { allNotification, getNotifications } = useContext(NoteContext);

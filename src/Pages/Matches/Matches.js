@@ -4,6 +4,7 @@ import { ChevronLeft, Heart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import NoteContext from "../../Context/NikhaContext";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import defaultimg from "../../Assets/default.jpg"
 
 const Matches = () => {
   const { userDetail, getAccountDetails, allConnected, getAllConnected } =
@@ -20,6 +21,8 @@ const Matches = () => {
     }
   }, [navigate]);
 
+  console.log(allConnected,"allConnected")
+
   // ✅ Function to calculate age from DOB object
   const calculateAge = (dob) => {
     if (!dob?.year || !dob?.month || !dob?.day) return null;
@@ -31,7 +34,7 @@ const Matches = () => {
 
   // ✅ Function to safely get profile picture based on privacy
   const getProfilePic = (profilePic, currentUserId) => {
-    if (!profilePic) return "/default-hidden.jpg"; // fallback
+    if (!profilePic) return defaultimg; // fallback
 
     if (profilePic.isHidden === false && profilePic.url) {
       return profilePic.url;
@@ -46,7 +49,7 @@ const Matches = () => {
     }
 
     // otherwise show default hidden image
-    return "/default-hidden.jpg";
+    return defaultimg;
   };
   // ✅ Get logged-in user ID from token payload or store (assuming context has it)
   const currentUserId = userDetail?._id; // set when user logs in
@@ -105,8 +108,8 @@ const Matches = () => {
                       >
                         <img
                           src={
-                            imageUrl ||
-                            "https://static.vecteezy.com/system/resources/previews/008/433/598/non_2x/men-icon-for-website-symbol-presentation-free-vector.jpg"
+                            receiver?.profilePic.url ||
+                            defaultimg
                           }
                           alt={receiver?.name}
                           className="match-img"

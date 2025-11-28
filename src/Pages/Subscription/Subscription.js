@@ -1,40 +1,22 @@
 import { ChevronLeft } from "lucide-react";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Subscription.css";
+import NoteContext from "../../Context/NikhaContext";
 
 const Subscription = () => {
+  const { getPlans, plans } = useContext(NoteContext);
   const navigate = useNavigate();
 
-  const plans = [
-    {
-      _id: "sub1",
-      plan: "Monthly",
-      description: "Perfect for individuals looking to explore our platform.",
-      price: "₹999",
-      slprice: "499",
-      tag: "",
-    },
-    {
-      _id: "sub2",
-      plan: "Quarterly",
-      description: "Ideal for users seeking enhanced features and benefits.",
-      price: "₹1999",
-      slprice: "999",
-      tag: "Most Popular",
-    },
-    {
-      _id: "sub3",
-      plan: "Yearly",
-      description:
-        "Best for those who want the ultimate experience with all features unlocked.",
-      price: "₹2999",
-      slprice: "1499",
-      tag: "",
-    },
-  ];
+  useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      navigate("/welcome");
+    } else {
+      getPlans();
+    }
+  }, [navigate]);
 
-  const lastBought = "Monthly";
+  // console.log(plans,"plans")
 
   return (
     <div className="Profile">
@@ -49,16 +31,18 @@ const Subscription = () => {
               <div key={plan._id} className="subscription-card">
                 <div className="sub-plan-top">
                   <div className="sub-plan-top-left">
-                    {lastBought === plan.plan && (
+                    {/* {lastBought === plan.plan && (
                       <h6 className="last-subs">Last Subscribed</h6>
-                    )}
+                    )} */}
                     <h6>
-                      {plan.plan}{" "}
+                      {plan.title}
                       {plan.tag && (
                         <span className="status-badge active">{plan.tag}</span>
-                      )}{" "}
+                      )}
                     </h6>
-                    <p>{plan.description}</p>
+                    <p>
+                      {plan.description}({plan.duration} days)
+                    </p>
                   </div>
                   <div className="sub-plan-top-right">
                     <h5>₹{plan.slprice}</h5>
