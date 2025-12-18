@@ -3,6 +3,7 @@ import SadaqahContext from "./NikhaContext";
 import { useState } from "react";
 import Host from "../Host/Host";
 import { io } from "socket.io-client";
+import SocketHost from "../Host/SocketHost"
 
 const ContextState = (props) => {
   const userData = [];
@@ -72,7 +73,7 @@ const ContextState = (props) => {
 
   // ✅ Initialize Socket.io Connection
   useEffect(() => {
-    const newSocket = io(Host, { transports: ["websocket"] }); // backend URL
+    const newSocket = io(SocketHost, { transports: ["websocket"] }); // backend URL
     setSocket(newSocket);
 
     newSocket.on("connect", () => console.log("🟢 Socket connected"));
