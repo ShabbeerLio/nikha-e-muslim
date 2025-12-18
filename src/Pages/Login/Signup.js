@@ -41,6 +41,28 @@ const Signup = () => {
 
   const [step, setStep] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [apiError, setApiError] = useState("");
+  const stepValidation = {
+    0: ["name", "email", "password"],
+    1: ["profileFor"],
+    2: ["gender"],
+    3: ["dob"],
+    4: ["height"],
+    5: ["sect"],
+    6: ["caste"],
+    7: ["maslak"],
+    8: ["state", "city"],
+    9: ["familyLivesHere"],
+    10: ["maritalStatus"],
+    11: ["mobile"],
+    12: ["motherTongue"],
+    13: ["qualification"],
+    14: ["workSector"],
+    15: ["profession"],
+    16: ["income"],
+  };
+
   const [form, setForm] = useState({
     profileFor: "",
     name: "",
@@ -108,10 +130,114 @@ const Signup = () => {
   const [searchTerm, setSearchTerm] = React.useState("");
 
   const courses = {
-    Arts: ["B.A", "B.Ed", "B.M.C.", "B.J.M.C.", "B.M.M."],
-    Commerce: ["B.Com", "B.B.A", "B.B.M"],
-    Science: ["B.Sc.", "B.Pharm", "B.Tech"],
-    Computer: ["B.C.A", "B.Sc. Computer Science", "B.Tech IT"],
+    Others: [
+      "Un-Educated",
+      "Primary",
+      "Secondary",
+      "Higher Secondary",
+      "Diploma",
+      "ITI",
+      "Vocational Training",
+    ],
+
+    Arts: [
+      "B.A",
+      "B.Ed",
+      "B.M.C",
+      "B.J.M.C",
+      "B.M.M",
+      "M.A",
+      "M.Ed",
+      "BFA",
+      "MFA",
+      "BA (Honours)",
+      "MA (Honours)",
+    ],
+
+    Commerce: [
+      "B.Com",
+      "B.Com (Honours)",
+      "M.Com",
+      "B.B.A",
+      "B.B.M",
+      "MBA",
+      "CA",
+      "CS",
+      "CMA",
+      "Diploma in Accounting",
+      "Chartered Accountant (CA Inter)",
+    ],
+
+    Science: [
+      "B.Sc",
+      "B.Sc (Honours)",
+      "M.Sc",
+      "B.Pharm",
+      "M.Pharm",
+      "B.Tech",
+      "M.Tech",
+      "B.E",
+      "M.E",
+      "MBBS",
+      "BDS",
+      "BHMS",
+      "BAMS",
+      "BNYS",
+      "Nursing (GNM)",
+      "B.Sc Nursing",
+    ],
+
+    Computer: [
+      "B.C.A",
+      "M.C.A",
+      "B.Sc Computer Science",
+      "M.Sc Computer Science",
+      "B.Tech IT",
+      "B.Tech CSE",
+      "M.Tech CSE",
+      "Diploma in Computer Applications (DCA)",
+      "PGDCA",
+      "Software Engineering",
+      "Data Science",
+      "Artificial Intelligence",
+      "Cyber Security",
+      "Cloud Computing",
+    ],
+
+    Law: ["LLB", "BA LLB", "BBA LLB", "LLM", "Diploma in Law"],
+
+    Education: ["D.El.Ed", "B.Ed", "M.Ed", "Diploma in Teaching", "NTT", "TTC"],
+
+    Engineering: [
+      "Mechanical Engineering",
+      "Civil Engineering",
+      "Electrical Engineering",
+      "Electronics Engineering",
+      "Chemical Engineering",
+      "Automobile Engineering",
+      "Aerospace Engineering",
+    ],
+
+    Medical: ["MBBS", "BDS", "BAMS", "BHMS", "BUMS", "MD", "MS", "DM", "MCh"],
+
+    Management: [
+      "MBA",
+      "PGDM",
+      "Hotel Management",
+      "Hospital Management",
+      "Event Management",
+      "Retail Management",
+    ],
+
+    IslamicStudies: [
+      "Hifz-e-Quran",
+      "Alim Course",
+      "Fazilat",
+      "Mufti Course",
+      "Dars-e-Nizami",
+      "Islamic Theology",
+      "Arabic Literature",
+    ],
   };
 
   // State and profession data
@@ -120,14 +246,172 @@ const Signup = () => {
   const professions = {
     "IT & Software": [
       "Software Engineer",
+      "Frontend Developer",
+      "Backend Developer",
+      "Full Stack Developer",
       "Web Developer",
+      "Mobile App Developer",
+      "DevOps Engineer",
+      "Cloud Engineer",
       "Data Analyst",
-      "AI/ML Engineer",
+      "Data Scientist",
+      "AI / ML Engineer",
+      "Cyber Security Engineer",
+      "QA / Test Engineer",
+      "System Administrator",
+      "IT Support Engineer",
     ],
-    Healthcare: ["Doctor", "Nurse", "Pharmacist", "Lab Technician"],
-    Education: ["Teacher", "Professor", "Counselor"],
-    "Business & Finance": ["Accountant", "Manager", "Entrepreneur"],
-    Creative: ["Designer", "Writer", "Photographer", "Musician"],
+
+    Healthcare: [
+      "Doctor",
+      "Surgeon",
+      "Dentist",
+      "Nurse",
+      "Pharmacist",
+      "Physiotherapist",
+      "Medical Officer",
+      "Lab Technician",
+      "Radiologist",
+      "Medical Representative",
+      "Hospital Administrator",
+    ],
+
+    Education: [
+      "Teacher",
+      "Professor",
+      "Lecturer",
+      "School Principal",
+      "Tutor",
+      "Counselor",
+      "Education Consultant",
+      "Online Educator",
+    ],
+
+    "Business & Finance": [
+      "Business Owner",
+      "Entrepreneur",
+      "Startup Founder",
+      "Accountant",
+      "Chartered Accountant",
+      "Company Secretary",
+      "Financial Analyst",
+      "Banker",
+      "Relationship Manager",
+      "Investment Advisor",
+      "Stock Market Trader",
+      "Insurance Advisor",
+    ],
+
+    Government: [
+      "IAS Officer",
+      "IPS Officer",
+      "Government Officer",
+      "Clerk",
+      "PSU Employee",
+      "Municipal Employee",
+      "Public Sector Staff",
+    ],
+
+    Defence_Security: [
+      "Army Officer",
+      "Navy Officer",
+      "Air Force Officer",
+      "Police Officer",
+      "Security Officer",
+      "Home Guard",
+    ],
+
+    Engineering_Non_IT: [
+      "Civil Engineer",
+      "Mechanical Engineer",
+      "Electrical Engineer",
+      "Electronics Engineer",
+      "Chemical Engineer",
+      "Automobile Engineer",
+      "Production Engineer",
+    ],
+
+    Creative: [
+      "Graphic Designer",
+      "UI/UX Designer",
+      "Interior Designer",
+      "Fashion Designer",
+      "Photographer",
+      "Videographer",
+      "Writer",
+      "Content Creator",
+      "Journalist",
+      "Musician",
+    ],
+
+    Sales_Marketing: [
+      "Sales Executive",
+      "Marketing Manager",
+      "Digital Marketing Executive",
+      "SEO Specialist",
+      "Social Media Manager",
+      "Brand Manager",
+      "Business Development Executive",
+    ],
+
+    Skilled_Technical: [
+      "Electrician",
+      "Plumber",
+      "Carpenter",
+      "Welder",
+      "Mechanic",
+      "Technician",
+      "AC Technician",
+    ],
+
+    Service_Industry: [
+      "Hotel Manager",
+      "Restaurant Manager",
+      "Chef",
+      "Cook",
+      "Waiter",
+      "Housekeeping Staff",
+      "Travel Consultant",
+    ],
+
+    Transport_Logistics: [
+      "Driver",
+      "Delivery Executive",
+      "Fleet Manager",
+      "Logistics Coordinator",
+      "Warehouse Manager",
+    ],
+
+    Agriculture_Allied: [
+      "Farmer",
+      "Agriculture Officer",
+      "Dairy Farmer",
+      "Poultry Farmer",
+      "Horticulturist",
+    ],
+
+    Islamic_Religious: [
+      "Imam",
+      "Muazzin",
+      "Alim",
+      "Mufti",
+      "Islamic Teacher",
+      "Qari",
+      "Hafiz-e-Quran",
+    ],
+
+    Homemaker: ["Homemaker", "Housewife", "Househusband"],
+
+    Others: [
+      "Self Employed",
+      "Freelancer",
+      "Consultant",
+      "Contractor",
+      "Not Working",
+      "Student",
+      "Retired",
+      "Other",
+    ],
   };
 
   const [profilepic, setProfilepic] = useState(null);
@@ -182,21 +466,24 @@ const Signup = () => {
 
       setTimeout(() => {
         setLoading(false);
-      },[2000]);
+      }, [2000]);
       const res = await fetch(`${Host}/api/auth/register`, {
         method: "POST",
         body: formData,
       });
 
       const data = await res.json();
-      console.log(data,"data")
+      console.log(data, "data");
 
       if (res.ok) {
         setLoading(false);
         localStorage.setItem("token", data.token);
         navigate("/congrats"); // ✅ go to congrats page
       } else {
+        setLoading(false);
+        setApiError(data?.error || "Registration failed");
         console.log("Registeration failed");
+        setStep(0);
         // alert(data.error || "Registration failed");
       }
     } catch (error) {
@@ -205,7 +492,36 @@ const Signup = () => {
     }
   };
 
-  console.log(loading,"loading")
+  const validateStep = () => {
+    const requiredFields = stepValidation[step];
+    if (!requiredFields) return true;
+
+    let newErrors = {};
+
+    requiredFields.forEach((field) => {
+      if (field === "dob") {
+        if (!form.dob.day || !form.dob.month || !form.dob.year) {
+          newErrors.dob = "Please select your date of birth";
+        }
+      } else if (field === "height") {
+        if (!form.height.ft) {
+          newErrors.height = "Please select your height";
+        }
+      } else if (!form[field]) {
+        newErrors[field] = "This field is required";
+      }
+    });
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleNext = () => {
+    if (validateStep()) {
+      console.log("clicked");
+      nextStep();
+    }
+  };
 
   console.warn = (message) =>
     message.includes("Buffer size mismatch") ? null : console.warn(message);
@@ -252,6 +568,9 @@ const Signup = () => {
           <div className="step-content">
             {step === 0 && (
               <div>
+                {errors.name && (
+                  <span className="error-text">{errors.name}</span>
+                )}
                 <input
                   type="text"
                   name="name"
@@ -259,7 +578,11 @@ const Signup = () => {
                   value={form.name}
                   onChange={handleChange}
                   required
+                  className={errors.name ? "error-input" : ""}
                 />
+                {errors.email && (
+                  <span className="error-text">{errors.email}</span>
+                )}
                 <input
                   type="email"
                   name="email"
@@ -267,7 +590,11 @@ const Signup = () => {
                   value={form.email}
                   onChange={handleChange}
                   required
+                  className={errors.email ? "error-input" : ""}
                 />
+                {errors.password && (
+                  <span className="error-text">{errors.password}</span>
+                )}
                 <input
                   type="password"
                   name="password"
@@ -275,13 +602,26 @@ const Signup = () => {
                   value={form.password}
                   onChange={handleChange}
                   required
+                  className={errors.password ? "error-input" : ""}
                 />
+                {apiError && (
+                  <p className="error-text" style={{ textAlign: "center" }}>
+                    {apiError}
+                  </p>
+                )}
               </div>
             )}
             {step === 1 && (
               <div>
                 <h2>Who are you creating this profile for?</h2>
-                <div className="radio-group">
+                {errors.profileFor && (
+                  <span className="error-text">Please select Profile for</span>
+                )}
+                <div
+                  className={`radio-group ${
+                    errors.profileFor ? "error-border" : ""
+                  }`}
+                >
                   {[
                     "Self",
                     "Son",
@@ -311,7 +651,14 @@ const Signup = () => {
             {step === 2 && (
               <div>
                 <h2>What is your Gender?</h2>
-                <div className="radio-group gender-group">
+                {errors.gender && (
+                  <span className="error-text">Please select gender</span>
+                )}
+                <div
+                  className={`radio-group gender-group ${
+                    errors.gender ? "error-border" : ""
+                  }`}
+                >
                   {["Male", "Female"].map((option) => (
                     <label key={option} className="radio-option gender-option">
                       {option === "Male" ? (
@@ -339,6 +686,9 @@ const Signup = () => {
             {step === 3 && (
               <div>
                 <h2>What is your date of birth?</h2>
+                {errors.dob && (
+                  <span className="error-text">Please select DOB</span>
+                )}
                 <div className="dob-picker">
                   <Picker
                     value={form.dob}
@@ -398,6 +748,9 @@ const Signup = () => {
             {step === 4 && (
               <div>
                 <h2>How Tall are you?</h2>
+                {errors.height && (
+                  <span className="error-text">Please select Height</span>
+                )}
                 <div className="dob-picker">
                   <Picker
                     value={form.height}
@@ -429,10 +782,14 @@ const Signup = () => {
             {step === 5 && (
               <div>
                 <h2>Religion & Sect</h2>
+
                 {/* <p>Religion (default: Muslim)</p> */}
                 <input type="text" value="Muslim" disabled />
 
                 <h4>What is your sect?</h4>
+                {errors.sect && (
+                  <span className="error-text">Please select sect</span>
+                )}
                 <div className="radio-group Sect-group">
                   {["Sunni", "Shia", "Other"].map((sect) => (
                     <label key={sect} className="radio-option">
@@ -457,6 +814,9 @@ const Signup = () => {
             {step === 6 && (
               <div>
                 <h2>What is your caste?</h2>
+                {errors.caste && (
+                  <span className="error-text">Please select caste</span>
+                )}
                 <div className="radio-group">
                   {[
                     "Syed",
@@ -488,6 +848,9 @@ const Signup = () => {
             {step === 7 && (
               <div>
                 <h2>Do you follow a specific maslak?</h2>
+                {errors.maslak && (
+                  <span className="error-text">Please select maslak</span>
+                )}
                 <div className="radio-group">
                   {[
                     "No Maslak",
@@ -521,6 +884,9 @@ const Signup = () => {
               <div>
                 <h2>Where do you currently live?</h2>
                 <h4>Select State</h4>
+                {errors.state && (
+                  <span className="error-text">{errors.state}</span>
+                )}
                 <select name="state" value={form.state} onChange={handleChange}>
                   <option value="">Select State</option>
                   {[
@@ -537,6 +903,9 @@ const Signup = () => {
                 </select>
 
                 <h4>Select City</h4>
+                {errors.city && (
+                  <span className="error-text">{errors.city}</span>
+                )}
                 <select name="city" value={form.city} onChange={handleChange}>
                   <option value="">Select City</option>
                   {[
@@ -567,6 +936,9 @@ const Signup = () => {
                     </p>
                   </div>
                 )}
+                {errors.familyLivesHere && (
+                  <span className="error-text">Please select </span>
+                )}
                 <div className="radio-group Sect-group">
                   {["Yes", "No"].map((option) => (
                     <label key={option} className="radio-option">
@@ -591,6 +963,9 @@ const Signup = () => {
                 {form.familyLivesHere === "No" && (
                   <div className="family-location">
                     <h4>Select State</h4>
+                    {errors.familyState && (
+                      <span className="error-text">{errors.familyState}</span>
+                    )}
                     <select
                       name="familyState"
                       value={form.familyState}
@@ -609,7 +984,9 @@ const Signup = () => {
                         </option>
                       ))}
                     </select>
-
+                    {errors.familyCity && (
+                      <span className="error-text">{errors.familyCity}</span>
+                    )}
                     <h4>Select City</h4>
                     <select
                       name="familyCity"
@@ -639,6 +1016,11 @@ const Signup = () => {
             {step === 10 && (
               <div>
                 <h2>What is your marital status?</h2>
+                {errors.maritalStatus && (
+                  <span className="error-text">
+                    Please select Marital Status
+                  </span>
+                )}
                 <div className="radio-group">
                   {["Single", "Married", "Divorced", "Widowed"].map(
                     (status) => (
@@ -665,12 +1047,16 @@ const Signup = () => {
             {step === 11 && (
               <div>
                 <h2>What is your mobile number?</h2>
+                {errors.mobile && (
+                  <span className="error-text">{errors.mobile}</span>
+                )}
                 <input
                   type="tel"
                   name="mobile"
                   placeholder="Enter mobile number"
                   value={form.mobile}
                   onChange={handleChange}
+                  className={errors.mobile ? "error-input" : ""}
                 />
               </div>
             )}
@@ -679,6 +1065,11 @@ const Signup = () => {
             {step === 12 && (
               <div>
                 <h2>What is your mother tongue?</h2>
+                {errors.motherTongue && (
+                  <span className="error-text">
+                    Please select Mother Tongue
+                  </span>
+                )}
                 <div className="radio-group">
                   {["Hindi/Urdu", "Angika", "Arabic", "Arunachali"].map(
                     (status) => (
@@ -705,7 +1096,11 @@ const Signup = () => {
             {step === 13 && (
               <div>
                 <h2>What is your highest qualification?</h2>
-
+                {errors.qualification && (
+                  <span className="error-text">
+                    Please select qualification
+                  </span>
+                )}
                 {/* Search Bar */}
                 <input
                   type="text"
@@ -764,12 +1159,21 @@ const Signup = () => {
                 <h2>What sector you work in?</h2>
                 <div className="radio-group">
                   {[
-                    "Business/Self Employed",
-                    "Civil Services",
-                    "Defence",
-                    "Government/Public Sector",
+                    "Business / Self Employed",
                     "Private Sector",
+                    "Government / Public Sector",
+                    "Civil Services",
+                    "Defence Services",
+                    "PSU (Public Sector Undertaking)",
+                    "Startup",
+                    "NGO / Social Work",
+                    "Freelancer / Consultant",
+                    "Agriculture",
+                    "Skilled Trade",
+                    "Service Industry",
                     "Not Working",
+                    "Student",
+                    "Retired",
                   ].map((status) => (
                     <label key={status} className="radio-option">
                       <span>{status}</span>
@@ -949,7 +1353,7 @@ const Signup = () => {
           {/* Navigation Buttons */}
           <div className="step-actions">
             {step !== steps.length - 2 ? (
-              <button onClick={nextStep} className="btn primary">
+              <button onClick={handleNext} className="btn primary">
                 Continue
               </button>
             ) : (

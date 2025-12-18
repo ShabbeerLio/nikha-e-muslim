@@ -301,3 +301,15 @@
   margin-top: 1rem;
   text-align: center;
 }
+
+
+.error-input,
+.error-border {
+  border: 1.5px solid #e53935 !important;
+}
+
+.error-text {
+  color: #e53935;
+  font-size: 12px;
+  margin-top: 4px;
+}
