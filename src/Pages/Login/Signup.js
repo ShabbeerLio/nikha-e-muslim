@@ -418,13 +418,19 @@ const Signup = () => {
 
   const fileInputRef = useRef(null);
 
+  const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      // Save file object or convert to base64 if needed
-      setForm({ ...form, profilePic: file });
-      setProfilepic(false);
+    if (!file) return;
+    if (file.size > MAX_FILE_SIZE) {
+      alert("Profile image must be less than 1MB");
+      e.target.value = ""; // reset input
+      return;
     }
+    // Save file object or convert to base64 if needed
+    setForm({ ...form, profilePic: file });
+    setProfilepic(false);
   };
 
   if (step === 19) {

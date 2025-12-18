@@ -82,7 +82,7 @@ const ProfileEdit = () => {
                 name: userDetail.name || "",
                 about: userDetail.about || "",
                 email: userDetail.email || "",
-                
+
                 gender: userDetail.gender || "",
                 dob: userDetail.dob || { day: "", month: "", year: "" },
                 height: userDetail.height || { ft: "", inch: "" },
@@ -167,15 +167,24 @@ const ProfileEdit = () => {
         </p>
     );
 
+    const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB
+
     // 📸 Handle Profile Image Selection + Preview
     const handleProfileSelect = (e) => {
         const file = e.target.files[0];
-        if (file) {
-            setSelectedProfileFile(file);
-            const previewURL = URL.createObjectURL(file);
-            setProfilePic(previewURL); // show preview instantly
-            setActiveSetting(null); // close modal
+        if (!file) return;
+
+        if (file.size > MAX_FILE_SIZE) {
+            alert("Profile image must be less than 1MB");
+            e.target.value = ""; // reset input
+            return;
         }
+
+        // ✅ Valid file
+        setSelectedProfileFile(file);
+        const previewURL = URL.createObjectURL(file);
+        setProfilePic(previewURL);
+        setActiveSetting(null);
     };
 
     // 🖼 Handle Gallery Image Selection + Preview
@@ -186,6 +195,13 @@ const ProfileEdit = () => {
         const totalFiles = selectedGalleryFiles.length + files.length;
         if (totalFiles > 6) {
             alert("You can upload up to 6 images total!");
+            return;
+        }
+
+        const invalidFile = files.find(file => file.size > MAX_FILE_SIZE);
+        if (invalidFile) {
+            alert("Each image must be less than 1MB");
+            e.target.value = ""; // reset input
             return;
         }
 
@@ -217,6 +233,7 @@ const ProfileEdit = () => {
             alert("Failed to delete image from server");
         }
     };
+
 
     const handleAllSave = () => {
         if (section === "images") {
@@ -272,6 +289,7 @@ const ProfileEdit = () => {
         } catch (err) {
             console.error(err);
             alert("Failed to upload images");
+            setLoading(false);
         }
     };
 
@@ -285,7 +303,7 @@ const ProfileEdit = () => {
                 interest: selectedLifestyle,
             };
 
-            console.log(finalData,"finalData")
+            console.log(finalData, "finalData")
 
             const res = await fetch(`${Host}/api/auth/update`, {
                 method: "PUT",
@@ -306,6 +324,7 @@ const ProfileEdit = () => {
         } catch (err) {
             console.error("Update error:", err);
             alert("Failed to update profile");
+            setLoading(false);
         }
     };
 
@@ -1074,7 +1093,7 @@ const ProfileEdit = () => {
                     </div>
                 </div>
             </div>
-            <Modal loading={loading}/>
+            <Modal loading={loading} />
         </div>
     );
 };
