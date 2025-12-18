@@ -133,7 +133,7 @@ const Home = () => {
                   className={active === 2 ? "active" : ""}
                   onClick={() => setActive(2)}
                 >
-                  For You testing LIVE
+                  For You
                 </p>
               </div>
             </div>
