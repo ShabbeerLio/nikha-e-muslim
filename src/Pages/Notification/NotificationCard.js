@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Host from "../../Host/Host";
 import Modal from "../../Components/Modal/Modal";
-import defaultimg from "../../Assets/default.jpg"
+import defaultimg from "../../Assets/default.jpg";
 
 const NotificationCard = ({ user, getNotifications }) => {
   const navigate = useNavigate();
@@ -60,11 +60,10 @@ const NotificationCard = ({ user, getNotifications }) => {
         body: JSON.stringify({ fromUserId: user.fromUser._id }),
       });
       const data = res.json();
-      if (data.success) {
-        setLoading(false);
+      setTimeout(() => {
         getNotifications();
-        // Refresh notifications or update state as needed
-      }
+        setLoading(false);
+      }, 2000);
     } catch (error) {
       console.log(error, "error");
     }
@@ -82,11 +81,10 @@ const NotificationCard = ({ user, getNotifications }) => {
         body: JSON.stringify({ fromUserId: user.fromUser._id }),
       });
       const data = res.json();
-      if (data.success) {
-        setLoading(false);
+      setTimeout(() => {
         getNotifications();
-        // Refresh notifications or update state as needed
-      }
+        setLoading(false);
+      }, 2000);
     } catch (error) {
       console.log(error, "error");
     }
@@ -106,11 +104,8 @@ const NotificationCard = ({ user, getNotifications }) => {
 
       const data = await res.json();
       if (res.ok) {
-        // alert("Picture request approved!");
         setLoading(false);
         getNotifications(); // refresh
-      } else {
-        alert(data.error);
       }
     } catch (err) {
       console.error(err);
@@ -130,16 +125,14 @@ const NotificationCard = ({ user, getNotifications }) => {
 
       const data = await res.json();
       if (res.ok) {
-        // alert("Picture request rejected.");
         setLoading(false);
         getNotifications();
-      } else {
-        alert(data.error);
       }
     } catch (err) {
       console.error(err);
     }
   };
+  console.log(loading, "loading");
 
   return (
     <div
@@ -198,7 +191,7 @@ const NotificationCard = ({ user, getNotifications }) => {
         <span className="time">{formatTime(user.createdAt)}</span>
       )}
       <span className={`dot ${user.isRead === false ? "new" : ""}`}></span>
-      <Modal loading={loading}/>
+      <Modal loading={loading} />
     </div>
   );
 };

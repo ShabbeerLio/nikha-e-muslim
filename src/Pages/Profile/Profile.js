@@ -15,7 +15,6 @@ import {
 import plan1 from "../../Assets/Plan/star.png";
 import plan2 from "../../Assets/Plan/diamond.png";
 import plan3 from "../../Assets/Plan/crown.png";
-import profileData from "../../Profile";
 import { useNavigate } from "react-router-dom";
 import NoteContext from "../../Context/NikhaContext";
 

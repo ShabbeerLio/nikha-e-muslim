@@ -211,7 +211,7 @@
   height: 18px;
 }
 
-.chat-edit-heading{
+.chat-edit-heading {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -225,4 +225,33 @@
   padding: 10px 14px;
   border-radius: 18px;
   border-bottom-right-radius: 4px;
+}
+
+.chatmessage-status {
+  position: absolute;
+  bottom: 8%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+}
+.chatmessage-status p{
+  margin: 0;
+  border-radius: 20px;
+  background-color: #eeeeee;
+  padding: 5px 10px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+.chatmessage-status p svg{
+  width: 12px;
+  height: 12px;
+}
+.chatmessage-status.success{
+  color: green;
+}
+.chatmessage-status.fail{
+  color: red;
 }

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ChevronDown, ChevronLeft, Pen, X } from "lucide-react";
+import { ChevronDown, ChevronLeft, OctagonAlert, Pen, X } from "lucide-react";
 import Picker from "react-mobile-picker";
 import NoteContext from "../../Context/NikhaContext";
 import Host from "../../Host/Host";
@@ -9,6 +9,8 @@ import Modal from "../../Components/Modal/Modal";
 const ProfileEdit = () => {
     const { section } = useParams();
     const { userDetail, getAccountDetails } = useContext(NoteContext);
+    const [imageSize, setImageSize] = useState("")
+    const [profilestatus, setProfileStatus] = useState();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -175,7 +177,10 @@ const ProfileEdit = () => {
         if (!file) return;
 
         if (file.size > MAX_FILE_SIZE) {
-            alert("Profile image must be less than 1MB");
+            setImageSize("Profile image must be less than 1MB")
+            setTimeout(() => {
+                setImageSize("")
+            }, 3000);
             e.target.value = ""; // reset input
             return;
         }
@@ -194,13 +199,19 @@ const ProfileEdit = () => {
         // Prevent exceeding 6 total
         const totalFiles = selectedGalleryFiles.length + files.length;
         if (totalFiles > 6) {
-            alert("You can upload up to 6 images total!");
+            setImageSize("You can upload up to 6 images total!")
+            setTimeout(() => {
+                setImageSize("")
+            }, 3000);
             return;
         }
 
         const invalidFile = files.find(file => file.size > MAX_FILE_SIZE);
         if (invalidFile) {
-            alert("Each image must be less than 1MB");
+            setImageSize("Each image must be less than 1MB")
+            setTimeout(() => {
+                setImageSize("")
+            }, 3000);
             e.target.value = ""; // reset input
             return;
         }
@@ -217,7 +228,7 @@ const ProfileEdit = () => {
 
     // ❌ Remove Image Preview
     const handleRemoveImage = async (index) => {
-        console.log(index, "index")
+        // console.log(index, "index")
         try {
             // instantly update UI
             setImages((prev) => prev.filter((_, i) => i !== index));
@@ -230,7 +241,6 @@ const ProfileEdit = () => {
             });
         } catch (err) {
             console.error("Error deleting image:", err);
-            alert("Failed to delete image from server");
         }
     };
 
@@ -245,7 +255,7 @@ const ProfileEdit = () => {
         }
     }
 
-    console.log(selectedGalleryFiles, "selectedGalleryFiles")
+    // console.log(selectedGalleryFiles, "selectedGalleryFiles")
     // 💾 Save images to backend using Fetch
     const handleSave = async () => {
         setLoading(true);
@@ -263,8 +273,13 @@ const ProfileEdit = () => {
 
                 if (!res.ok) throw new Error("Profile upload failed");
                 const data = await res.json();
-                setLoading(false);
                 setProfilePic(data.profilePic.url);
+                setProfileStatus("Images updated successfully!");
+                setTimeout(() => {
+                    setLoading(false);
+                    setProfileStatus(null)
+                    navigate(-1);
+                }, 3000);
             }
 
             // ✅ Upload Gallery Images
@@ -280,16 +295,22 @@ const ProfileEdit = () => {
 
                 if (!res.ok) throw new Error("Image upload failed");
                 const data = await res.json();
-                setLoading(false);
+                setProfileStatus("Images updated successfully!");
                 setImages(data.images);
+                setTimeout(() => {
+                    setLoading(false);
+                    setProfileStatus(null)
+                    navigate(-1);
+                }, 3000);
             }
 
-            alert("Images updated successfully!");
-            navigate(-1);
         } catch (err) {
             console.error(err);
-            alert("Failed to upload images");
-            setLoading(false);
+            setProfileStatus("Failed to upload images")
+            setTimeout(() => {
+                setLoading(false);
+                setProfileStatus(null)
+            }, 3000);
         }
     };
 
@@ -317,14 +338,20 @@ const ProfileEdit = () => {
             if (!res.ok) throw new Error("Update failed");
 
             const data = await res.json();
-            setLoading(false);
-            alert("Profile updated successfully!");
-            navigate(-1);
+            setProfileStatus("Profile updated successfully!")
+            setTimeout(() => {
+                setLoading(false);
+                setProfileStatus(null)
+                navigate(-1);
+            }, 3000);
 
         } catch (err) {
             console.error("Update error:", err);
-            alert("Failed to update profile");
-            setLoading(false);
+            setProfileStatus("Failed to upload profile")
+            setTimeout(() => {
+                setLoading(false);
+                setProfileStatus(null)
+            }, 3000);
         }
     };
 
@@ -1093,7 +1120,12 @@ const ProfileEdit = () => {
                     </div>
                 </div>
             </div>
-            <Modal loading={loading} />
+            <Modal loading={loading} profilestatus={profilestatus} />
+            {imageSize &&
+                <div className="chatmessage-status fail">
+                    <p> <OctagonAlert /> {imageSize}</p>
+                </div>
+            }
         </div>
     );
 };

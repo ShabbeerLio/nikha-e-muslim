@@ -3,6 +3,7 @@ import "./ProfileDetail.css";
 import {
     Ban,
     BriefcaseBusiness,
+    Check,
     CheckCheck,
     ChevronLeft,
     EllipsisVertical,
@@ -48,6 +49,9 @@ const ProfileDetail = () => {
     const [isBlocked, setIsBlocked] = useState(false);
     const [showBlockModal, setShowBlockModal] = useState(false);
     const [showRequestModal, setShowRequestModal] = useState(false);
+    const [requestsent, setRequestSent] = useState(false)
+    const [reportUser, setReportUser] = useState(false)
+    const [deleteUser, setDeleteUser] = useState(false)
 
     useEffect(() => {
         if (!localStorage.getItem("token")) {
@@ -321,8 +325,6 @@ const ProfileDetail = () => {
                 setShowBlockModal(false)
                 fetchUser()
                 setLoading(false);
-            } else {
-                alert(data.error);
             }
         } catch (err) {
             console.error(err);
@@ -345,8 +347,6 @@ const ProfileDetail = () => {
                 setShowBlockModal(false);
                 fetchUser()
                 setLoading(false);
-            } else {
-                alert(data.error);
             }
         } catch (err) {
             console.error(err);
@@ -364,10 +364,11 @@ const ProfileDetail = () => {
 
             const data = await res.json();
             if (res.ok) {
-                alert("Request sent successfully!");
+                setRequestSent(true)
+                setTimeout(() => {
+                    setRequestSent(false)
+                }, 3000);
                 setLoading(false);
-            } else {
-                alert(data.msg);
             }
 
             setShowRequestModal(false);
@@ -773,10 +774,16 @@ const ProfileDetail = () => {
                         </div>
                     )}
                     {showOptions && (
-                        <div className="options-popup">
+                        <div className="options-popup" onClick={() => setShowOptions(false)}>
                             <div className="options-box">
                                 {!personal ? (
                                     <>
+                                        <p onClick={() => {
+                                            setShowOptions(false);
+                                            setShowRequestModal(true);
+                                        }}>
+                                            Request Profile Picture
+                                        </p>
                                         <p
                                             onClick={() => {
                                                 setShowOptions(false);
@@ -785,12 +792,8 @@ const ProfileDetail = () => {
                                         >
                                             {!isBlocked ? "Block User" : "Unblock User"}
                                         </p>
-                                        <p onClick={() => {
-                                            setShowOptions(false);
-                                            setShowRequestModal(true);
-                                        }}>
-                                            Request Profile Picture
-                                        </p>
+                                        <p onClick={() => setReportUser(true)}>Report User</p>
+                                        <p onClick={() => setDeleteUser(true)} className="cancel-btn" >Delete Connection</p>
                                     </>
                                 ) :
                                     <>
@@ -798,11 +801,11 @@ const ProfileDetail = () => {
                                             setShowOptions(false);
                                             setShowRequestModal(true);
                                         }}>
-                                            Profile Picture
+                                            Profile Picture Privacy
                                         </p>
                                     </>}
 
-                                <p onClick={() => setShowOptions(false)} className="cancel-btn">Cancel</p>
+                                {/* <p onClick={() => setShowOptions(false)} className="cancel-btn">Cancel</p> */}
                             </div>
                         </div>
                     )}
@@ -839,7 +842,7 @@ const ProfileDetail = () => {
                         <div className="profiledetail-overlay">
                             {!personal ? (
                                 <div className="modal-box">
-                                    <h3>Request to view profile picture?</h3>
+                                    <h4>Request to view profile picture?</h4>
                                     <p>The user will be notified.</p>
 
                                     <div className="modal-button-box">
@@ -849,7 +852,7 @@ const ProfileDetail = () => {
                                 </div>
                             ) :
                                 <div className="modal-box">
-                                    <h3>Profile picture Privecy</h3>
+                                    <h4>Profile picture Privacy</h4>
                                     {user.profilePic?.isHidden === true ?
                                         <>
                                             <p>Your profile picture is currently hidden from other users.</p>
@@ -877,13 +880,10 @@ const ProfileDetail = () => {
 
                                                 const data = await res.json();
                                                 if (res.ok) {
-                                                    // alert(data.msg);
                                                     fetchUser();
                                                     getAccountDetails();
                                                     setShowRequestModal(false)
                                                     setLoading(false);
-                                                } else {
-                                                    alert(data.error);
                                                 }
                                             } catch (err) {
                                                 console.error(err);
@@ -895,9 +895,40 @@ const ProfileDetail = () => {
                             }
                         </div>
                     )}
+                    {reportUser &&
+                        <div className="profiledetail-overlay">
+                            <div className="modal-box">
+                                <h4>Report this User?</h4>
+                                {/* <p>The user will be notified.</p> */}
+
+                                <div className="modal-button-box">
+                                    <button className="yes-btn" onClick={() => setReportUser(false)}>Yes</button>
+                                    <button className="no-btn" onClick={() => setReportUser(false)}>Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    {deleteUser &&
+                        <div className="profiledetail-overlay">
+                            <div className="modal-box">
+                                <h4>Delete Connection?</h4>
+                                <p>You will not be able to chat with this user if connection is deleted, Are you sure want to delete connection?</p>
+
+                                <div className="modal-button-box">
+                                    <button className="yes-btn" onClick={() => setDeleteUser(false)}>Yes</button>
+                                    <button className="no-btn" onClick={() => setDeleteUser(false)}>Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
             <Modal loading={loading} />
+            {requestsent &&
+                <div className="chatmessage-status success">
+                    <p> <Check />Sent Successful</p>
+                </div>
+            }
         </div>
     );
 };

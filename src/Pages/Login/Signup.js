@@ -3,7 +3,7 @@ import "./Signup.css";
 import { useNavigate } from "react-router-dom";
 import img1 from "../../Assets/register.png";
 import logo from "../../Assets/Logo/logo.png";
-import { ChevronLeft, X } from "lucide-react";
+import { ChevronLeft, X, Eye, EyeOff } from "lucide-react";
 import male from "../../Assets/male.png";
 import female from "../../Assets/female.png";
 import Picker from "react-mobile-picker";
@@ -43,6 +43,8 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const [apiError, setApiError] = useState("");
+  const [profileSize, setProfileSize] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const stepValidation = {
     0: ["name", "email", "password"],
     1: ["profileFor"],
@@ -424,7 +426,7 @@ const Signup = () => {
     const file = e.target.files[0];
     if (!file) return;
     if (file.size > MAX_FILE_SIZE) {
-      alert("Profile image must be less than 1MB");
+      setProfileSize("Profile image must be less than 1MB")
       e.target.value = ""; // reset input
       return;
     }
@@ -490,12 +492,15 @@ const Signup = () => {
         setApiError(data?.error || "Registration failed");
         console.log("Registeration failed");
         setStep(0);
-        // alert(data.error || "Registration failed");
       }
     } catch (error) {
       console.error("Registration error:", error);
-      // alert("Something went wrong during registration");
     }
+  };
+
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    return emailRegex.test(email);
   };
 
   const validateStep = () => {
@@ -508,6 +513,12 @@ const Signup = () => {
       if (field === "dob") {
         if (!form.dob.day || !form.dob.month || !form.dob.year) {
           newErrors.dob = "Please select your date of birth";
+        }
+      } else if (field === "email") {
+        if (!form.email) {
+          newErrors.email = "Email is required";
+        } else if (!isValidEmail(form.email)) {
+          newErrors.email = "Please enter a valid email address";
         }
       } else if (field === "height") {
         if (!form.height.ft) {
@@ -594,26 +605,39 @@ const Signup = () => {
                   name="email"
                   placeholder="Email"
                   value={form.email}
-                  onChange={handleChange}
-                  required
+                  onChange={(e) => {
+                    setForm({ ...form, email: e.target.value });
+
+                    if (errors.email && isValidEmail(e.target.value)) {
+                      setErrors((prev) => ({ ...prev, email: "" }));
+                    }
+                  }}
                   className={errors.email ? "error-input" : ""}
                 />
                 {errors.password && (
                   <span className="error-text">{errors.password}</span>
                 )}
-                <input
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                  value={form.password}
-                  onChange={handleChange}
-                  required
-                  className={errors.password ? "error-input" : ""}
-                />
-                {apiError && (
-                  <p className="error-text" style={{ textAlign: "center" }}>
-                    {apiError}
-                  </p>
+                <div className="password-field">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    placeholder="Password"
+                    value={form.password}
+                    onChange={handleChange}
+                    required
+                    className={errors.password ? "error-input" : ""}
+                  />
+
+                  <span
+                    className="password-eye"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
+                  </span>
+                </div>
+
+                {errors.password && (
+                  <span className="error-text">{errors.password}</span>
                 )}
               </div>
             )}
@@ -624,9 +648,8 @@ const Signup = () => {
                   <span className="error-text">Please select Profile for</span>
                 )}
                 <div
-                  className={`radio-group ${
-                    errors.profileFor ? "error-border" : ""
-                  }`}
+                  className={`radio-group ${errors.profileFor ? "error-border" : ""
+                    }`}
                 >
                   {[
                     "Self",
@@ -661,9 +684,8 @@ const Signup = () => {
                   <span className="error-text">Please select gender</span>
                 )}
                 <div
-                  className={`radio-group gender-group ${
-                    errors.gender ? "error-border" : ""
-                  }`}
+                  className={`radio-group gender-group ${errors.gender ? "error-border" : ""
+                    }`}
                 >
                   {["Male", "Female"].map((option) => (
                     <label key={option} className="radio-option gender-option">
@@ -1413,6 +1435,8 @@ const Signup = () => {
           >
             Upload From Gallery
           </button>
+
+          {profileSize && <p>{profileSize}</p>}
 
           <input
             type="file"

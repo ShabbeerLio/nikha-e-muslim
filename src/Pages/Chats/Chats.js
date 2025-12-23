@@ -2,10 +2,10 @@ import React, { useContext, useEffect, useState } from "react";
 import "./Chats.css";
 import StatusBar from "../../Components/StatusBar/StatusBar";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
-import { Check, CheckCheck, ChevronLeft, MoveLeft } from "lucide-react";
+import { Check, CheckCheck, ChevronLeft, MoveLeft, Send, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import NoteContext from "../../Context/NikhaContext";
-import defaultimg from "../../Assets/default.jpg"
+import defaultimg from "../../Assets/default.jpg";
 
 const Chats = () => {
   const {
@@ -18,6 +18,7 @@ const Chats = () => {
   } = useContext(NoteContext);
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     if (!localStorage.getItem("token")) {
@@ -28,7 +29,7 @@ const Chats = () => {
     }
   }, [navigate]);
 
-   // ✅ Listen for incoming messages in real-time
+  // ✅ Listen for incoming messages in real-time
   useEffect(() => {
     if (!socket) return;
 
@@ -41,7 +42,7 @@ const Chats = () => {
       socket.off("receiveMessage");
     };
   }, [socket]);
-  
+
   // Filter users based on search text
   const filteredUsers =
     allConnected?.filter((item) =>
@@ -90,8 +91,15 @@ const Chats = () => {
     }
   };
 
-  console.log(allConnected,"allConnected")
-  // console.log(filteredUsers, "filteredUsers");
+  const handleOpenChat = (receiverId) => {
+    const plan = userDetail?.subscription?.plan;
+
+    if (!plan || plan === "Free") {
+      setShowModal(true);
+      return;
+    }
+    navigate(`/chat/${receiverId}`);
+  };
 
   return (
     <div className="Home">
@@ -123,9 +131,8 @@ const Chats = () => {
               </div>
             )}
             <div
-              className={`chats-list  ${
-                filteredUsers.length === 0 ? "empty" : ""
-              }`}
+              className={`chats-list  ${filteredUsers.length === 0 ? "empty" : ""
+                }`}
             >
               {filteredUsers.length > 0 ? (
                 filteredUsers.map((item) => {
@@ -138,14 +145,11 @@ const Chats = () => {
                     <div
                       key={receiver?._id}
                       className="chat-item"
-                      onClick={() => navigate(`/chat/${receiver?._id}`)}
+                      onClick={() => handleOpenChat(receiver?._id)}
                     >
                       <div className="chat-avatar">
                         <img
-                          src={
-                            receiver?.profilePic?.url ||
-                            defaultimg
-                          }
+                          src={receiver?.profilePic?.url || defaultimg}
                           alt={receiver?.name}
                         />
                         {onlineUsers.includes(receiver._id) && (
@@ -159,9 +163,8 @@ const Chats = () => {
                             <>
                               {isMine && (
                                 <span
-                                  className={`msg-status ${
-                                    isSeen ? "seen" : "sent"
-                                  }`}
+                                  className={`msg-status ${isSeen ? "seen" : "sent"
+                                    }`}
                                 >
                                   {isSeen ? <CheckCheck /> : <Check />}
                                 </span>
@@ -189,6 +192,13 @@ const Chats = () => {
                   <p>No chats yet. Start a conversation!</p>
                 </div>
               )}
+            </div>
+          </div>
+          <div className={`modal-overlay ${showModal}`}>
+            <div className="modal-content liquid-glass">
+              <h4 className="chat-edit-heading">Subscription < X onClick={() => setShowModal(false)} /></h4>
+              <p className="modal-message mb-0" >Please Subscribe any plan to start conversation!</p>
+              <button class="subscribe-btn" onClick={() => navigate("/subscription")}>Subscribe Now</button>
             </div>
           </div>
         </div>

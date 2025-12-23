@@ -2,7 +2,7 @@ import React from "react";
 import "./Modal.css";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
-const Modal = ({ loading }) => {
+const Modal = ({ loading, profilestatus }) => {
   return (
     <div className={`modal-overlay ${loading}`}>
       <div className="modal-box">
@@ -13,8 +13,14 @@ const Modal = ({ loading }) => {
           autoplay
           onError={(e) => console.error("Lottie load error:", e)}
         />
-        <p>Processing...</p>
-        <p>Please Wait</p>
+        {profilestatus ? (
+          <p>{profilestatus}</p>
+        ) : (
+          <>
+            <p>Processing...</p>
+            <p>Please Wait</p>
+          </>
+        )}
       </div>
     </div>
   );

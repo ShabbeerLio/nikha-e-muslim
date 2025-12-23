@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 import "./ChatDetails.css";
-import { Check, CheckCheck, ChevronLeft, EllipsisVertical, Paperclip, Pen, Send, Trash, X } from "lucide-react";
+import { Check, CheckCheck, CheckCheckIcon, ChevronLeft, EllipsisVertical, Paperclip, Pen, Send, Trash, X } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import NoteContext from "../../Context/NikhaContext";
 import Host from "../../Host/Host";
@@ -192,9 +192,7 @@ const ChatDetails = () => {
             const data = await res.json();
             if (res.ok) {
                 setMessages((prev) => prev.filter((m) => m._id !== messageId));
-            } else {
-                alert(data.msg);
-            }
+            } 
         } catch (err) {
             console.error("Delete error:", err);
         }
@@ -218,8 +216,6 @@ const ChatDetails = () => {
                 setMessages((prev) =>
                     prev.map((m) => (m._id === updatedMsg._id ? updatedMsg : m))
                 );
-            } else {
-                alert(updatedMsg.msg);
             }
         } catch (err) {
             console.error("Edit error:", err);
@@ -382,6 +378,12 @@ const ChatDetails = () => {
                     </div>
                 </div>
             </div>
+            {/* <div className="chatmessage-status success">
+                <p> <Check /> Successful</p>
+            </div> */}
+            {/* <div className="chatmessage-status fail">
+                <p> <X /> Failed</p>
+            </div> */}
         </div>
     );
 };

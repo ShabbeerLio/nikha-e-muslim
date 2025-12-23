@@ -4,6 +4,7 @@ import "./Login.css";
 import imag1 from "../../Assets/login.png";
 import Host from "../../Host/Host";
 import Loading from "../../Components/Loading/Loading";
+import { Eye, EyeOff } from "lucide-react";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -68,13 +70,21 @@ const Login = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          <input
-            type="password"
-            placeholder="Password"
-            className="form-input"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+          <div className="password-field">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              className="form-input"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <span
+              className="password-eye"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
+            </span>
+          </div>
           <span>Forgot Password?</span>
           {errorMessage && (
             <p

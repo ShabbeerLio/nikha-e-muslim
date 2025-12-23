@@ -38,6 +38,10 @@
   width: 100%;
   margin-bottom: 1rem;
 }
+
+.password-field span{
+  width: auto !important;
+}
 .page-box .form span {
   color: #004aad;
   /* color: #abbaab; */
