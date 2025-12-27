@@ -38,7 +38,7 @@ const Home = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        setLoading(true);
+        // setLoading(true);
         const route = active === 1 ? "nearby" : "foryou";
         const res = await fetch(`${Host}/api/match/${route}`, {
           headers: {
@@ -48,10 +48,11 @@ const Home = () => {
         if (!res.ok) throw new Error("Failed to fetch users");
         const data = await res.json();
         setUserData(data);
+        setIndex(0);
       } catch (err) {
         console.error("Error fetching users:", err);
       } finally {
-        setLoading(false);
+        // setLoading(false);
       }
     };
 
@@ -99,9 +100,14 @@ const Home = () => {
   };
   // console.log(allConnected, "allConnected");
 
-  if (loading) {
-    return <Loading/>;
-  }
+  // if (loading) {
+  //   return <Loading/>;
+  // }
+
+  useEffect(() => {
+    setIndex(0); // 🔥 reset card index
+    setSwipeDir("left");
+  }, [active]);
 
   return (
     <div className="Home">
@@ -141,7 +147,7 @@ const Home = () => {
             {active === 1 ? "Nearby cards" : "For You cards"}
           </div> */}
             <div className="cards">
-              <AnimatePresence mode="popLayout">
+              <AnimatePresence mode="popLayout" key={active}>
                 {userData.length === 0 ? (
                   <p className="no-users">No users found</p>
                 ) : (

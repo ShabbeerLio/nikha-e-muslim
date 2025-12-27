@@ -15,11 +15,12 @@ const Footer = () => {
       <section className="requst-quote-comp">
         <div className="common-container">
           <div className="requst-quote-bx">
-            <h6>1st AI-Powered Meal & Workout Planner in a single App</h6>
+            <h6>A Trusted Halal Matrimonial Platform</h6>
             <h5>We are here to help you!</h5>
             <p>
-              Give us a call or pay us a visit - We are dedicated to addressing
-              all your inquiries promptly, within 24 hours on business days.
+              Nikha-e-Muslim is dedicated to helping you find a compatible life
+              partner in a respectful, secure, and faith-based environment.
+              Feel free to reach out to us with your questions or concerns.
             </p>
 
             <div className="hero-downloads">
@@ -95,7 +96,7 @@ const Footer = () => {
       <footer className="footer-sec">
         <div className="common-container">
           <div className="footer-flex-bx">
-            <p>© NASHA <span>IQ</span> INOVATIONS 2025 | All Rights Reserved.</p>
+            <p>© Nikha-e-Muslim 2025 | All Rights Reserved.</p>
             <p>Dev. By: <Link to={"https://digitaldezire.com/"}>Digital Dezire.</Link> </p>
           </div>
         </div>

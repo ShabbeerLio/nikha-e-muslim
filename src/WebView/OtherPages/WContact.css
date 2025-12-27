@@ -1,0 +1,146 @@
+/* CONTENT BOX */
+.contact-container {
+  width: 100%;
+  display: flex;
+  gap: 2rem;
+}
+
+/* LEFT IMAGE */
+.contact-left {
+  width: 50%;
+}
+
+.contact-left img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+/* RIGHT FORM */
+.contact-right {
+  width: 50%;
+}
+
+.contact-form {
+  /* background: #0a2842; */
+  border-radius: 20px;
+  color: white;
+}
+
+.form-items {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* FORM GROUP */
+.form-group {
+  width: 100%;
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+  /* color: #222; */
+}
+
+/* INPUTS */
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #c9c9c9;
+  border-radius: 20px;
+  font-size: 14px;
+  outline: none;
+  background: #fafafa;
+  box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #113f67;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+/* BUTTON */
+.contact-btn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(270deg, #5de0e6, #004aad);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.contact-bottom {
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  width: 100%;
+}
+
+.contact-bottom-box {
+  background: linear-gradient(270deg, #5de0e6, #004aad);
+  color: white !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border-radius: 20px;
+  padding: 1.5rem;
+  gap: 10px;
+  text-decoration: none;
+}
+.contact-bottom-box svg {
+  font-size: 30px;
+}
+.contact-bottom-box p {
+  margin: 0;
+  font-size: 12px;
+}
+.contact-bottom-box h5 {
+  margin: 0;
+  font-size: 18px;
+}
+
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 900px) {
+  .contact-container {
+    flex-direction: column;
+  }
+
+  .contact-left,
+  .contact-right {
+    width: 100%;
+  }
+  .form-items {
+    flex-direction: column;
+    gap: 0;
+  }
+  .contact-bottom{
+  display: grid;
+  grid-template-columns: repeat(1,1fr);
+  gap: 1rem;
+}
+}
+
+@media (max-width: 576px) {
+
+  .contact-right h2 {
+    font-size: 26px;
+  }
+}

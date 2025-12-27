@@ -5,11 +5,18 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #004aad;
-  background: linear-gradient(0deg, #5de0e6, #004aad);
+  background-color: white;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+
+@media (max-width: 768px) {
+  body {
+  background-color: #004aad;
+  background: linear-gradient(0deg, #5de0e6, #004aad);
+}
 }

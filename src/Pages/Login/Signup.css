@@ -39,7 +39,7 @@
 .signup-logo {
   width: 25%;
   object-fit: cover;
-  margin: .5rem 0;
+  margin: 0.5rem 0;
 }
 
 .therm_img {
@@ -81,7 +81,7 @@
   color: white;
   width: 100%;
   border-radius: 50px;
-  padding: .8rem 1rem;
+  padding: 0.8rem 1rem;
   font-weight: bold;
   font-size: 14px;
 }
@@ -150,7 +150,7 @@
   font-size: 14px;
 }
 .step-actions {
-  margin-top:  20px;
+  margin-top: 20px;
   text-align: right;
   /* position: absolute;
   bottom: 0;
@@ -302,7 +302,6 @@
   text-align: center;
 }
 
-
 .error-input,
 .error-border {
   border: 1.5px solid #e53935 !important;
@@ -335,4 +334,30 @@
 
 .password-eye:hover {
   color: #000;
+}
+
+@media (max-width: 678px) {
+  .signup-logo {
+    width: 20%;
+  }
+  .signup-top {
+    height: 27vh;
+  }
+  .sign-page-box {
+    margin-top: 3rem;
+    padding: 1.5rem 2rem 1rem 2rem;
+  }
+  .age-display {
+    margin: 0;
+  }
+  .plans-list {
+    margin-top: 0 !important;
+  }
+  .plan {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 15px;
+  }
 }

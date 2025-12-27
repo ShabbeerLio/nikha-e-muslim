@@ -7,69 +7,97 @@ const WTermCondition = () => {
         <div className="common-container">
           <div className="comn-heading">
             <h3>
-              Terms <span>Consditions</span>{" "}
+              Terms <span>Conditions</span>
             </h3>
+
             <strong>Effective Date: 11 Sep 2025</strong>
+
             <p>
-              By accessing or using Feast IQ (“the App”), you agree to these
-              Terms & Conditions. If you do not agree, please discontinue use of
-              the App immediately.
+              By accessing or using Nikha-e-Muslim (“the Platform”), you agree to
+              comply with and be bound by these Terms & Conditions. If you do not
+              agree with any part of these terms, you must discontinue use of
+              the platform immediately.
             </p>
 
             <strong>1. Use of the Service</strong>
             <p>
-              Feast IQ offers AI-generated meal suggestions and workout plans
-              tailored to your daily calorie needs, complete with ingredients,
-              preparation steps, and YouTube video guidance. By using the App,
-              you confirm that all information provided (e.g., age, weight,
-              health status) is accurate and up-to-date.
+              Nikha-e-Muslim is a matrimonial and matchmaking platform created
+              for Muslims seeking marriage through a halal, respectful, and
+              value-based process. Users must be legally eligible for marriage
+              and must use the platform solely for genuine matrimonial
+              purposes.
             </p>
 
-            <strong>2. No Medical or Professional Advice</strong>
+            <strong>2. User Eligibility & Conduct</strong>
             <p>
-              The content, recommendations, and suggestions provided by Feast IQ
-              are for informational and educational purposes only. They do not
-              constitute medical, nutritional, or fitness advice. Always consult
-              a qualified healthcare provider before making significant changes
-              to your diet or exercise routine. Feast IQ and its affiliates
-              assume no liability for any outcomes, injuries, or health issues
-              resulting from use of the App.{" "}
+              By using this platform, you confirm that all information provided
+              in your profile is accurate, truthful, and up to date. Any form of
+              misleading information, impersonation, abuse, harassment, or
+              inappropriate behavior is strictly prohibited and may result in
+              account suspension or permanent termination.
             </p>
 
-            <strong>3. Account Registration & Responsibility</strong>
+            <strong>3. Account Registration & Security</strong>
             <p>
-              To access full features, you may need to create an account. You
-              are responsible for maintaining your account credentials securely
-              and for all activity under your account.{" "}
+              To access certain features, users must create an account. You are
+              responsible for maintaining the confidentiality of your login
+              credentials and for all activities conducted through your
+              account. Nikha-e-Muslim shall not be liable for unauthorized
+              account access caused by user negligence.
             </p>
 
-            <strong>4. Intellectual Property</strong>
+            <strong>4. Subscription & Payments</strong>
             <p>
-              All content, including text, design, videos, and software, is
-              owned by Feast IQ or its licensors and is protected by
-              intellectual property laws. Modifying, copying, or distributing
-              any part of the App without explicit permission is prohibited.{" "}
+              Nikha-e-Muslim offers free and paid subscription plans. Paid
+              features may include messaging, contact visibility, and enhanced
+              profile access. All payments are subject to our Return & Refund
+              Policy, and subscription fees are generally non-refundable once
+              activated.
             </p>
 
-            <strong>5. Liability Limitations</strong>
+            <strong>5. Privacy & Data Protection</strong>
             <p>
-              Feast IQ is provided "as-is," with no warranties of any kind. Our
-              liability for any claim arising from your use of the App is
-              limited to the amount you paid (if any). We disclaim all liability
-              for indirect, incidental, or consequential damages.{" "}
+              Your use of the platform is also governed by our Privacy Policy.
+              We take user privacy seriously and provide tools to control
+              profile visibility, photo access, and personal information
+              sharing.
             </p>
 
-            <strong>6. Changes to Terms</strong>
+            <strong>6. Intellectual Property</strong>
+            <p>
+              All content, trademarks, logos, designs, and software associated
+              with Nikha-e-Muslim are the intellectual property of the platform
+              and are protected by applicable laws. Unauthorized copying,
+              modification, or distribution is strictly prohibited.
+            </p>
+
+            <strong>7. Limitation of Liability</strong>
+            <p>
+              Nikha-e-Muslim provides matchmaking services on an “as-is” basis
+              and does not guarantee marriage outcomes. We are not responsible
+              for user interactions, decisions, or outcomes arising from
+              connections made through the platform.
+            </p>
+
+            <strong>8. Termination of Service</strong>
+            <p>
+              Nikha-e-Muslim reserves the right to suspend or terminate any
+              account that violates these Terms & Conditions, applicable laws,
+              or Islamic ethical guidelines, without prior notice.
+            </p>
+
+            <strong>9. Changes to Terms</strong>
             <p>
               We reserve the right to update or modify these Terms at any time.
-              Continued use of the App after changes are posted constitutes your
-              acceptance.
+              Continued use of the platform after changes are posted constitutes
+              acceptance of the revised Terms.
             </p>
 
-            <strong>7. Governing Law & Contact</strong>
+            <strong>10. Governing Law & Contact</strong>
             <p>
-              These Terms are governed by the laws of Indian. For questions or
-              concerns, please contact us at feastiq@gmail.com
+              These Terms & Conditions are governed by the laws of India. If you
+              have any questions or concerns, please contact us through the
+              official support channels available on Nikha-e-Muslim.
             </p>
           </div>
         </div>

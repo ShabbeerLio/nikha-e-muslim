@@ -9,27 +9,60 @@ const WPrivacyPolicy = () => {
             <h3>
               Privacy <span>Policy</span>{" "}
             </h3>
+
             <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere sint ratione, aperiam ipsum incidunt quae quisquam nulla eos. Explicabo, deleniti totam. Porro provident reprehenderit maxime eveniet illo ad explicabo quidem dignissimos aut magni ea, cumque repudiandae iste reiciendis ullam! Deserunt obcaecati dolores repellat pariatur ullam quidem ut rem, omnis ducimus quisquam, cum quos earum nam, sequi id aliquam iusto voluptatum sed. A aliquam ipsa nesciunt dolorem incidunt illum commodi cupiditate pariatur eius beatae soluta eligendi quasi quaerat nemo odio voluptatibus, quod quos autem vitae? Facere, adipisci modi consectetur, sit omnis molestiae sunt illo harum mollitia, ipsum quos hic laboriosam officia?
-              </p>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere sint ratione, aperiam ipsum incidunt quae quisquam nulla eos. Explicabo, deleniti totam. Porro provident reprehenderit maxime eveniet illo ad explicabo quidem dignissimos aut magni ea, cumque repudiandae iste reiciendis ullam! Deserunt obcaecati dolores repellat pariatur ullam quidem ut rem, omnis ducimus quisquam, cum quos earum nam, sequi id aliquam iusto voluptatum sed. A aliquam ipsa nesciunt dolorem incidunt illum commodi cupiditate pariatur eius beatae soluta eligendi quasi quaerat nemo odio voluptatibus, quod quos autem vitae? Facere, adipisci modi consectetur, sit omnis molestiae sunt illo harum mollitia, ipsum quos hic laboriosam officia?
-              </p>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere sint ratione, aperiam ipsum incidunt quae quisquam nulla eos. Explicabo, deleniti totam. Porro provident reprehenderit maxime eveniet illo ad explicabo quidem dignissimos aut magni ea, cumque repudiandae iste reiciendis ullam! Deserunt obcaecati dolores repellat pariatur ullam quidem ut rem, omnis ducimus quisquam, cum quos earum nam, sequi id aliquam iusto voluptatum sed. A aliquam ipsa nesciunt dolorem incidunt illum commodi cupiditate pariatur eius beatae soluta eligendi quasi quaerat nemo odio voluptatibus, quod quos autem vitae? Facere, adipisci modi consectetur, sit omnis molestiae sunt illo harum mollitia, ipsum quos hic laboriosam officia?
-              </p>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere sint ratione, aperiam ipsum incidunt quae quisquam nulla eos. Explicabo, deleniti totam. Porro provident reprehenderit maxime eveniet illo ad explicabo quidem dignissimos aut magni ea, cumque repudiandae iste reiciendis ullam! Deserunt obcaecati dolores repellat pariatur ullam quidem ut rem, omnis ducimus quisquam, cum quos earum nam, sequi id aliquam iusto voluptatum sed. A aliquam ipsa nesciunt dolorem incidunt illum commodi cupiditate pariatur eius beatae soluta eligendi quasi quaerat nemo odio voluptatibus, quod quos autem vitae? Facere, adipisci modi consectetur, sit omnis molestiae sunt illo harum mollitia, ipsum quos hic laboriosam officia?
-              </p>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere sint ratione, aperiam ipsum incidunt quae quisquam nulla eos. Explicabo, deleniti totam. Porro provident reprehenderit maxime eveniet illo ad explicabo quidem dignissimos aut magni ea, cumque repudiandae iste reiciendis ullam! Deserunt obcaecati dolores repellat pariatur ullam quidem ut rem, omnis ducimus quisquam, cum quos earum nam, sequi id aliquam iusto voluptatum sed. A aliquam ipsa nesciunt dolorem incidunt illum commodi cupiditate pariatur eius beatae soluta eligendi quasi quaerat nemo odio voluptatibus, quod quos autem vitae? Facere, adipisci modi consectetur, sit omnis molestiae sunt illo harum mollitia, ipsum quos hic laboriosam officia?
-              </p>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere sint ratione, aperiam ipsum incidunt quae quisquam nulla eos. Explicabo, deleniti totam. Porro provident reprehenderit maxime eveniet illo ad explicabo quidem dignissimos aut magni ea, cumque repudiandae iste reiciendis ullam! Deserunt obcaecati dolores repellat pariatur ullam quidem ut rem, omnis ducimus quisquam, cum quos earum nam, sequi id aliquam iusto voluptatum sed. A aliquam ipsa nesciunt dolorem incidunt illum commodi cupiditate pariatur eius beatae soluta eligendi quasi quaerat nemo odio voluptatibus, quod quos autem vitae? Facere, adipisci modi consectetur, sit omnis molestiae sunt illo harum mollitia, ipsum quos hic laboriosam officia?
-              </p>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere sint ratione, aperiam ipsum incidunt quae quisquam nulla eos. Explicabo, deleniti totam. Porro provident reprehenderit maxime eveniet illo ad explicabo quidem dignissimos aut magni ea, cumque repudiandae iste reiciendis ullam! Deserunt obcaecati dolores repellat pariatur ullam quidem ut rem, omnis ducimus quisquam, cum quos earum nam, sequi id aliquam iusto voluptatum sed. A aliquam ipsa nesciunt dolorem incidunt illum commodi cupiditate pariatur eius beatae soluta eligendi quasi quaerat nemo odio voluptatibus, quod quos autem vitae? Facere, adipisci modi consectetur, sit omnis molestiae sunt illo harum mollitia, ipsum quos hic laboriosam officia?
-              </p>
+              At Nikha-e-Muslim, we are committed to protecting your privacy and
+              safeguarding your personal information. This Privacy Policy
+              explains how we collect, use, store, and protect your data when
+              you use our website and mobile application.
+            </p>
+
+            <p>
+              We collect personal information such as name, age, gender,
+              contact details, religious preferences, family information, and
+              profile details to provide matchmaking services. This information
+              is used solely to improve compatibility, enhance user experience,
+              and facilitate meaningful connections for Nikah purposes.
+            </p>
+
+            <p>
+              Your profile information is visible only according to your
+              privacy settings. You have full control over who can view your
+              photos and personal details. Sensitive data such as contact
+              numbers and private chats are never shared publicly.
+            </p>
+
+            <p>
+              Nikha-e-Muslim uses industry-standard security measures to protect
+              your data from unauthorized access, misuse, or disclosure.
+              However, while we strive to protect your information, no online
+              platform can guarantee absolute security.
+            </p>
+
+            <p>
+              We do not sell, rent, or trade your personal information to third
+              parties. Your data may only be shared with trusted service
+              providers when required for essential platform operations such as
+              payments, notifications, or technical support.
+            </p>
+
+            <p>
+              Cookies and similar technologies may be used to improve site
+              performance, personalize content, and analyze user behavior. You
+              can manage or disable cookies through your browser settings.
+            </p>
+
+            <p>
+              By using Nikha-e-Muslim, you agree to this Privacy Policy. We may
+              update this policy from time to time, and any changes will be
+              posted on this page. Continued use of the platform indicates your
+              acceptance of the updated policy.
+            </p>
+
+            <p>
+              If you have any questions or concerns regarding your privacy, you
+              may contact us through our official support channels.
+            </p>
           </div>
         </div>
       </section>

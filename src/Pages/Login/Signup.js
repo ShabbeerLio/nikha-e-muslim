@@ -588,6 +588,9 @@ const Signup = () => {
                 {errors.name && (
                   <span className="error-text">{errors.name}</span>
                 )}
+                {apiError && (
+                  <span className="error-text">{apiError}</span>
+                )}
                 <input
                   type="text"
                   name="name"
@@ -954,89 +957,92 @@ const Signup = () => {
 
             {/* STEP 9: Family Location */}
             {step === 9 && (
-              <div>
+              <div >
                 <h2>Does your family also live here?</h2>
                 {/* Show selected location from Step 8 */}
-                {form.state && form.city && (
-                  <div className="selected-location-box">
-                    <p>
-                      <strong>Your Location:</strong> {form.city}, {form.state}
-                    </p>
+                <div className="radio-group">
+                  {form.state && form.city && (
+                    <div className="selected-location-box">
+                      <p>
+                        <strong>Your Location:</strong> {form.city}, {form.state}
+                      </p>
+                    </div>
+                  )}
+                  {errors.familyLivesHere && (
+                    <span className="error-text">Please select </span>
+                  )}
+                  <div className="radio-group Sect-group" style={{display: "contents"}}>
+                    {["Yes", "No"].map((option) => (
+                      <label key={option} className="radio-option">
+                        <span>{option}</span>
+                        <input
+                          type="radio"
+                          name="familyLivesHere"
+                          value={option}
+                          checked={form.familyLivesHere === option}
+                          onChange={(e) => {
+                            setForm({ ...form, familyLivesHere: e.target.value });
+                            if (e.target.value === "Yes") {
+                              nextStep(); // 👈 go next if Yes
+                            }
+                          }}
+                        />
+                      </label>
+                    ))}
                   </div>
-                )}
-                {errors.familyLivesHere && (
-                  <span className="error-text">Please select </span>
-                )}
-                <div className="radio-group Sect-group">
-                  {["Yes", "No"].map((option) => (
-                    <label key={option} className="radio-option">
-                      <span>{option}</span>
-                      <input
-                        type="radio"
-                        name="familyLivesHere"
-                        value={option}
-                        checked={form.familyLivesHere === option}
-                        onChange={(e) => {
-                          setForm({ ...form, familyLivesHere: e.target.value });
-                          if (e.target.value === "Yes") {
-                            nextStep(); // 👈 go next if Yes
-                          }
-                        }}
-                      />
-                    </label>
-                  ))}
+
+                  {/* If "No", show state & city */}
+                  {form.familyLivesHere === "No" && (
+                    <div className="family-location">
+                      <h4>Select State</h4>
+                      {errors.familyState && (
+                        <span className="error-text">{errors.familyState}</span>
+                      )}
+                      <select
+                        name="familyState"
+                        value={form.familyState}
+                        onChange={handleChange}
+                      >
+                        <option value="">Select State</option>
+                        {[
+                          "Maharashtra",
+                          "Uttar Pradesh",
+                          "Delhi",
+                          "Karnataka",
+                          "Bihar",
+                        ].map((st) => (
+                          <option key={st} value={st}>
+                            {st}
+                          </option>
+                        ))}
+                      </select>
+                      {errors.familyCity && (
+                        <span className="error-text">{errors.familyCity}</span>
+                      )}
+                      <h4>Select City</h4>
+                      <select
+                        name="familyCity"
+                        value={form.familyCity}
+                        onChange={handleChange}
+                      >
+                        <option value="">Select City</option>
+                        {[
+                          "Mumbai",
+                          "Pune",
+                          "Lucknow",
+                          "Delhi",
+                          "Patna",
+                          "Bengaluru",
+                        ].map((ct) => (
+                          <option key={ct} value={ct}>
+                            {ct}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
                 </div>
 
-                {/* If "No", show state & city */}
-                {form.familyLivesHere === "No" && (
-                  <div className="family-location">
-                    <h4>Select State</h4>
-                    {errors.familyState && (
-                      <span className="error-text">{errors.familyState}</span>
-                    )}
-                    <select
-                      name="familyState"
-                      value={form.familyState}
-                      onChange={handleChange}
-                    >
-                      <option value="">Select State</option>
-                      {[
-                        "Maharashtra",
-                        "Uttar Pradesh",
-                        "Delhi",
-                        "Karnataka",
-                        "Bihar",
-                      ].map((st) => (
-                        <option key={st} value={st}>
-                          {st}
-                        </option>
-                      ))}
-                    </select>
-                    {errors.familyCity && (
-                      <span className="error-text">{errors.familyCity}</span>
-                    )}
-                    <h4>Select City</h4>
-                    <select
-                      name="familyCity"
-                      value={form.familyCity}
-                      onChange={handleChange}
-                    >
-                      <option value="">Select City</option>
-                      {[
-                        "Mumbai",
-                        "Pune",
-                        "Lucknow",
-                        "Delhi",
-                        "Patna",
-                        "Bengaluru",
-                      ].map((ct) => (
-                        <option key={ct} value={ct}>
-                          {ct}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                )}
               </div>
             )}
 

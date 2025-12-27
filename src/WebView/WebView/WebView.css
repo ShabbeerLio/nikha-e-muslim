@@ -87,7 +87,7 @@ ________________________________- */
 }
 
 .logo-bx img {
-  width: 65%;
+  width: 20%;
   height: auto;
 }
 
@@ -96,7 +96,7 @@ ________________________________- */
   width: max-content;
   padding: 1rem 2rem;
   /* background-color: #fffd75; */
-  background: linear-gradient(180deg, #466572, #203a43, #112128);
+  background: linear-gradient(270deg, #5de0e6, #004aad);
   border: none;
   letter-spacing: 0.55px;
   font-size: 18px;
@@ -153,7 +153,7 @@ Our Hero comp css code
 }
 
 .hero-info-bx h1 span {
-  color: #2c5364;
+  color: #004aad;
 }
 
 .hero-info-bx p {
@@ -187,7 +187,7 @@ Our Hero comp css code
   width: 100%;
   border-radius: 40px;
   /* background-color: #2c2d31; */
-  background: linear-gradient(180deg, #466572, #203a43, #112128);
+  background: linear-gradient(0deg, #5de0e6, #004aad);
   padding: 1rem;
 }
 
@@ -217,6 +217,7 @@ Our Hero comp css code
 }
 
 .h-inpt-bx input,
+.webview textarea ,
 .h-inpt-bx select {
   width: 100%;
   height: 100%;
@@ -225,6 +226,8 @@ Our Hero comp css code
   font-size: 14px;
   /* background-color: transparent; */
   color: #242421;
+  border-radius: 40px;
+  padding: 10px;
 }
 
 .h-inpt-bx input::placeholder {
@@ -251,7 +254,7 @@ Our Hero comp css code
   position: relative;
   width: 100%;
   margin-top: 1rem;
-  background-color: #fffd75;
+  background-color: white;
   border-radius: 3rem;
   font-size: 18px;
   color: black;
@@ -259,8 +262,9 @@ Our Hero comp css code
   letter-spacing: 0.5px;
   transition: 400ms cubic-bezier(0.33, 1, 0.68, 1);
   border: none;
-  border: 0.1rem solid #fffd75;
+  border: 0.1rem solid #004aad;
   cursor: pointer;
+  padding: 1rem;
 }
 
 .form-submt-btn:hover {
@@ -287,10 +291,10 @@ Our Hero comp css code
   position: relative;
   left: -1rem;
   width: 120%;
-  margin-bottom: 6rem;
+  /* margin-bottom: 6rem; */
   padding-block: 2rem;
   /* background-color: #181818; */
-  background: linear-gradient(180deg, #466572, #203a43, #112128);
+      background: linear-gradient(0deg, #5de0e6, #004aad);
   transform: rotate(-2deg);
   z-index: 99;
 }
@@ -330,6 +334,7 @@ Our Hero comp css code
  ----------------- */
 
 .serv-comp {
+  /* background-color: white; */
   position: relative;
   width: 100%;
   padding: 4rem 5rem;
@@ -352,10 +357,10 @@ Our Hero comp css code
 
 .comn-heading h3 {
   font-size: 2.5rem;
-    font-weight: 600;
+  font-weight: 600;
 }
 .comn-heading h3 span {
-  color: #2c5364;
+  color: #004aad;
 }
 
 .serv-grid-main {
@@ -438,12 +443,12 @@ Our Hero comp css code
 
 .serv-img-bx {
   position: absolute;
-      bottom: -3rem;
-    right: -2rem;
+  bottom: -3rem;
+  right: -2rem;
   width: 12rem;
   height: 12rem;
   /* background: #f3f3f3; */
-  background: linear-gradient(180deg, #466572, #203a43, #112128);
+  background: linear-gradient(0deg, #5de0e6, #004aad);
   border-radius: 50%;
   transition: 0.5s cubic-bezier(0.33, 1, 0.68, 1);
   display: flex;
@@ -480,8 +485,8 @@ Our Hero comp css code
 .choose-us-comp {
   position: relative;
   width: 100%;
-  margin-top: 3rem;
-  background: linear-gradient(180deg, #466572, #203a43, #112128);
+  /* margin-top: 3rem; */
+  background: linear-gradient(0deg, #5de0e6, #004aad);
   padding: 5rem 5rem;
 }
 
@@ -536,7 +541,7 @@ Our Hero comp css code
   line-height: 1.8;
   margin-bottom: 1rem;
 }
-.right-choose-us-info p svg{
+.right-choose-us-info p svg {
   color: #fffd75;
   margin-right: 5px;
 }
@@ -662,7 +667,8 @@ Our Hero comp css code
   /* margin-top: 3rem; */
   padding: 8rem 5rem;
   background: url("../../Assets/WebView/patrn.svg") no-repeat center
-    center/cover;
+  center/cover;
+  background-color: white;
 }
 
 .requst-quote-bx {
@@ -745,10 +751,10 @@ Our Hero comp css code
   letter-spacing: 0.55px;
   font-weight: 400;
 }
-.footer-flex-bx p span{
+.footer-flex-bx p span {
   color: #fffd75;
 }
-.footer-flex-bx p a{
+.footer-flex-bx p a {
   color: #fffd75;
   font-weight: 400;
   font-size: 14px;

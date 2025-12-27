@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import logo from "../../Assets/WebView/logo-1.png";
+import logo from "../../Assets/Logo/logo.png";
 import { FaWhatsapp, FaGooglePlay } from "react-icons/fa";
 
 const TopBar = () => {

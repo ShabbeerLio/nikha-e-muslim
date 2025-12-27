@@ -3,9 +3,20 @@
   overflow-y: auto; 
 }
 
-html, body {
+/* Default (Desktop) */
+html,
+body {
   margin: 0;
   padding: 0;
-  height: 100%;
-  overflow: hidden;
+  height: auto;
+  overflow: visible;
+}
+
+/* Mobile only */
+@media (max-width: 768px) {
+  html,
+  body {
+    height: 100%;
+    overflow: hidden;
+  }
 }
