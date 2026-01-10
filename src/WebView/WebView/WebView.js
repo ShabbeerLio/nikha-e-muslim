@@ -4,6 +4,12 @@ import { Link } from "react-router-dom";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { ChevronDown, CircleCheckBig, MoveRight } from "lucide-react";
 import { useEffect } from "react";
+import service1 from "../../Assets/WebView/verified.png"
+import service2 from "../../Assets/WebView/matchmaking.png"
+import service3 from "../../Assets/WebView/chat system.png"
+import service4 from "../../Assets/WebView/family-friendly.png"
+import service5 from "../../Assets/WebView/shortlist.png"
+import service6 from "../../Assets/WebView/subscription.png"
 
 const WebView = () => {
   console.warn = (message) =>
@@ -214,12 +220,7 @@ const WebView = () => {
 
               <div className="serv-img-bx">
                 <div className="wallet-status">
-                  <DotLottieReact
-                    className="wallet-success"
-                    src="https://lottie.host/bd46aacd-11ff-4b51-8f9f-93c0347de779/lV2sBz3Zib.lottie"
-                    loop
-                    autoplay
-                  />
+                  <img src={service1} alt="" />
                 </div>
               </div>
             </div>
@@ -240,12 +241,7 @@ const WebView = () => {
 
               <div className="serv-img-bx">
                 <div className="wallet-status">
-                  <DotLottieReact
-                    className="wallet-success"
-                    src="https://lottie.host/f605fcdc-982e-4e16-8d4e-acd6084186ee/zPlwddzsXj.lottie"
-                    loop
-                    autoplay
-                  />
+                  <img src={service2} alt="" />
                 </div>
               </div>
             </div>
@@ -266,12 +262,7 @@ const WebView = () => {
 
               <div className="serv-img-bx">
                 <div className="wallet-status">
-                  <DotLottieReact
-                    className="wallet-success"
-                    src="https://lottie.host/aeedfbee-ede8-4794-8db4-c8260741c2a4/fUF9MMSlT4.lottie"
-                    loop
-                    autoplay
-                  />
+                  <img src={service3} alt="" />
                 </div>
               </div>
             </div>
@@ -293,12 +284,7 @@ const WebView = () => {
 
               <div className="serv-img-bx">
                 <div className="wallet-status">
-                  <DotLottieReact
-                    className="wallet-success"
-                    src="https://lottie.host/caa70555-c6a5-44c5-b49b-c451d277994f/ObCwD4QgNY.lottie"
-                    loop
-                    autoplay
-                  />
+                  <img src={service4} alt="" />
                 </div>
               </div>
             </div>
@@ -319,12 +305,7 @@ const WebView = () => {
 
               <div className="serv-img-bx">
                 <div className="wallet-status">
-                  <DotLottieReact
-                    className="wallet-success"
-                    src="https://lottie.host/5f7a12ee-88d4-4db0-947f-517892e40aee/jfx11DB4Ky.lottie"
-                    loop
-                    autoplay
-                  />
+                  <img src={service5} alt="" />
                 </div>
               </div>
             </div>
@@ -345,12 +326,7 @@ const WebView = () => {
 
               <div className="serv-img-bx">
                 <div className="wallet-status">
-                  <DotLottieReact
-                    className="wallet-success"
-                    src="https://lottie.host/73cb3825-d699-4de8-888e-cb221baae174/vEW9auWP7z.lottie"
-                    loop
-                    autoplay
-                  />
+                  <img src={service6} alt="" />
                 </div>
               </div>
             </div>
