@@ -16,7 +16,7 @@ const Login = () => {
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
-      navigate("/");
+      navigate("/app/");
     }
   }, [navigate]);
 
@@ -39,7 +39,7 @@ const Login = () => {
 
       if (data.success) {
         localStorage.setItem("token", data.token);
-        navigate("/");
+        navigate("/app/");
       } else {
         setLoading(false);
         setErrorMessage(data.error);
@@ -107,7 +107,7 @@ const Login = () => {
         <span className="or">OR</span>
         <p className="login-register">
           New user?{" "}
-          <span className="link" onClick={() => navigate("/signup")}>
+          <span className="link" onClick={() => navigate("/app/signup")}>
             Register
           </span>
         </p>

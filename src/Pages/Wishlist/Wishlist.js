@@ -11,7 +11,7 @@ const Wishlist = () => {
 
   useEffect(() => {
     if (!localStorage.getItem("token")) {
-      navigate("/welcome");
+      navigate("/app/welcome");
     }
   }, [navigate]);
 

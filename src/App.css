@@ -12,10 +12,14 @@ body {
   overflow: visible;
 }
 
+.app-view{
+  display: none;
+}
+
 /* Mobile only */
 @media (max-width: 768px) {
-  html,
-  body {
+  .app-view{
+    display: inline;
     height: 100%;
     overflow: hidden;
   }

@@ -28,18 +28,52 @@ import WAbout from "./WebView/OtherPages/WAbout";
 import WContact from "./WebView/OtherPages/WContact";
 import Footer from "./WebView/Footer/Footer";
 import TopBar from "./WebView/TopBar/TopBar";
+import { Outlet } from "react-router-dom";
 
 const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
 function App() {
   return (
     <BrowserRouter>
-      <MainLayout />
+     <BodyClassManager />
+      <Routes>
+        {/* 🌍 PUBLIC WEBSITE ROUTES */}
+        <Route element={<PublicLayout />}>
+          <Route path="/" element={<WebView />} />
+          <Route path="/privacy-policy" element={<WPrivacyPolicy />} />
+          <Route path="/term-and-conditions" element={<WTermCondition />} />
+          <Route path="/return-refund" element={<WReturnRefund />} />
+          <Route path="/about" element={<WAbout />} />
+          <Route path="/contact-us" element={<WContact />} />
+        </Route>
+        {/* 🔒 APP ROUTES (AUTH + PIN) */}
+        <Route path="/app/*" element={<AppLayout />} />
+      </Routes>
     </BrowserRouter>
   );
 }
 
-function MainLayout() {
+
+function BodyClassManager() {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname.startsWith("/app")) {
+      document.body.classList.add("app-view");
+    } else {
+      document.body.classList.remove("app-view");
+    }
+
+    return () => {
+      document.body.classList.remove("app-view");
+    };
+  }, [location.pathname]);
+
+  return null;
+}
+
+// ---------------------- MAIN LAYOUT ----------------------
+function AppLayout() {
   const location = useLocation();
   const [loading, setLoading] = useState(true);
 
@@ -59,62 +93,57 @@ function MainLayout() {
   }
 
   const hideNav =
-    location.pathname === "/" ||
-    location.pathname === "/matches" ||
-    location.pathname === "/chats";
+    location.pathname === "/app/" ||
+    location.pathname === "/app/matches" ||
+    location.pathname === "/app/chats";
 
   const hidePnav =
-    location.pathname === "/login" ||
-    location.pathname === "/signup" ||
-    location.pathname === "/welcome" ||
-    location.pathname === "/congrats" ||
-    location.pathname === "/notification" ||
-    location.pathname === "/subscription" ||
-    location.pathname === "/checkout" ||
-    location.pathname.startsWith("/chat/") ||
-    location.pathname.startsWith("/profile-detail/") ||
-    location.pathname.startsWith("/profile-edit/");
+    location.pathname === "/app/login" ||
+    location.pathname === "/app/signup" ||
+    location.pathname === "/app/welcome" ||
+    location.pathname === "/app/congrats" ||
+    location.pathname === "/app/notification" ||
+    location.pathname === "/app/subscription" ||
+    location.pathname === "/app/checkout" ||
+    location.pathname.startsWith("/app/chat/") ||
+    location.pathname.startsWith("/app/profile-detail/") ||
+    location.pathname.startsWith("/app/profile-edit/");
 
   return (
+    <ContextState>
+      <div className="app-container">
+        {hideNav && <Navbar />}
+        <Routes>
+          <Route path="/welcome" element={<Welcome />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/congrats" element={<Congrats />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/matches" element={<Matches />} />
+          <Route path="/chats" element={<Chats />} />
+          <Route path="/chat/:id" element={<ChatDetails />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile-detail/:id" element={<ProfileDetail />} />
+          <Route path="/profile-edit/:section" element={<ProfileEdit />} />
+          <Route path="/notification" element={<Notification />} />
+          <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/subscription" element={<Subscription />} />
+          <Route path="/checkout" element={<Checkout />} />
+        </Routes>
+        {!hidePnav && <Pnav />}
+      </div>
+    </ContextState>
+  );
+}
+
+function PublicLayout() {
+  return (
     <>
-      {isMobile ? (
-        <ContextState>
-          <div className="app-container">
-            {hideNav && <Navbar />}
-            <Routes>
-              <Route path="/welcome" element={<Welcome />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/congrats" element={<Congrats />} />
-              <Route path="/" element={<Home />} />
-              <Route path="/matches" element={<Matches />} />
-              <Route path="/chats" element={<Chats />} />
-              <Route path="/chat/:id" element={<ChatDetails />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/profile-detail/:id" element={<ProfileDetail />} />
-              <Route path="/profile-edit/:section" element={<ProfileEdit />} />
-              <Route path="/notification" element={<Notification />} />
-              <Route path="/wishlist" element={<Wishlist />} />
-              <Route path="/subscription" element={<Subscription />} />
-              <Route path="/checkout" element={<Checkout />} />
-            </Routes>
-            {!hidePnav && <Pnav />}
-          </div>
-        </ContextState>
-      ) : (
-        <div className="webview">
-          <TopBar />
-          <Routes>
-            <Route path="/" element={<WebView />} />
-            <Route path="/privacy-policy" element={<WPrivacyPolicy />} />
-            <Route path="/term-and-conditions" element={<WTermCondition />} />
-            <Route path="/return-refund" element={<WReturnRefund />} />
-            <Route path="/about" element={<WAbout />} />
-            <Route path="/contact-us" element={<WContact />} />
-          </Routes>
-          <Footer />
-        </div>
-      )}
+      <div className="webview">
+        <TopBar />
+        <Outlet />
+        <Footer />
+      </div>
     </>
   );
 }

@@ -507,12 +507,12 @@ font-size: 25px;
 }
 
 .close-btn {
-  position: absolute;
+  position: fixed;
   right: 3%;
   top: 5%;
   background: none;
   border: none;
-  color: black;
+  color: white;
 }
 
 .options-popup {

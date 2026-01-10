@@ -10,7 +10,7 @@ const SubscriptionLock = () => {
         <Lock />
         <h5>Upgrade to Premium to view contact details</h5>
       </div>
-      <button onClick={() => navigate("/subscription")}>Upgrade Now</button>
+      <button onClick={() => navigate("/app/subscription")}>Upgrade Now</button>
     </div>
   );
 };

@@ -22,7 +22,7 @@ const Chats = () => {
 
   useEffect(() => {
     if (!localStorage.getItem("token")) {
-      navigate("/welcome");
+      navigate("/app/welcome");
     } else {
       getAccountDetails();
       getAllConnected();
@@ -98,7 +98,7 @@ const Chats = () => {
       setShowModal(true);
       return;
     }
-    navigate(`/chat/${receiverId}`);
+    navigate(`/app/chat/${receiverId}`);
   };
 
   return (
@@ -198,7 +198,7 @@ const Chats = () => {
             <div className="modal-content liquid-glass">
               <h4 className="chat-edit-heading">Subscription < X onClick={() => setShowModal(false)} /></h4>
               <p className="modal-message mb-0" >Please Subscribe any plan to start conversation!</p>
-              <button class="subscribe-btn" onClick={() => navigate("/subscription")}>Subscribe Now</button>
+              <button class="subscribe-btn" onClick={() => navigate("/app/subscription")}>Subscribe Now</button>
             </div>
           </div>
         </div>

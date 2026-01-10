@@ -15,7 +15,7 @@ const ProfileEdit = () => {
 
     useEffect(() => {
         if (!localStorage.getItem("token")) {
-            navigate("/welcome");
+            navigate("/app/welcome");
         } else {
             getAccountDetails();
         }
@@ -488,7 +488,13 @@ const ProfileEdit = () => {
                         {section === "bio" && (
                             <div>
                                 {/* <h3>Edit Bio</h3> */}
-                                <textarea value={form.about} placeholder="Enter bio here..." />
+                                <textarea type="text" value={form.about} placeholder="Enter bio here..."
+                                    onChange={(e) =>
+                                        setForm({
+                                            ...form, about: e.target.value,
+                                        })
+                                    }
+                                />
                             </div>
                         )}
                         {section === "contact" && (

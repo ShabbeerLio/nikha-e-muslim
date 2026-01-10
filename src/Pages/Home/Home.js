@@ -27,7 +27,7 @@ const Home = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
-      navigate("/welcome");
+      navigate("/app/welcome");
     } else {
       getAllConnected();
       getAccountDetails();
@@ -222,7 +222,7 @@ const Home = () => {
                           </div>
                           <p
                             onClick={() =>
-                              navigate(`/profile-detail/${user._id}`)
+                              navigate(`/app/profile-detail/${user._id}`)
                             }
                           >
                             <MoveUpRight />

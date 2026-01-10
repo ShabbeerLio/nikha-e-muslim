@@ -55,7 +55,7 @@ const ProfileDetail = () => {
 
     useEffect(() => {
         if (!localStorage.getItem("token")) {
-            navigate("/welcome");
+            navigate("/app/welcome");
         } else {
             getAccountDetails();
         }
@@ -418,7 +418,7 @@ const ProfileDetail = () => {
                             )}
 
                             {personal ? (
-                                <ImagePlus onClick={() => navigate(`/profile-edit/images`)} />
+                                <ImagePlus onClick={() => navigate(`/app/profile-edit/images`)} />
                             ) : (
                                 <>
                                     {user.profilePic?.isHidden && !isAllowedToSeePic ? (
@@ -465,7 +465,7 @@ const ProfileDetail = () => {
                                         <h2>
                                             Basic Details{" "}
                                             {personal && (
-                                                <Pen onClick={() => navigate(`/profile-edit/basic`)} />
+                                                <Pen onClick={() => navigate(`/app/profile-edit/basic`)} />
                                             )}
                                         </h2>
                                         <ul>
@@ -497,7 +497,7 @@ const ProfileDetail = () => {
                                         <h2>
                                             {user?.name}'s Bio{" "}
                                             {personal && (
-                                                <Pen onClick={() => navigate(`/profile-edit/bio`)} />
+                                                <Pen onClick={() => navigate(`/app/profile-edit/bio`)} />
                                             )}
                                         </h2>
                                         <p>
@@ -528,7 +528,7 @@ const ProfileDetail = () => {
                                     <h2>
                                         Contact{" "}
                                         {personal && (
-                                            <Pen onClick={() => navigate(`/profile-edit/contact`)} />
+                                            <Pen onClick={() => navigate(`/app/profile-edit/contact`)} />
                                         )}
                                     </h2>
                                     {subscriptionPlan === "Free" && !personal ? (
@@ -537,7 +537,7 @@ const ProfileDetail = () => {
                                                 <Lock />
                                                 <h5>Upgrade to Premium to view contact details</h5>
                                             </div>
-                                            <button onClick={() => navigate("/subscription")}>
+                                            <button onClick={() => navigate("/app/subscription")}>
                                                 Upgrade Now
                                             </button>
                                         </div>
@@ -567,7 +567,7 @@ const ProfileDetail = () => {
                                     <h2>
                                         Education & Career{" "}
                                         {personal && (
-                                            <Pen onClick={() => navigate(`/profile-edit/education`)} />
+                                            <Pen onClick={() => navigate(`/app/profile-edit/education`)} />
                                         )}
                                     </h2>
                                     <div className="profile-detail-bottom-card">
@@ -601,7 +601,7 @@ const ProfileDetail = () => {
                                     <h2>
                                         Family{" "}
                                         {personal && (
-                                            <Pen onClick={() => navigate(`/profile-edit/family`)} />
+                                            <Pen onClick={() => navigate(`/app/profile-edit/family`)} />
                                         )}
                                     </h2>
                                     {subscriptionPlan === "Free" && !personal ? (
@@ -649,7 +649,7 @@ const ProfileDetail = () => {
                                     <h2>
                                         Religious Detail{" "}
                                         {personal && (
-                                            <Pen onClick={() => navigate(`/profile-edit/religious`)} />
+                                            <Pen onClick={() => navigate(`/app/profile-edit/religious`)} />
                                         )}
                                     </h2>
                                     {subscriptionPlan === "Free" && !personal ? (
@@ -673,7 +673,7 @@ const ProfileDetail = () => {
                                     <h2>
                                         Lifestyle & Interest{" "}
                                         {personal && (
-                                            <Pen onClick={() => navigate(`/profile-edit/lifestyle`)} />
+                                            <Pen onClick={() => navigate(`/app/profile-edit/lifestyle`)} />
                                         )}
                                     </h2>
                                     {subscriptionPlan === "Free" && !personal ? (
@@ -708,7 +708,7 @@ const ProfileDetail = () => {
                             {status === "Accepted" ? (
                                 <p
                                     className="Accepted"
-                                    onClick={() => navigate(`/chat/${user._id}`)}
+                                    onClick={() => navigate(`/app/chat/${user._id}`)}
                                 >
                                     <MessageCircle />
                                     Chat

@@ -20,10 +20,10 @@ const Welcome = () => {
                 </div>
                 <h2>Welcome Back</h2>
                 <p>For suggesting a life partner match anytime, anywhere</p>
-                <button className="btn primary" onClick={() => navigate("/login")}>
+                <button className="btn primary" onClick={() => navigate("/app/login")}>
                     Sign in
                 </button>
-                <button className="btn secondary" onClick={() => navigate("/signup")}>
+                <button className="btn secondary" onClick={() => navigate("/app/signup")}>
                     Register
                 </button>
             </div>

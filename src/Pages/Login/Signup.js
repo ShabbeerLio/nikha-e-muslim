@@ -436,7 +436,7 @@ const Signup = () => {
   };
 
   if (step === 19) {
-    navigate("/congrats");
+    navigate("/app/congrats");
   }
 
   const handleRegister = async () => {
@@ -486,7 +486,7 @@ const Signup = () => {
       if (res.ok) {
         setLoading(false);
         localStorage.setItem("token", data.token);
-        navigate("/congrats"); // ✅ go to congrats page
+        navigate("/app/congrats"); // ✅ go to congrats page
       } else {
         setLoading(false);
         setApiError(data?.error || "Registration failed");
@@ -1392,7 +1392,7 @@ const Signup = () => {
               </button>
             ) : (
               <button
-                onClick={() => navigate("/subscription")}
+                onClick={() => navigate("/app/subscription")}
                 className="btn success"
               >
                 Buy Now
@@ -1405,7 +1405,7 @@ const Signup = () => {
             <span className="or">OR</span>
             <p className="login-register">
               Already user?{" "}
-              <span className="link" onClick={() => navigate("/login")}>
+              <span className="link" onClick={() => navigate("/app/login")}>
                 Login
               </span>
             </p>

@@ -20,7 +20,7 @@ const Pnav = () => {
   const [tail, setTail] = useState(null);
 
   useEffect(() => {
-    const links = ["/", "/matches", "/chats", "/profile"];
+    const links = ["/app/", "/app/matches", "/app/chats", "/app/profile"];
 
     const current = navRefs.current.find(
       (ref) => ref && ref.dataset.path === location.pathname
@@ -58,9 +58,9 @@ const Pnav = () => {
       <ul>
         <li>
           <NavLink
-            to={"/"}
+            to={"/app/"}
             className="nav-link"
-            data-path={"/"}
+            data-path={"/app/"}
             ref={(el) => (navRefs.current[0] = el)}
           >
             <House />
@@ -68,9 +68,9 @@ const Pnav = () => {
         </li>
         <li>
           <NavLink
-            to={"/matches"}
+            to={"/app/matches"}
             className="nav-link"
-            data-path={"/matches"}
+            data-path={"/app/matches"}
             ref={(el) => (navRefs.current[1] = el)}
           >
             <CopyCheck />
@@ -78,9 +78,9 @@ const Pnav = () => {
         </li>
         <li>
           <NavLink
-            to={"/chats"}
+            to={"/app/chats"}
             className="nav-link"
-            data-path={"/chats"}
+            data-path={"/app/chats"}
             ref={(el) => (navRefs.current[2] = el)}
           >
             <MessageCircleHeart />
@@ -88,9 +88,9 @@ const Pnav = () => {
         </li>
         <li>
           <NavLink
-            to={"/profile"}
+            to={"/app/profile"}
             className="nav-link"
-            data-path={"/profile"}
+            data-path={"/app/profile"}
             ref={(el) => (navRefs.current[3] = el)}
           >
             <User />

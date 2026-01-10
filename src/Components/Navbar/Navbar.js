@@ -15,7 +15,7 @@ const Navbar = () => {
 
   useEffect(() => {
     if (!localStorage.getItem("token")) {
-      navigate("/login");
+      navigate("/app/login");
     } else {
       getAccountDetails();
       getNotifications();
@@ -29,7 +29,7 @@ const Navbar = () => {
       <div className="navbar-main">
         <nav className="navbar navbar-expand-lg navbar-light">
           <div className="container-fluid nav-name">
-            <Link to={"/profile"} className="navbar-brand">
+            <Link to={"/app/profile"} className="navbar-brand">
               <img
                 src={
                   userDetail.profilePic?.url
@@ -45,19 +45,19 @@ const Navbar = () => {
             </Link>
             <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
               <div className="navbar-nav">
-                <Link className="nav-link active" aria-current="page" to="/">
+                <Link className="nav-link active" aria-current="page" to="/app/">
                   Home
                 </Link>
-                <Link className="nav-link" to="/feeds">
+                <Link className="nav-link" to="/app/feeds">
                   Feeds
                 </Link>
-                <Link className="nav-link" to="/add">
+                <Link className="nav-link" to="/app/add">
                   Add
                 </Link>
-                <Link className="nav-link" to="/search">
+                <Link className="nav-link" to="/app/search">
                   Search
                 </Link>
-                <Link className="nav-link" to="/history">
+                <Link className="nav-link" to="/app/history">
                   History
                 </Link>
               </div>
@@ -65,14 +65,14 @@ const Navbar = () => {
             <div className="profile">
               <div className="notification">
                 <Link
-                  to={"/wishlist"}
+                  to={"/app/wishlist"}
                   className="notification-items"
                   style={{ marginRight: "15px" }}
                 >
                   <Heart />
                   <span>{userDetail?.wishlist?.length}</span>
                 </Link>
-                <Link to={"/notification"} className="notification-items">
+                <Link to={"/app/notification"} className="notification-items">
                   <Bell />
                   <span>{allNotification?.length}</span>
                 </Link>

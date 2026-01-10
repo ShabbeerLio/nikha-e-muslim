@@ -24,7 +24,7 @@ const Profile = () => {
 
     useEffect(() => {
         if (!localStorage.getItem("token")) {
-            navigate("/welcome");
+            navigate("/app/welcome");
         } else {
             getAccountDetails();
             getAllConnected();
@@ -37,7 +37,7 @@ const Profile = () => {
 
     const handlelogout = () => {
         localStorage.removeItem("token")
-        navigate("/welcome");
+        navigate("/app/welcome");
     }
 
     console.log(userDetail, "userDetail")
@@ -68,7 +68,7 @@ const Profile = () => {
                                         {userDetail?.name}
                                         <Pen
                                             onClick={() =>
-                                                navigate(`/profile-detail/${userDetail?._id}`)
+                                                navigate(`/app/profile-detail/${userDetail?._id}`)
                                             }
                                             className="profile-edit"
                                         />
@@ -119,19 +119,19 @@ const Profile = () => {
                         <div className="profile-content">
                             {activeTab === "safety" && (
                                 <div className="menu-list">
-                                    <div className="menu-item" onClick={() => navigate(`/chats`)}>
+                                    <div className="menu-item" onClick={() => navigate(`/app/chats`)}>
                                         <MessageCircle size={20} /> <span>Message</span>{" "}
                                         <ChevronRight />
                                     </div>
                                     <div
                                         className="menu-item"
-                                        onClick={() => navigate(`/notification`)}
+                                        onClick={() => navigate(`/app/notification`)}
                                     >
                                         <Bell size={20} /> <span>Ntification</span> <ChevronRight />
                                     </div>
                                     <div
                                         className="menu-item"
-                                        onClick={() => navigate(`/wishlist`)}
+                                        onClick={() => navigate(`/app/wishlist`)}
                                     >
                                         <Heart size={20} /> <span>Wishlist</span> <ChevronRight />
                                     </div>
@@ -145,7 +145,7 @@ const Profile = () => {
                                     </div>
                                     <div
                                         className="menu-item"
-                                        onClick={() => navigate(`/subscription`)}
+                                        onClick={() => navigate(`/app/subscription`)}
                                     >
                                         <ShieldCheck size={20} /> <span>Verify</span>{" "}
                                         <ChevronRight />
@@ -199,7 +199,7 @@ const Profile = () => {
                                             </div>
                                             <button
                                                 className="subscribe-btn"
-                                                onClick={() => navigate("/subscription")}
+                                                onClick={() => navigate("/app/subscription")}
                                             >
                                                 Subscribe Now
                                             </button>

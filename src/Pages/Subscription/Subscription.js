@@ -10,7 +10,7 @@ const Subscription = () => {
 
   useEffect(() => {
     if (!localStorage.getItem("token")) {
-      navigate("/welcome");
+      navigate("/app/welcome");
     } else {
       getPlans();
     }
@@ -54,7 +54,7 @@ const Subscription = () => {
                 <h6
                   className="subs-btn"
                   onClick={() =>
-                    navigate("/checkout", {
+                    navigate("/app/checkout", {
                       state: { type: "subscription", data: plan },
                     })
                   }

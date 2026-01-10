@@ -24,7 +24,7 @@ const ChatDetails = () => {
 
     useEffect(() => {
         if (!localStorage.getItem("token")) {
-            navigate("/welcome");
+            navigate("/app/welcome");
         } else {
             getAccountDetails();
         }

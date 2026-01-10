@@ -106,7 +106,7 @@ const Checkout = () => {
         setStatus("Success");
         setTimeout(() => {
           setShowModal(false);
-          navigate("/");
+          navigate("/app/");
         }, 2000);
       } else {
         setStatus("Error");
