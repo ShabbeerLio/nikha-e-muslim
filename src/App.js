@@ -29,6 +29,7 @@ import WContact from "./WebView/OtherPages/WContact";
 import Footer from "./WebView/Footer/Footer";
 import TopBar from "./WebView/TopBar/TopBar";
 import { Outlet } from "react-router-dom";
+import Forgot from "./Pages/Login/Forgot";
 
 const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
@@ -100,6 +101,7 @@ function AppLayout() {
   const hidePnav =
     location.pathname === "/app/login" ||
     location.pathname === "/app/signup" ||
+    location.pathname === "/app/forgot-password" ||
     location.pathname === "/app/welcome" ||
     location.pathname === "/app/congrats" ||
     location.pathname === "/app/notification" ||
@@ -116,6 +118,7 @@ function AppLayout() {
         <Routes>
           <Route path="/welcome" element={<Welcome />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<Forgot />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/congrats" element={<Congrats />} />
           <Route path="/" element={<Home />} />

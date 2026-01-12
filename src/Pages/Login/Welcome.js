@@ -7,7 +7,7 @@ import "./Welcome.css"
 const Welcome = () => {
     const navigate = useNavigate();
     return (
-        <div className="page">
+        <div className="page sign-page">
             <div className="page-box">
                 <div className="welcome-logo">
                     <img src={logo} alt="" />

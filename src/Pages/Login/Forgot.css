@@ -1,0 +1,49 @@
+.page-icon{
+    border-radius: 25px;
+    border: 1px solid #004aad;
+    padding: 15px;
+    width: 60px;
+    height: 60px;
+    margin-bottom: 1rem;
+    color: #004aad;
+}
+
+.msg {
+  font-size: 13px;
+}
+
+.msg.error {
+  color: red;
+}
+
+.msg.success {
+  color: green;
+}
+
+.rule {
+  color: #999;
+  transition: 0.3s;
+}
+
+.rule.ok {
+  color: green;
+  font-weight: 500;
+}
+
+.password-rules ul{
+    padding: 0;
+}
+.password-rules ul li{
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+.form h2{
+    position: relative;
+}
+.form h2 svg{
+    position: absolute;
+    left: 0;
+    top: 0;
+}

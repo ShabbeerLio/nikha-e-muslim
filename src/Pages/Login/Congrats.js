@@ -7,7 +7,7 @@ const Congrats = () => {
     const navigate = useNavigate();
 
   return (
-    <div className="page">
+    <div className="page sign-page">
       <div className="page-box">
         <h2>Congrats!</h2>
         <p>Now enjoy life with your highlighted partner 💕</p>

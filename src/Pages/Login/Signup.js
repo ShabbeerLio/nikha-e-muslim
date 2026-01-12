@@ -1,21 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./Signup.css";
 import { useNavigate } from "react-router-dom";
-import img1 from "../../Assets/register.png";
-import logo from "../../Assets/Logo/logo.png";
 import { ChevronLeft, X, Eye, EyeOff } from "lucide-react";
 import male from "../../Assets/male.png";
 import female from "../../Assets/female.png";
 import Picker from "react-mobile-picker";
-import plan1 from "../../Assets/Plan/star.png";
-import plan2 from "../../Assets/Plan/diamond.png";
-import plan3 from "../../Assets/Plan/crown.png";
 import Host from "../../Host/Host";
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import logo from "../../Assets/Logo/logo.png";
 
 const steps = [
+  "Account Info",
+  "OTP Verification",
   "Profile For",
-  "Basic Info",
   "Gender",
   "Date of Birth",
   "Height",
@@ -45,24 +41,31 @@ const Signup = () => {
   const [apiError, setApiError] = useState("");
   const [profileSize, setProfileSize] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  const [otp, setOtp] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpVerified, setOtpVerified] = useState(false);
+  const [otpError, setOtpError] = useState("");
+
   const stepValidation = {
     0: ["name", "email", "password"],
-    1: ["profileFor"],
-    2: ["gender"],
-    3: ["dob"],
-    4: ["height"],
-    5: ["sect"],
-    6: ["caste"],
-    7: ["maslak"],
-    8: ["state", "city"],
-    9: ["familyLivesHere"],
-    10: ["maritalStatus"],
-    11: ["mobile"],
-    12: ["motherTongue"],
-    13: ["qualification"],
-    14: ["workSector"],
-    15: ["profession"],
-    16: ["income"],
+    1: ["otp"],
+    2: ["profileFor"],
+    3: ["gender"],
+    4: ["dob"],
+    5: ["height"],
+    6: ["sect"],
+    7: ["caste"],
+    8: ["maslak"],
+    9: ["state", "city"],
+    10: ["familyLivesHere"],
+    11: ["maritalStatus"],
+    12: ["mobile"],
+    13: ["motherTongue"],
+    14: ["qualification"],
+    15: ["workSector"],
+    16: ["profession"],
+    17: ["income"],
   };
 
   const [form, setForm] = useState({
@@ -435,10 +438,6 @@ const Signup = () => {
     setProfilepic(false);
   };
 
-  if (step === 19) {
-    navigate("/app/congrats");
-  }
-
   const handleRegister = async () => {
     setLoading(true);
     try {
@@ -540,46 +539,50 @@ const Signup = () => {
     }
   };
 
+  const handleSendOtp = async () => {
+    nextStep();
+    if (!form.email || !form.name || !form.password) {
+      setErrors({ email: "Required", name: "Required", password: "Required" });
+      return;
+    }
+
+    setLoading(true);
+
+    const res = await fetch(`${Host}/api/auth/signup-send-otp`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: form.email }),
+    });
+
+    const data = await res.json();
+    setLoading(false);
+
+    if (res.ok) {
+      setOtpSent(true);
+    } else {
+      setApiError(data.msg || "OTP sending failed");
+    }
+  };
+
   console.warn = (message) =>
     message.includes("Buffer size mismatch") ? null : console.warn(message);
 
   return (
-    <div className="sign-page">
-      <div className={`signup-top ${loading ? "loading" : ""}`}>
-        <span>Find exactly the</span>
-        <h5>Right Partner for you!</h5>
+    <div className="sign-page page">
+      <div className="page-box registration">
         <img className="signup-logo" src={logo} alt="" />
-        {!loading ? (
-          <>
-            <h2>Let's Get Started!</h2>
-            <p>Create your account</p>
-          </>
-        ) : (
-          <div className="signup-loading-text">
-            <h2>Getting Things Ready</h2>
-            <DotLottieReact
-              src="https://lottie.host/fb3a7cfa-4d6c-4829-a42e-2aadb2742424/seUY29Eqkz.lottie"
-              loop
-              autoplay
-            />
-          </div>
-        )}
-
-        <img className="therm_img" src={img1} alt="" />
-      </div>
-      <div className="sign-page-box registration">
         <h2>
           {step > 0 && <ChevronLeft onClick={prevStep} className="back-btn" />}
           Register
         </h2>
-        <div className="signup-container">
-          {/* Progress Bar */}
-          <div className="progress-bar">
-            <div
-              className="progress"
-              style={{ width: `${((step + 1) / steps.length) * 100}%` }}
-            />
-          </div>
+        {/* Progress Bar */}
+        <div className="progress-bar">
+          <div
+            className="progress"
+            style={{ width: `${((step + 1) / steps.length) * 100}%` }}
+          />
+        </div>
+        <div className="signup-container form">
 
           {/* Step Content */}
           <div className="step-content">
@@ -646,6 +649,54 @@ const Signup = () => {
             )}
             {step === 1 && (
               <div>
+                <h2>Verify OTP</h2>
+                {loading && "Processing ..."}
+                <p>{otpSent && `OTP sent to ${form.email}`}</p>
+
+                {otpError && <span className="error-text">{otpError}</span>}
+
+                <input
+                  type="text"
+                  placeholder="Enter OTP"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                />
+
+                {!otpVerified ? (
+                  <button
+                    className="btn primary"
+                    onClick={async () => {
+                      const res = await fetch(`${Host}/api/auth/verify-otp`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                          email: form.email,
+                          otp,
+                          type: "signup",
+                        }),
+                      });
+
+                      const data = await res.json();
+
+                      if (res.ok) {
+                        setOtpVerified(true);
+                        setOtpError("");
+                      } else {
+                        setOtpError(data.msg || "Invalid OTP");
+                      }
+                    }}
+                  >
+                    Verify OTP
+                  </button>
+                ) : (
+                  <button className="btn success" onClick={nextStep}>
+                    Continue
+                  </button>
+                )}
+              </div>
+            )}
+            {step === 2 && (
+              <div>
                 <h2>Who are you creating this profile for?</h2>
                 {errors.profileFor && (
                   <span className="error-text">Please select Profile for</span>
@@ -680,7 +731,7 @@ const Signup = () => {
               </div>
             )}
 
-            {step === 2 && (
+            {step === 3 && (
               <div>
                 <h2>What is your Gender?</h2>
                 {errors.gender && (
@@ -714,7 +765,7 @@ const Signup = () => {
               </div>
             )}
 
-            {step === 3 && (
+            {step === 4 && (
               <div>
                 <h2>What is your date of birth?</h2>
                 {errors.dob && (
@@ -776,7 +827,7 @@ const Signup = () => {
               </div>
             )}
             {/* STEP 4: Religion & Sect */}
-            {step === 4 && (
+            {step === 5 && (
               <div>
                 <h2>How Tall are you?</h2>
                 {errors.height && (
@@ -810,7 +861,7 @@ const Signup = () => {
                 )}
               </div>
             )}
-            {step === 5 && (
+            {step === 6 && (
               <div>
                 <h2>Religion & Sect</h2>
 
@@ -842,7 +893,7 @@ const Signup = () => {
             )}
 
             {/* STEP 6: Caste */}
-            {step === 6 && (
+            {step === 7 && (
               <div>
                 <h2>What is your caste?</h2>
                 {errors.caste && (
@@ -876,7 +927,7 @@ const Signup = () => {
             )}
 
             {/* STEP 6: Maslak */}
-            {step === 7 && (
+            {step === 8 && (
               <div>
                 <h2>Do you follow a specific maslak?</h2>
                 {errors.maslak && (
@@ -911,7 +962,7 @@ const Signup = () => {
             )}
 
             {/* STEP 8: Location */}
-            {step === 8 && (
+            {step === 9 && (
               <div>
                 <h2>Where do you currently live?</h2>
                 <h4>Select State</h4>
@@ -956,7 +1007,7 @@ const Signup = () => {
             )}
 
             {/* STEP 9: Family Location */}
-            {step === 9 && (
+            {step === 10 && (
               <div >
                 <h2>Does your family also live here?</h2>
                 {/* Show selected location from Step 8 */}
@@ -971,7 +1022,7 @@ const Signup = () => {
                   {errors.familyLivesHere && (
                     <span className="error-text">Please select </span>
                   )}
-                  <div className="radio-group Sect-group" style={{display: "contents"}}>
+                  <div className="radio-group Sect-group" style={{ display: "contents" }}>
                     {["Yes", "No"].map((option) => (
                       <label key={option} className="radio-option">
                         <span>{option}</span>
@@ -1047,7 +1098,7 @@ const Signup = () => {
             )}
 
             {/* STEP 8: Marital Status */}
-            {step === 10 && (
+            {step === 11 && (
               <div>
                 <h2>What is your marital status?</h2>
                 {errors.maritalStatus && (
@@ -1056,7 +1107,7 @@ const Signup = () => {
                   </span>
                 )}
                 <div className="radio-group">
-                  {["Single", "Married", "Divorced", "Widowed"].map(
+                  {["Single", "Divorced", "Widowed"].map(
                     (status) => (
                       <label key={status} className="radio-option">
                         <span>{status}</span>
@@ -1078,7 +1129,7 @@ const Signup = () => {
             )}
 
             {/* STEP 9: Mobile Number */}
-            {step === 11 && (
+            {step === 12 && (
               <div>
                 <h2>What is your mobile number?</h2>
                 {errors.mobile && (
@@ -1096,7 +1147,7 @@ const Signup = () => {
             )}
 
             {/* STEP 10: Mother Tongue */}
-            {step === 12 && (
+            {step === 13 && (
               <div>
                 <h2>What is your mother tongue?</h2>
                 {errors.motherTongue && (
@@ -1127,7 +1178,7 @@ const Signup = () => {
             )}
 
             {/* STEP 11: Qualification */}
-            {step === 13 && (
+            {step === 14 && (
               <div>
                 <h2>What is your highest qualification?</h2>
                 {errors.qualification && (
@@ -1188,7 +1239,7 @@ const Signup = () => {
             )}
 
             {/* STEP 12: Work Sector */}
-            {step === 14 && (
+            {step === 15 && (
               <div>
                 <h2>What sector you work in?</h2>
                 <div className="radio-group">
@@ -1228,7 +1279,7 @@ const Signup = () => {
             )}
 
             {/* STEP 13: Profession */}
-            {step === 15 && (
+            {step === 16 && (
               <div>
                 <h2>What is your profession?</h2>
 
@@ -1289,7 +1340,7 @@ const Signup = () => {
             )}
 
             {/* STEP 14: Annual Income */}
-            {step === 16 && (
+            {step === 17 && (
               <div>
                 <h2>What is your annual income?</h2>
                 <div className="dob-picker">
@@ -1316,7 +1367,7 @@ const Signup = () => {
             )}
 
             {/* STEP 15: Profile Picture */}
-            {step === 17 && (
+            {step === 18 && (
               <div>
                 <h2>Add your photo to get 10X more matches</h2>
                 {form.profilePic ? (
@@ -1348,37 +1399,11 @@ const Signup = () => {
             )}
 
             {/* STEP 16: Subscription */}
-            {step === 18 && (
+            {step === 19 && (
               <div>
-                <h2>Choose Subscription</h2>
-                <div className="plans-list">
-                  <div className="plan">
-                    <img src={plan1} alt="" />
-                    <div className="plan-detail">
-                      <h4>3 Months</h4>
-                      <p>₹9.83 per month</p>
-                    </div>
-                    <span>₹29.50</span>
-                  </div>
-                  <div className="plan">
-                    <img src={plan2} alt="" />
-                    <div className="plan-detail">
-                      <h4>6 Months</h4>
-                      <p>₹9 per month</p>
-                    </div>
-                    <span>₹54.20</span>
-                  </div>
-                  <div className="plan">
-                    <img src={plan3} alt="" />
-                    <div className="plan-detail">
-                      <h4>12 Months</h4>
-                      <p>₹6 per month</p>
-                    </div>
-                    <span>₹72.90</span>
-                  </div>
-                </div>
-                <p onClick={handleRegister} className="skip-btn">
-                  Maybe Later
+                <h2>Congratulations!</h2>
+                <p className="skip-btn">
+                  You have successfully completed the required fields. <br /> Click on the registration button to continue.
                 </p>
               </div>
             )}
@@ -1386,25 +1411,35 @@ const Signup = () => {
 
           {/* Navigation Buttons */}
           <div className="step-actions">
-            {step !== steps.length - 2 ? (
+
+            {step === 0 && (
+              <button onClick={handleSendOtp} className="btn primary">
+                Send OTP
+              </button>
+            )}
+
+            {step > 1 && step !== steps.length - 2 && (
               <button onClick={handleNext} className="btn primary">
                 Continue
               </button>
-            ) : (
-              <button
-                onClick={() => navigate("/app/subscription")}
-                className="btn success"
-              >
-                Buy Now
+            )}
+
+            {step === steps.length - 2 && (
+              <button onClick={handleRegister} className="btn success">
+                Register
               </button>
             )}
+
           </div>
         </div>
         {step === 0 && (
           <>
+            {/* <p className="google-signup" onClick={() => handleGoogle()}>
+              <FcGoogle /> Sign up with Google
+            </p> */}
             <span className="or">OR</span>
             <p className="login-register">
-              Already user?{" "}
+              Already have an account?{" "}
               <span className="link" onClick={() => navigate("/app/login")}>
                 Login
               </span>
