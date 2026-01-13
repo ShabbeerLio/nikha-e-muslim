@@ -544,9 +544,8 @@ const Signup = () => {
       setErrors({ email: "Required", name: "Required", password: "Required" });
       return;
     }
-    
+
     setLoading(true);
-    nextStep();
 
     const res = await fetch(`${Host}/api/auth/signup-send-otp`, {
       method: "POST",
@@ -556,11 +555,15 @@ const Signup = () => {
 
     const data = await res.json();
     setLoading(false);
-
+    
     if (res.ok) {
+      nextStep();
       setOtpSent(true);
     } else {
       setApiError(data.msg || "OTP sending failed");
+      setTimeout(() => {
+        setApiError("")
+      }, 2000);
     }
   };
 
@@ -591,9 +594,6 @@ const Signup = () => {
                 {errors.name && (
                   <span className="error-text">{errors.name}</span>
                 )}
-                {apiError && (
-                  <span className="error-text">{apiError}</span>
-                )}
                 <input
                   type="text"
                   name="name"
@@ -605,6 +605,9 @@ const Signup = () => {
                 />
                 {errors.email && (
                   <span className="error-text">{errors.email}</span>
+                )}
+                {apiError && (
+                  <span className="error-text">{apiError}</span>
                 )}
                 <input
                   type="email"
@@ -650,7 +653,6 @@ const Signup = () => {
             {step === 1 && (
               <div>
                 <h2>Verify OTP</h2>
-                {loading && "Processing ..."}
                 <p>{otpSent && `OTP sent to ${form.email}`}</p>
 
                 {otpError && <span className="error-text">{otpError}</span>}
@@ -1413,9 +1415,16 @@ const Signup = () => {
           <div className="step-actions">
 
             {step === 0 && (
-              <button onClick={handleSendOtp} className="btn primary">
-                Send OTP
-              </button>
+              <>
+                {loading ?
+                  <button onClick={handleSendOtp} className="btn primary">
+                    "Processing ..."
+                  </button>
+                  :
+                  <button onClick={handleSendOtp} className="btn primary">
+                    Send OTP
+                  </button>}
+              </>
             )}
 
             {step > 1 && step !== steps.length - 2 && (
