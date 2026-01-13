@@ -540,13 +540,13 @@ const Signup = () => {
   };
 
   const handleSendOtp = async () => {
-    nextStep();
     if (!form.email || !form.name || !form.password) {
       setErrors({ email: "Required", name: "Required", password: "Required" });
       return;
     }
-
+    
     setLoading(true);
+    nextStep();
 
     const res = await fetch(`${Host}/api/auth/signup-send-otp`, {
       method: "POST",
