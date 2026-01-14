@@ -53,6 +53,14 @@ const ProfileDetail = () => {
     const [reportUser, setReportUser] = useState(false)
     const [deleteUser, setDeleteUser] = useState(false)
 
+    const [reportReason, setReportReason] = useState("");
+    const [reportDescription, setReportDescription] = useState("");
+    const [reportSuccess, setReportSuccess] = useState(false);
+    const [connectionNote, setConnectionNote] = useState(false);
+
+    const [contactPrivacyModal, setContactPrivacyModal] = useState(false)
+    const [contactPrivacyError, setContactPrivacyError] = useState("")
+
     useEffect(() => {
         if (!localStorage.getItem("token")) {
             navigate("/app/welcome");
@@ -105,7 +113,7 @@ const ProfileDetail = () => {
     }, [id]);
 
     const [status, setStatus] = useState(null);
-    console.log(isBlocked, "isBlocked")
+    // console.log(isBlocked, "isBlocked")
 
     useEffect(() => {
         const fetchStatus = async () => {
@@ -138,7 +146,7 @@ const ProfileDetail = () => {
     const [subscriptionPlan, setSubscriptionPlan] = useState(
         userDetail.subscription?.plan || "Free"
     );
-    console.log(userDetail, "userDetail")
+    // console.log(userDetail, "userDetail")
 
     // 🔹 Tabs
     const tabs = [
@@ -377,13 +385,122 @@ const ProfileDetail = () => {
         }
     };
 
-    const isAllowedToSeePic = user?.profilePic?.allowedUsers?.includes(userDetail?._id);
+    const handleReportSubmit = async () => {
+        if (!reportReason) {
+            alert("Please select a reason");
+            return;
+        }
 
+        setLoading(true);
+        try {
+            const res = await fetch(`${Host}/api/auth/report/${id}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "auth-token": localStorage.getItem("token"),
+                },
+                body: JSON.stringify({
+                    reason: reportReason,
+                    description: reportDescription,
+                }),
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                setReportSuccess(true);
+                setTimeout(() => setReportSuccess(false), 3000);
+                setReportUser(false);
+                setReportReason("");
+                setReportDescription("");
+            } else {
+                alert(data.msg || "Report failed");
+            }
+        } catch (err) {
+            console.error(err);
+        }
+        setLoading(false);
+    };
+
+    const handleDeleteConnection = async () => {
+        setLoading(true);
+        try {
+            const res = await fetch(`${Host}/api/connection/delete/${id}`, {
+                method: "DELETE",
+                headers: {
+                    "auth-token": localStorage.getItem("token"),
+                },
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                setDeleteUser(false);
+                setStatus("none"); // update UI
+                setConnectionNote(true)
+                setTimeout(() => {
+                    setConnectionNote(false)
+                }, 3000);
+            } else {
+                alert(data.msg);
+            }
+        } catch (err) {
+            console.error(err);
+        }
+        setLoading(false);
+    };
+    const handleRequestContactPrivacy = async () => {
+        setLoading(true);
+        try {
+            const res = await fetch(`${Host}/api/auth/request-contact/${id}`, {
+                method: "POST",
+                headers: {
+                    "auth-token": localStorage.getItem("token"),
+                },
+            });
+
+
+            const data = await res.json();
+
+            if (res.ok) {
+                setContactPrivacyModal(true);
+                setContactPrivacyError(data.msg)
+                setTimeout(() => {
+                    setContactPrivacyModal(false)
+                    setContactPrivacyError("");
+                }, 3000);
+            } else {
+                setContactPrivacyError(data.msg);
+                setContactPrivacyModal(true);
+                setTimeout(() => {
+                    setContactPrivacyModal(false)
+                    setContactPrivacyError("");
+                }, 3000);
+            }
+        } catch (err) {
+            console.error(err);
+        }
+        setLoading(false);
+    };
+
+    const percent = user.profileCompletion;
+    const getColor = () => {
+        if (percent <= 20) return "#ff3b3b";
+        if (percent <= 50) return "#ff8c00";
+        if (percent <= 70) return "#ffd400";
+        return "#00c853";
+    };
+
+    const isAllowedToSeePic = user?.profilePic?.allowedUsers?.includes(userDetail?._id);
+    const isAllowedContact =
+        user?.contactPrivacy?.allowedUsers?.includes(userDetail?._id);
+
+    const isContactHidden = user?.contactPrivacy?.isHidden;
     // console.log(userDetail, "userDetail")
 
-    console.log(user, "user")
+    // console.log(user, "user")
 
-    console.log(subscriptionPlan, "subscriptionPlan")
+    // console.log(subscriptionPlan, "subscriptionPlan")
 
     return (
         <div className="Profile-detail">
@@ -447,15 +564,31 @@ const ProfileDetail = () => {
                         ))}
                     </div>
                     <div className="profile-detail-bottom" ref={containerRef}>
+                        <div className="profile-completion">
+                            <p>Profile Completion: {percent}%</p>
+                            <div className="battery-wrapper">
+                                <div className="battery">
+                                    <div
+                                        className="battery-level"
+                                        style={{
+                                            width: `${percent}%`,
+                                            background: getColor(),
+                                        }}
+                                    ></div>
+                                </div>
+                            </div>
+                        </div>
                         {!isBlocked ?
                             <>
                                 {!personal && (
                                     <div className="profile-detail-bottom-box">
                                         <h2>Matched</h2>
                                         <ul>
-                                            {matchedItems?.matchedFields.map((field, i) => (
-                                                <li key={i}><MoonStar /> {field} <CheckCheck className="matched" /></li>
-                                            ))}
+                                            {matchedItems?.matchedFields?.slice()
+                                                .reverse()
+                                                .map((field, i) => (
+                                                    <li key={i}><MoonStar /> {field} <CheckCheck className="matched" /></li>
+                                                ))}
                                         </ul>
                                         <p style={{ color: "green" }}>Your profile matched {matchedItems?.matchPercentage}%</p>
                                     </div>
@@ -469,6 +602,8 @@ const ProfileDetail = () => {
                                             )}
                                         </h2>
                                         <ul>
+                                            <li>Dowry: {user?.dowry}</li>
+                                            <li>Nikah As Sunnat: {user?.nikahAsSunnat}</li>
                                             <li>
                                                 <ScanHeart />
                                                 {user?.maritalStatus || "-"}
@@ -491,6 +626,7 @@ const ProfileDetail = () => {
                                                 <UserPen />
                                                 {user?.profileFor ? `Profile created for ${user?.profileFor}` : "-"}
                                             </li>
+
                                         </ul>
                                     </div>
                                     <div className="profile-detail-bottom-box">
@@ -531,6 +667,8 @@ const ProfileDetail = () => {
                                             <Pen onClick={() => navigate(`/app/profile-edit/contact`)} />
                                         )}
                                     </h2>
+
+                                    {/* 🔐 Subscription Lock */}
                                     {subscriptionPlan === "Free" && !personal ? (
                                         <div className="contact-overlay">
                                             <div className="contact-overlay-content">
@@ -543,18 +681,36 @@ const ProfileDetail = () => {
                                         </div>
                                     ) : (
                                         <>
-                                            <p>
-                                                <MapPinHouse /> {user.city + ", " + user?.state + ", India"}
-                                            </p>
-                                            <p>
-                                                <Mail /> {user?.email}
-                                            </p>
-                                            <p>
-                                                <Phone /> {user?.mobile}
-                                            </p>
-                                            <p style={{ color: "green" }}>
-                                                <FaWhatsapp style={{ color: "green" }} /> {user?.whatsapp || "Not Added"}
-                                            </p>
+                                            {/* 🔒 Privacy Lock */}
+                                            {isContactHidden && !isAllowedContact && !personal ? (
+                                                <div className="contact-overlay">
+                                                    <div className="contact-overlay-content">
+                                                        <Lock />
+                                                        <h5>Contact information is hidden</h5>
+                                                    </div>
+                                                    <button
+                                                        onClick={() => handleRequestContactPrivacy()}
+                                                    >
+                                                        Request Access
+                                                    </button>
+                                                </div>
+                                            ) : (
+                                                <>
+                                                    <p>
+                                                        <MapPinHouse /> {user.city + ", " + user?.state + ", India"}
+                                                    </p>
+                                                    <p>
+                                                        <Mail /> {user?.email}
+                                                    </p>
+                                                    <p>
+                                                        <Phone /> {user?.mobile}
+                                                    </p>
+                                                    <p style={{ color: "green" }}>
+                                                        <FaWhatsapp style={{ color: "green" }} />{" "}
+                                                        {user?.whatsapp || "Not Added"}
+                                                    </p>
+                                                </>
+                                            )}
                                         </>
                                     )}
                                 </section>
@@ -784,6 +940,7 @@ const ProfileDetail = () => {
                                         }}>
                                             Request Profile Picture
                                         </p>
+
                                         <p
                                             onClick={() => {
                                                 setShowOptions(false);
@@ -793,7 +950,10 @@ const ProfileDetail = () => {
                                             {!isBlocked ? "Block User" : "Unblock User"}
                                         </p>
                                         <p onClick={() => setReportUser(true)}>Report User</p>
-                                        <p onClick={() => setDeleteUser(true)} className="cancel-btn" >Delete Connection</p>
+                                        {status === "Accepted" && (
+                                            <p onClick={() => setDeleteUser(true)} className="cancel-btn" >Delete Connection</p>
+                                        )}
+
                                     </>
                                 ) :
                                     <>
@@ -803,9 +963,21 @@ const ProfileDetail = () => {
                                         }}>
                                             Profile Picture Privacy
                                         </p>
+                                        <p
+                                            onClick={async () => {
+                                                await fetch(`${Host}/api/auth/toggle-contact-privacy`, {
+                                                    method: "PUT",
+                                                    headers: {
+                                                        "auth-token": localStorage.getItem("token"),
+                                                    },
+                                                });
+                                                fetchUser();
+                                            }}
+                                        >
+                                            Toggle Contact Privacy
+                                        </p>
                                     </>}
 
-                                {/* <p onClick={() => setShowOptions(false)} className="cancel-btn">Cancel</p> */}
                             </div>
                         </div>
                     )}
@@ -898,12 +1070,35 @@ const ProfileDetail = () => {
                     {reportUser &&
                         <div className="profiledetail-overlay">
                             <div className="modal-box">
-                                <h4>Report this User?</h4>
-                                {/* <p>The user will be notified.</p> */}
+                                <h4>Report User</h4>
+
+                                <select
+                                    value={reportReason}
+                                    onChange={(e) => setReportReason(e.target.value)}
+                                    style={{ width: "100%", padding: "10px", marginTop: "10px" }}
+                                >
+                                    <option value="">Select Reason</option>
+                                    <option value="Fake profile">Fake profile</option>
+                                    <option value="Harassment">Harassment</option>
+                                    <option value="Inappropriate content">Inappropriate content</option>
+                                    <option value="Scam / Fraud">Scam / Fraud</option>
+                                    <option value="Other">Other</option>
+                                </select>
+
+                                <textarea
+                                    placeholder="Additional details (optional)"
+                                    value={reportDescription}
+                                    onChange={(e) => setReportDescription(e.target.value)}
+                                    style={{ width: "100%", padding: "10px", marginTop: "10px" }}
+                                />
 
                                 <div className="modal-button-box">
-                                    <button className="yes-btn" onClick={() => setReportUser(false)}>Yes</button>
-                                    <button className="no-btn" onClick={() => setReportUser(false)}>Cancel</button>
+                                    <button className="yes-btn" onClick={handleReportSubmit}>
+                                        Submit Report
+                                    </button>
+                                    <button className="no-btn" onClick={() => setReportUser(false)}>
+                                        Cancel
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -915,7 +1110,7 @@ const ProfileDetail = () => {
                                 <p>You will not be able to chat with this user if connection is deleted, Are you sure want to delete connection?</p>
 
                                 <div className="modal-button-box">
-                                    <button className="yes-btn" onClick={() => setDeleteUser(false)}>Yes</button>
+                                    <button className="yes-btn" onClick={handleDeleteConnection}>Yes</button>
                                     <button className="no-btn" onClick={() => setDeleteUser(false)}>Cancel</button>
                                 </div>
                             </div>
@@ -927,6 +1122,21 @@ const ProfileDetail = () => {
             {requestsent &&
                 <div className="chatmessage-status success">
                     <p> <Check />Sent Successful</p>
+                </div>
+            }
+            {reportSuccess &&
+                <div className="chatmessage-status success">
+                    <p><Check /> Report sent successfully</p>
+                </div>
+            }
+            {connectionNote &&
+                <div className="chatmessage-status success">
+                    <p><Check /> Connection removed</p>
+                </div>
+            }
+            {contactPrivacyModal &&
+                <div className="chatmessage-status success">
+                    <p><Check /> {contactPrivacyError}</p>
                 </div>
             }
         </div>

@@ -54,3 +54,84 @@
   justify-content: space-between;
   border-radius: 0 0 40px 40px;
 }
+
+.chat-search.matches{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: white;
+}
+
+.filter-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.filter-modal {
+  background: white;
+  width: 90%;
+  border-radius: 40px;
+  padding: 1.5rem;
+}
+
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filter-header h3 {
+  margin: 0;
+}
+
+.filter-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+.filter-body-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter-body-item {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.filter-body-item label {
+  color: #666;
+}
+.filter-body-item select {
+  border-radius: 40px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #b0b0b0;
+}
+
+.filter-footer {
+  margin-top: 15px;
+  text-align: center;
+}
+.filter-footer button{
+  background: linear-gradient(270deg, #5de0e6 0%, #004aad 100%);
+  width: 100%;
+  border-radius: 50px;
+  padding: 1rem;
+  border: none;
+  font-weight: bold;
+  color: white;
+}

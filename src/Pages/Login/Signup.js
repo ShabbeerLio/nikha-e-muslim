@@ -18,6 +18,8 @@ const steps = [
   "Religion & Sect",
   "Caste",
   "Maslak",
+  "Dowry Preference",
+  "Nikah As Sunnat",
   "Location",
   "Parents Location",
   "Marital Status",
@@ -57,15 +59,17 @@ const Signup = () => {
     6: ["sect"],
     7: ["caste"],
     8: ["maslak"],
-    9: ["state", "city"],
-    10: ["familyLivesHere"],
-    11: ["maritalStatus"],
-    12: ["mobile"],
-    13: ["motherTongue"],
-    14: ["qualification"],
-    15: ["workSector"],
-    16: ["profession"],
-    17: ["income"],
+    9: ["dowry"],
+    10: ["nikahAsSunnat"],
+    11: ["state", "city"],
+    12: ["familyLivesHere"],
+    13: ["maritalStatus"],
+    14: ["mobile"],
+    15: ["motherTongue"],
+    16: ["qualification"],
+    17: ["workSector"],
+    18: ["profession"],
+    19: ["income"],
   };
 
   const [form, setForm] = useState({
@@ -80,6 +84,8 @@ const Signup = () => {
     sect: "",
     caste: "",
     maslak: "",
+    dowry: "",
+    nikahAsSunnat: "",
     state: "",
     city: "",
     maritalStatus: "",
@@ -419,6 +425,64 @@ const Signup = () => {
     ],
   };
 
+  // const states = [
+  //   "Uttar Pradesh",
+  //   "Maharashtra",
+  //   "Delhi",
+  //   "Bihar",
+  //   "Karnataka",
+  // ];
+
+  // const cities = {
+  //   "Uttar Pradesh": ["Lucknow", "Kanpur", "Varanasi"],
+  //   Maharashtra: ["Mumbai", "Pune", "Nagpur"],
+  //   Delhi: ["Delhi"],
+  //   Bihar: ["Patna", "Gaya"],
+  //   Karnataka: ["Bengaluru", "Mysuru"],
+  // };
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
+
+  const fetchStates = async () => {
+    const res = await fetch("https://countriesnow.space/api/v0.1/countries/states", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ country: "India" }),
+    });
+    const data = await res.json();
+    return data.data.states.map(s => s.name);
+  };
+
+  const fetchCities = async (state) => {
+    const res = await fetch("https://countriesnow.space/api/v0.1/countries/state/cities", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        country: "India",
+        state: state,
+      }),
+    });
+    const data = await res.json();
+    return data.data;
+  };
+
+  useEffect(() => {
+    const loadStates = async () => {
+      const list = await fetchStates();
+      setStates(list);
+    };
+    loadStates();
+  }, []);
+
+  const handleStateChange = async (e) => {
+    const selectedState = e.target.value;
+
+    setForm({ ...form, state: selectedState, city: "" });
+
+    const cityList = await fetchCities(selectedState);
+    setCities(cityList);
+  };
+
   const [profilepic, setProfilepic] = useState(null);
 
   const fileInputRef = useRef(null);
@@ -456,6 +520,8 @@ const Signup = () => {
       formData.append("sect", form.sect);
       formData.append("caste", form.caste);
       formData.append("maslak", form.maslak);
+      formData.append("dowry", form.dowry);
+      formData.append("nikahAsSunnat", form.nikahAsSunnat);
       formData.append("state", form.state);
       formData.append("city", form.city);
       formData.append("maritalStatus", form.maritalStatus);
@@ -555,7 +621,7 @@ const Signup = () => {
 
     const data = await res.json();
     setLoading(false);
-    
+
     if (res.ok) {
       nextStep();
       setOtpSent(true);
@@ -848,7 +914,7 @@ const Signup = () => {
                       ))}
                     </Picker.Column>
                     <Picker.Column name="inch">
-                      {[...Array(11)].map((_, i) => (
+                      {[...Array(12)].map((_, i) => (
                         <Picker.Item key={i} value={i}>
                           {i} in
                         </Picker.Item>
@@ -962,24 +1028,77 @@ const Signup = () => {
                 </div>
               </div>
             )}
-
-            {/* STEP 8: Location */}
             {step === 9 && (
               <div>
-                <h2>Where do you currently live?</h2>
-                <h4>Select State</h4>
-                {errors.state && (
-                  <span className="error-text">{errors.state}</span>
+                <h2>Do you support Dowry (Dahej)?</h2>
+                {errors.dowry && <span className="error-text">Please select option</span>}
+                <div className="radio-group">
+                  {["No", "Yes", "Depends"].map((opt) => (
+                    <label key={opt} className="radio-option">
+                      <span>{opt}</span>
+                      <input
+                        type="radio"
+                        name="dowry"
+                        value={opt}
+                        checked={form.dowry === opt}
+                        onChange={(e) => {
+                          setForm({ ...form, dowry: e.target.value });
+                          nextStep();
+                        }}
+                      />
+                    </label>
+                  ))}
+                </div>
+              </div>
+            )}
+            {step === 10 && (
+              <div>
+                <h2>Nikah As Sunnat</h2>
+                <p style={{ fontSize: "13px" }}>
+                  Nikah with 10 or fewer people as per Sunnah.
+                </p>
+
+                {errors.nikahAsSunnat && (
+                  <span className="error-text">Please select option</span>
                 )}
-                <select name="state" value={form.state} onChange={handleChange}>
+
+                <div className="radio-group">
+                  {["Yes", "No", "Depends"].map((opt) => (
+                    <label key={opt} className="radio-option">
+                      <span>{opt}</span>
+                      <input
+                        type="radio"
+                        name="nikahAsSunnat"
+                        value={opt}
+                        checked={form.nikahAsSunnat === opt}
+                        onChange={(e) => {
+                          setForm({ ...form, nikahAsSunnat: e.target.value });
+                          nextStep();
+                        }}
+                      />
+                    </label>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* STEP 8: Location */}
+            {step === 11 && (
+              <div>
+                <h2>Where do you currently live?</h2>
+
+                <h4>Select State</h4>
+                {errors.state && <span className="error-text">{errors.state}</span>}
+                {/* <select
+                  name="state"
+                  value={form.state}
+                  onChange={(e) =>
+                    setForm({ ...form, state: e.target.value, city: "" })
+                  }
+                > */}
+                <select value={form.state} onChange={handleStateChange}>
                   <option value="">Select State</option>
-                  {[
-                    "Maharashtra",
-                    "Uttar Pradesh",
-                    "Delhi",
-                    "Karnataka",
-                    "Bihar",
-                  ].map((st) => (
+                  {states.map((st) => (
                     <option key={st} value={st}>
                       {st}
                     </option>
@@ -987,29 +1106,34 @@ const Signup = () => {
                 </select>
 
                 <h4>Select City</h4>
-                {errors.city && (
-                  <span className="error-text">{errors.city}</span>
-                )}
-                <select name="city" value={form.city} onChange={handleChange}>
+                {errors.city && <span className="error-text">{errors.city}</span>}
+                {/* <select
+                  name="city"
+                  value={form.city}
+                  disabled={!form.state}
+                  onChange={(e) => setForm({ ...form, city: e.target.value })}
+                > */}
+                <select
+                  value={form.city}
+                  disabled={!form.state}
+                  onChange={(e) => setForm({ ...form, city: e.target.value })}
+                >
                   <option value="">Select City</option>
-                  {[
-                    "Mumbai",
-                    "Pune",
-                    "Lucknow",
-                    "Delhi",
-                    "Patna",
-                    "Bengaluru",
-                  ].map((ct) => (
-                    <option key={ct} value={ct}>
-                      {ct}
-                    </option>
+                  {/* {form.state &&
+                    cities[form.state]?.map((ct) => (
+                      <option key={ct} value={ct}>
+                        {ct}
+                      </option>
+                    ))} */}
+                  {cities.map((ct) => (
+                    <option key={ct} value={ct}>{ct}</option>
                   ))}
                 </select>
               </div>
             )}
 
             {/* STEP 9: Family Location */}
-            {step === 10 && (
+            {step === 12 && (
               <div >
                 <h2>Does your family also live here?</h2>
                 {/* Show selected location from Step 8 */}
@@ -1047,51 +1171,44 @@ const Signup = () => {
                   {/* If "No", show state & city */}
                   {form.familyLivesHere === "No" && (
                     <div className="family-location">
+
                       <h4>Select State</h4>
-                      {errors.familyState && (
-                        <span className="error-text">{errors.familyState}</span>
-                      )}
                       <select
                         name="familyState"
                         value={form.familyState}
-                        onChange={handleChange}
+                        onChange={(e) =>
+                          setForm({
+                            ...form,
+                            familyState: e.target.value,
+                            familyCity: "",
+                          })
+                        }
                       >
                         <option value="">Select State</option>
-                        {[
-                          "Maharashtra",
-                          "Uttar Pradesh",
-                          "Delhi",
-                          "Karnataka",
-                          "Bihar",
-                        ].map((st) => (
-                          <option key={st} value={st}>
-                            {st}
-                          </option>
+                        {states.map((st) => (
+                          <option key={st} value={st}>{st}</option>
                         ))}
                       </select>
-                      {errors.familyCity && (
-                        <span className="error-text">{errors.familyCity}</span>
-                      )}
+
                       <h4>Select City</h4>
                       <select
                         name="familyCity"
                         value={form.familyCity}
-                        onChange={handleChange}
+                        disabled={!form.familyState}
+                        onChange={(e) =>
+                          setForm({ ...form, familyCity: e.target.value })
+                        }
                       >
                         <option value="">Select City</option>
-                        {[
-                          "Mumbai",
-                          "Pune",
-                          "Lucknow",
-                          "Delhi",
-                          "Patna",
-                          "Bengaluru",
-                        ].map((ct) => (
-                          <option key={ct} value={ct}>
-                            {ct}
-                          </option>
+                        {/* {form.familyState &&
+                          cities[form.familyState]?.map((ct) => (
+                            <option key={ct} value={ct}>{ct}</option>
+                          ))} */}
+                        {cities.map((ct) => (
+                          <option key={ct} value={ct}>{ct}</option>
                         ))}
                       </select>
+
                     </div>
                   )}
                 </div>
@@ -1100,7 +1217,7 @@ const Signup = () => {
             )}
 
             {/* STEP 8: Marital Status */}
-            {step === 11 && (
+            {step === 13 && (
               <div>
                 <h2>What is your marital status?</h2>
                 {errors.maritalStatus && (
@@ -1131,7 +1248,7 @@ const Signup = () => {
             )}
 
             {/* STEP 9: Mobile Number */}
-            {step === 12 && (
+            {step === 14 && (
               <div>
                 <h2>What is your mobile number?</h2>
                 {errors.mobile && (
@@ -1149,7 +1266,7 @@ const Signup = () => {
             )}
 
             {/* STEP 10: Mother Tongue */}
-            {step === 13 && (
+            {step === 15 && (
               <div>
                 <h2>What is your mother tongue?</h2>
                 {errors.motherTongue && (
@@ -1180,7 +1297,7 @@ const Signup = () => {
             )}
 
             {/* STEP 11: Qualification */}
-            {step === 14 && (
+            {step === 16 && (
               <div>
                 <h2>What is your highest qualification?</h2>
                 {errors.qualification && (
@@ -1241,7 +1358,7 @@ const Signup = () => {
             )}
 
             {/* STEP 12: Work Sector */}
-            {step === 15 && (
+            {step === 17 && (
               <div>
                 <h2>What sector you work in?</h2>
                 <div className="radio-group">
@@ -1281,7 +1398,7 @@ const Signup = () => {
             )}
 
             {/* STEP 13: Profession */}
-            {step === 16 && (
+            {step === 18 && (
               <div>
                 <h2>What is your profession?</h2>
 
@@ -1342,7 +1459,7 @@ const Signup = () => {
             )}
 
             {/* STEP 14: Annual Income */}
-            {step === 17 && (
+            {step === 19 && (
               <div>
                 <h2>What is your annual income?</h2>
                 <div className="dob-picker">
@@ -1369,7 +1486,7 @@ const Signup = () => {
             )}
 
             {/* STEP 15: Profile Picture */}
-            {step === 18 && (
+            {step === 20 && (
               <div>
                 <h2>Add your photo to get 10X more matches</h2>
                 {form.profilePic ? (
@@ -1401,7 +1518,7 @@ const Signup = () => {
             )}
 
             {/* STEP 16: Subscription */}
-            {step === 19 && (
+            {step === 21 && (
               <div>
                 <h2>Congratulations!</h2>
                 <p className="skip-btn">
@@ -1418,7 +1535,7 @@ const Signup = () => {
               <>
                 {loading ?
                   <button onClick={handleSendOtp} className="btn primary">
-                    "Processing ..."
+                    Processing ...
                   </button>
                   :
                   <button onClick={handleSendOtp} className="btn primary">

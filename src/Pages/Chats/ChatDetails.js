@@ -234,7 +234,7 @@ const ChatDetails = () => {
             </div>
             <div className="chatDetails-header">
                 <div className="chatDetails-user" onClick={() =>
-                    navigate(`/profile-detail/${user._id}`)
+                    navigate(`/app/profile-detail/${user._id}`)
                 }>
                     <img
                         src={

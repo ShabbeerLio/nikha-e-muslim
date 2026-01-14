@@ -355,6 +355,52 @@ const ProfileEdit = () => {
         }
     };
 
+    const [states, setStates] = useState([]);
+    const [cities, setCities] = useState([]);
+
+    useEffect(() => {
+        fetchStates();
+        if (form.state) {
+            fetchCities(form.state);
+        }
+    }, [form.state]);
+
+    const fetchStates = async () => {
+        const res = await fetch("https://countriesnow.space/api/v0.1/countries/states", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ country: "India" }),
+        });
+        const data = await res.json();
+        setStates(data.data.states.map(s => s.name));
+    };
+
+    const fetchCities = async (state) => {
+        const res = await fetch("https://countriesnow.space/api/v0.1/countries/state/cities", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ country: "India", state }),
+        });
+        const data = await res.json();
+        setCities(data.data || []);
+    };
+
+    const handleStateChange = async (e) => {
+        const selectedState = e.target.value;
+
+        setForm({
+            ...form,
+            state: selectedState,
+            city: "", // reset city when state changes
+        });
+
+        if (selectedState) {
+            await fetchCities(selectedState);
+        } else {
+            setCities([]);
+        }
+    };
+
 
 
     return (
@@ -424,39 +470,27 @@ const ProfileEdit = () => {
                             <div>
                                 {/* <h3>Edit Basic Details</h3> */}
                                 <select
-                                    name="city"
-                                    value={form.city} // bind value
-                                    onChange={(e) => setForm({ ...form, city: e.target.value })} // update state
+                                    name="state"
+                                    value={form.state}
+                                    onChange={handleStateChange}
                                 >
-                                    <option value="">Select City</option>
-                                    {[
-                                        "Mumbai",
-                                        "Pune",
-                                        "Lucknow",
-                                        "Delhi",
-                                        "Patna",
-                                        "Bengaluru",
-                                    ].map((ct) => (
-                                        <option key={ct} value={ct}>
-                                            {ct}
+                                    <option value="">Select State</option>
+                                    {states.map((st) => (
+                                        <option key={st} value={st}>
+                                            {st}
                                         </option>
                                     ))}
                                 </select>
                                 <select
-                                    name="state"
-                                    value={form.state}
-                                    onChange={(e) => setForm({ ...form, state: e.target.value })}
+                                    name="city"
+                                    value={form.city}
+                                    disabled={!form.state}
+                                    onChange={(e) => setForm({ ...form, city: e.target.value })}
                                 >
-                                    <option value="">Select State</option>
-                                    {[
-                                        "Maharashtra",
-                                        "Uttar Pradesh",
-                                        "Delhi",
-                                        "Karnataka",
-                                        "Bihar",
-                                    ].map((st) => (
-                                        <option key={st} value={st}>
-                                            {st}
+                                    <option value="">Select City</option>
+                                    {cities.map((ct) => (
+                                        <option key={ct} value={ct}>
+                                            {ct}
                                         </option>
                                     ))}
                                 </select>

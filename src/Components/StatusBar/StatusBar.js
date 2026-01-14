@@ -7,7 +7,7 @@ const StatusBar = ({ Users, userDetail, onlineUsers }) => {
   const navigate = useNavigate();
 
   const handleClick = (receiverId) => {
-    if (receiverId) navigate(`/chat/${receiverId}`);
+    if (receiverId) navigate(`/app/chat/${receiverId}`);
   };
 
   return (
