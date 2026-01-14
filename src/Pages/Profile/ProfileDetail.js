@@ -864,7 +864,7 @@ const ProfileDetail = () => {
                             {status === "Accepted" ? (
                                 <p
                                     className="Accepted"
-                                    onClick={() => navigate(`/app/chat/${user._id}`)}
+                                    onClick={() => navigate(`/app/chats`)}
                                 >
                                     <MessageCircle />
                                     Chat
