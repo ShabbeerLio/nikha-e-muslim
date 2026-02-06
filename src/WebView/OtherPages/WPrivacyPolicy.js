@@ -11,7 +11,7 @@ const WPrivacyPolicy = () => {
             </h3>
 
             <p>
-              At Nikha-e-Muslim, we are committed to protecting your privacy and
+              At Nikah-e-Muslim, we are committed to protecting your privacy and
               safeguarding your personal information. This Privacy Policy
               explains how we collect, use, store, and protect your data when
               you use our website and mobile application.
@@ -33,7 +33,7 @@ const WPrivacyPolicy = () => {
             </p>
 
             <p>
-              Nikha-e-Muslim uses industry-standard security measures to protect
+              Nikah-e-Muslim uses industry-standard security measures to protect
               your data from unauthorized access, misuse, or disclosure.
               However, while we strive to protect your information, no online
               platform can guarantee absolute security.
@@ -53,7 +53,7 @@ const WPrivacyPolicy = () => {
             </p>
 
             <p>
-              By using Nikha-e-Muslim, you agree to this Privacy Policy. We may
+              By using Nikah-e-Muslim, you agree to this Privacy Policy. We may
               update this policy from time to time, and any changes will be
               posted on this page. Continued use of the platform indicates your
               acceptance of the updated policy.

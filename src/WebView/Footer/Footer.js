@@ -18,7 +18,7 @@ const Footer = () => {
             <h6>A Trusted Halal Matrimonial Platform</h6>
             <h5>We are here to help you!</h5>
             <p>
-              Nikha-e-Muslim is dedicated to helping you find a compatible life
+              Nikah-e-Muslim is dedicated to helping you find a compatible life
               partner in a respectful, secure, and faith-based environment.
               Feel free to reach out to us with your questions or concerns.
             </p>
@@ -96,7 +96,7 @@ const Footer = () => {
       <footer className="footer-sec">
         <div className="common-container">
           <div className="footer-flex-bx">
-            <p>© Nikha-e-Muslim 2025 | All Rights Reserved.</p>
+            <p>© Nikah-e-Muslim 2025 | All Rights Reserved.</p>
             <p>Dev. By: <Link to={"https://digitaldezire.com/"}>Digital Dezire.</Link> </p>
           </div>
         </div>

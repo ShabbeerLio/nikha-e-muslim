@@ -41,13 +41,13 @@ const WebView = () => {
             <div className="hero-grid">
               <div className="hero-info-bx">
                 <h1>
-                  Nikha-e-Muslim: <span>Trusted</span> Islamic platform for
+                  Nikah-e-Muslim: <span>Trusted</span> Islamic platform for
                   <span> Nikah, matchmaking</span> and
                   <span> meaningful connections.</span>
                 </h1>
 
                 <p>
-                  Nikha-e-Muslim helps Muslims find the right life partner in a
+                  Nikah-e-Muslim helps Muslims find the right life partner in a
                   <b> halal, respectful</b> and <b>secure</b> way by combining
                   <b> faith-based matchmaking</b> with modern technology.
                 </p>
@@ -118,7 +118,7 @@ const WebView = () => {
               Verified Muslim Profiles <span>Halal Matchmaking</span> Secure
               Chat
               <span> Privacy First </span>
-              Nikha-e-Muslim <span>Family Oriented</span> Serious Intentions
+              Nikah-e-Muslim <span>Family Oriented</span> Serious Intentions
               Only
               <span>Islamic Values</span>
               Verified Muslim Profiles <span>Halal Matchmaking</span> Secure
@@ -145,7 +145,7 @@ const WebView = () => {
 
             <div className="right-choose-us-info">
               <h3>
-                Why <span>Choose Nikha-e-Muslim?</span>
+                Why <span>Choose Nikah-e-Muslim?</span>
               </h3>
 
               <p>
@@ -179,7 +179,7 @@ const WebView = () => {
               </p>
 
               <p>
-                Nikha-e-Muslim is a faith-first matchmaking platform that helps
+                Nikah-e-Muslim is a faith-first matchmaking platform that helps
                 Muslims find compatible life partners with dignity, trust, and
                 simplicity.
               </p>
@@ -350,13 +350,13 @@ const WebView = () => {
           <div className="faq-main">
             <div className="faq-bx ">
               <div className="faq-title-btn-bx">
-                <h5>What Is Nikha-e-Muslim?</h5>
+                <h5>What Is Nikah-e-Muslim?</h5>
                 <div className="arrow-btn">
                   <ChevronDown />
                 </div>
               </div>
               <p>
-                Nikha-e-Muslim is a Muslim matrimonial platform created to help
+                Nikah-e-Muslim is a Muslim matrimonial platform created to help
                 individuals find suitable life partners following Islamic
                 guidelines and values.
               </p>
@@ -364,7 +364,7 @@ const WebView = () => {
 
             <div className="faq-bx ">
               <div className="faq-title-btn-bx">
-                <h5>Is Nikha-e-Muslim Halal?</h5>
+                <h5>Is Nikah-e-Muslim Halal?</h5>
                 <div className="arrow-btn">
                   <ChevronDown />
                 </div>
@@ -397,7 +397,7 @@ const WebView = () => {
                 </div>
               </div>
               <p>
-                Yes. Nikha-e-Muslim encourages family involvement and
+                Yes. Nikah-e-Muslim encourages family involvement and
                 transparency throughout the matchmaking and Nikah process.
               </p>
             </div>

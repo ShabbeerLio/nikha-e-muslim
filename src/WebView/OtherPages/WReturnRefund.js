@@ -10,14 +10,14 @@ const WReturnRefund = () => {
               Return <span>Refund</span>{" "}
             </h3>
             <p>
-              Nikha-e-Muslim offers digital subscription-based services designed
+              Nikah-e-Muslim offers digital subscription-based services designed
               to help users find a compatible life partner through a secure and
               halal matchmaking process. As our services are digital in nature,
               no physical returns are applicable.
             </p>
 
             <p>
-              Subscription fees paid on Nikha-e-Muslim are generally
+              Subscription fees paid on Nikah-e-Muslim are generally
               non-refundable once the service has been activated. This includes
               access to premium features such as viewing contact details,
               sending messages, profile visibility enhancements, and other paid
@@ -35,7 +35,7 @@ const WReturnRefund = () => {
               To request a refund, users must contact our support team through
               the official contact channels provided on the website or app.
               Each request will be reviewed carefully, and decisions will be
-              made at the sole discretion of Nikha-e-Muslim.
+              made at the sole discretion of Nikah-e-Muslim.
             </p>
 
             <p>
@@ -45,14 +45,14 @@ const WReturnRefund = () => {
             </p>
 
             <p>
-              Nikha-e-Muslim reserves the right to suspend or terminate accounts
+              Nikah-e-Muslim reserves the right to suspend or terminate accounts
               found misusing the platform or violating our Terms & Conditions.
               In such cases, no refund will be applicable.
             </p>
 
             <p>
               By purchasing a subscription or using paid services on
-              Nikha-e-Muslim, you acknowledge and agree to this Return and
+              Nikah-e-Muslim, you acknowledge and agree to this Return and
               Refund Policy.
             </p>
           </div>

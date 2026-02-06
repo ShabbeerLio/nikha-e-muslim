@@ -13,7 +13,7 @@ const WTermCondition = () => {
             <strong>Effective Date: 11 Sep 2025</strong>
 
             <p>
-              By accessing or using Nikha-e-Muslim (“the Platform”), you agree to
+              By accessing or using Nikah-e-Muslim (“the Platform”), you agree to
               comply with and be bound by these Terms & Conditions. If you do not
               agree with any part of these terms, you must discontinue use of
               the platform immediately.
@@ -21,7 +21,7 @@ const WTermCondition = () => {
 
             <strong>1. Use of the Service</strong>
             <p>
-              Nikha-e-Muslim is a matrimonial and matchmaking platform created
+              Nikah-e-Muslim is a matrimonial and matchmaking platform created
               for Muslims seeking marriage through a halal, respectful, and
               value-based process. Users must be legally eligible for marriage
               and must use the platform solely for genuine matrimonial
@@ -42,13 +42,13 @@ const WTermCondition = () => {
               To access certain features, users must create an account. You are
               responsible for maintaining the confidentiality of your login
               credentials and for all activities conducted through your
-              account. Nikha-e-Muslim shall not be liable for unauthorized
+              account. Nikah-e-Muslim shall not be liable for unauthorized
               account access caused by user negligence.
             </p>
 
             <strong>4. Subscription & Payments</strong>
             <p>
-              Nikha-e-Muslim offers free and paid subscription plans. Paid
+              Nikah-e-Muslim offers free and paid subscription plans. Paid
               features may include messaging, contact visibility, and enhanced
               profile access. All payments are subject to our Return & Refund
               Policy, and subscription fees are generally non-refundable once
@@ -66,14 +66,14 @@ const WTermCondition = () => {
             <strong>6. Intellectual Property</strong>
             <p>
               All content, trademarks, logos, designs, and software associated
-              with Nikha-e-Muslim are the intellectual property of the platform
+              with Nikah-e-Muslim are the intellectual property of the platform
               and are protected by applicable laws. Unauthorized copying,
               modification, or distribution is strictly prohibited.
             </p>
 
             <strong>7. Limitation of Liability</strong>
             <p>
-              Nikha-e-Muslim provides matchmaking services on an “as-is” basis
+              Nikah-e-Muslim provides matchmaking services on an “as-is” basis
               and does not guarantee marriage outcomes. We are not responsible
               for user interactions, decisions, or outcomes arising from
               connections made through the platform.
@@ -81,7 +81,7 @@ const WTermCondition = () => {
 
             <strong>8. Termination of Service</strong>
             <p>
-              Nikha-e-Muslim reserves the right to suspend or terminate any
+              Nikah-e-Muslim reserves the right to suspend or terminate any
               account that violates these Terms & Conditions, applicable laws,
               or Islamic ethical guidelines, without prior notice.
             </p>
@@ -97,7 +97,7 @@ const WTermCondition = () => {
             <p>
               These Terms & Conditions are governed by the laws of India. If you
               have any questions or concerns, please contact us through the
-              official support channels available on Nikha-e-Muslim.
+              official support channels available on Nikah-e-Muslim.
             </p>
           </div>
         </div>

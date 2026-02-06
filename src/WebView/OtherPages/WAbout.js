@@ -10,7 +10,7 @@ const WAbout = () => {
               About <span>Us</span>{" "}
             </h3>
             <p>
-              Nikha-e-Muslim is a faith-based matrimonial and matchmaking platform
+              Nikah-e-Muslim is a faith-based matrimonial and matchmaking platform
               designed to help Muslims find a compatible life partner in a
               respectful, halal, and meaningful way. We focus on creating
               genuine connections that lead to Nikah, guided by Islamic values
@@ -26,7 +26,7 @@ const WAbout = () => {
             </p>
 
             <p>
-              Nikha-e-Muslim provides a safe and secure environment where users
+              Nikah-e-Muslim provides a safe and secure environment where users
               can connect through verified profiles, private chats, and
               controlled communication features. Privacy settings allow you to
               decide who can view your profile details and images.
@@ -41,7 +41,7 @@ const WAbout = () => {
 
             <p>
               With advanced search filters, wishlist options, matches, and
-              subscription plans, Nikha-e-Muslim makes the process of finding a
+              subscription plans, Nikah-e-Muslim makes the process of finding a
               compatible partner simple, organized, and trustworthy.
             </p>
 
@@ -50,7 +50,7 @@ const WAbout = () => {
               reliable for Muslims across the globe.
             </p>
 
-            <p>Your journey to Nikah begins with Nikha-e-Muslim.</p>
+            <p>Your journey to Nikah begins with Nikah-e-Muslim.</p>
           </div>
         </div>
       </section>

@@ -106,7 +106,7 @@ const WContact = () => {
               <Link className="contact-bottom-box">
                 <Mail />
                 <h5>send us e-mail</h5>
-                <p>nikhaemuslim@gmail.com</p>
+                <p>nikahemuslim@gmail.com</p>
               </Link>
               <Link className="contact-bottom-box">
                 <MapPin />
